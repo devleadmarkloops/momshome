@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "image_fiiPcV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Group_5.png",
+            "image_width": 170,
+            "alignment": ""
+          }
+        },
+        "link_list_8iiFWA": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop",
+            "menu": "footer"
+          }
+        },
+        "link_list_DrPVWk": {
+          "type": "link_list",
+          "settings": {
+            "heading": "INFORMATION",
+            "menu": "footer-info"
+          }
+        }
+      },
+      "block_order": [
+        "image_fiiPcV",
+        "link_list_8iiFWA",
+        "link_list_DrPVWk"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "newsletter_enable": true,
+        "newsletter_heading": "Join our newsletter",
+        "newsletter_placeholder": "Email address",
+        "newsletter_button": "Subscribe",
+        "newsletter_button_color_scheme": "scheme-1",
+        "newsletter_subtext": "By subscribing you agree to our Privacy Policy and Terms of Service.",
+        "show_policy": true,
+        "info_text": "<p>Simply Living brings order to the everyday — kitchen and home organisers built to last in Pakistani homes.</p>",
+        "margin_top": 0,
+        "padding_top": 52,
+        "padding_bottom": 24,
+        "padding_top_mob": 32,
+        "padding_bottom_mob": 20
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

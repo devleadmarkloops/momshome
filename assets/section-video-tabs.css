@@ -1,0 +1,332 @@
+.vt__head-area {
+  margin-bottom: 2.4rem;
+}
+
+.vt__heading {
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+
+.vt__desc {
+  margin: 0;
+  max-width: 46rem;
+}
+
+.vt__desc > :first-child { margin-top: 0; }
+.vt__desc > :last-child { margin-bottom: 0; }
+
+/* ---------- Accordion ---------- */
+.vt__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.vt__item {
+  border-top: 0.1rem solid rgb(var(--color-foreground) / 0.12);
+}
+
+.vt__item:last-child {
+  border-bottom: 0.1rem solid rgb(var(--color-foreground) / 0.12);
+}
+
+.vt__item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 1.6rem 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  color: rgb(var(--color-foreground) / 0.45);
+  transition: color 0.18s ease;
+}
+
+.vt__item.is-active .vt__item-head,
+.vt__item-head:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.vt__item-title {
+  font-weight: 400;
+  margin: 0;
+}
+
+.vt__item-caret {
+  display: none;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.vt__item-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.vt__item.is-active .vt__item-panel {
+  grid-template-rows: 1fr;
+}
+
+.vt__item-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.vt__item-text {
+  margin: 0 0 1.6rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.vt__item-text > :first-child { margin-top: 0; }
+.vt__item-text > :last-child { margin-bottom: 0; }
+
+/* ---------- Videos ---------- */
+.vt__videos {
+  position: relative;
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.6rem;
+}
+
+.vt__video {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: rgb(var(--color-foreground) / 0.05);
+}
+
+.vt__v,
+.vt__v-ph {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* control box (bottom-left) */
+.vt__vctrl {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: none;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.vt__video.is-started .vt__vctrl {
+  display: flex;
+}
+
+.vt__vbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 0;
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  cursor: pointer;
+}
+
+.vt__ic {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.vt__ic--muted,
+.vt__ic--pause {
+  display: none;
+}
+
+.vt__video.is-muted .vt__ic--sound { display: none; }
+.vt__video.is-muted .vt__ic--muted { display: block; }
+.vt__video.is-playing .vt__ic--play { display: none; }
+.vt__video.is-playing .vt__ic--pause { display: block; }
+
+/* center play */
+.vt__vplay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.vt__vplay svg {
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-left: 0.2rem;
+}
+
+.vt__video.is-started .vt__vplay {
+  display: none;
+}
+
+/* shop button (per video, bottom-right) */
+.vt__shop {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.4rem;
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-family: var(--font-button-family);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  z-index: 2;
+}
+
+.vt__shop svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  color: rgb(var(--color-button-text));
+  stroke: rgb(var(--color-button-text));
+}
+.vt__shop:hover svg {
+  color: rgb(var(--color-button));
+  stroke: rgb(var(--color-button));
+}
+.vt__shop:hover {
+  opacity: 0.9;
+}
+
+/* ---------- Arrows ---------- */
+.vt__nav {
+  display: none;
+}
+
+/* ---------- Mobile caret ---------- */
+@media screen and (max-width: 989px) {
+  .vt__item-caret {
+    display: block;
+  }
+
+  .vt__item.is-active .vt__item-caret {
+    transform: rotate(180deg);
+  }
+}
+
+/* ---------- Desktop split ---------- */
+@media screen and (min-width: 990px) {
+  .vt__inner {
+    position: relative;
+    min-height: var(--vt-stage-h, 520px);
+  }
+
+  .vt__main {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - var(--vt-stage-w, 52%) - 4.8rem);
+    min-height: var(--vt-stage-h, 520px);
+  }
+
+  .vt__list {
+    margin-top: auto;
+  }
+
+  /* the active block's videos become the right-hand stage (crossfade) */
+  .vt__videos {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--vt-stage-w, 52%);
+    height: var(--vt-stage-h, 520px);
+    margin-bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .vt__item.is-active .vt__videos {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .vt__video {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .vt__nav {
+    position: absolute;
+    top: calc(var(--vt-stage-h, 520px) / 2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    border: 0.1rem solid rgb(var(--color-foreground) / 0.12);
+    box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .vt__nav svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .vt__nav--prev {
+    left: calc(100% - var(--vt-stage-w, 52%) - 0rem);
+    transform: translate(-50%, -50%);
+  }
+
+  .vt__nav--next {
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .vt__item-head {
+    padding: 1.4rem 0;
+  }
+  .vt__vplay {
+    width: 4.8rem;
+    height: 4.8rem;
+  }
+  .vt__shop {
+    font-size: 1.1rem;
+    padding: 0.9rem 1.2rem;
+  }
+  .vt__vctrl {
+    top: 1rem;
+    bottom: unset;
+    gap: 0.3rem;
+  }
+  .vt__vbtn {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .vt__ic {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}

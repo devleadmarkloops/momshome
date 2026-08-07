@@ -1,0 +1,464 @@
+{{ 'section-before-after.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign align = section.settings.alignment
+  assign heading_size = section.settings.heading_size
+  assign text_size = section.settings.text_size
+
+  assign left_img = section.settings.left_image
+  assign right_img = section.settings.right_image
+
+  assign ratio = left_img.aspect_ratio | default: 1.6
+  assign hd = section.settings.image_height_desktop
+  assign hm = section.settings.image_height_mobile
+  assign start = section.settings.start_position
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #ba-{{ section.id }} {
+    --ba-ratio: {{ ratio }};
+    --ba-h-m: {% if hm == 'adapt' %}auto{% else %}{{ hm }}px{% endif %};
+    --ba-h-d: {% if hd == 'adapt' %}auto{% else %}{{ hd }}px{% endif %};
+    --ba-divider: {{ section.settings.divider_color }};
+  }
+
+  #ba-{{ section.id }} .ba__caption {
+    background-color: {{ section.settings.caption_bg_color }};
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+  }
+  #ba-{{ section.id }} .ba__caption-text--right {
+    display: none;
+  }
+  #ba-{{ section.id }}.ba--show-left .ba__caption-text--right {
+    display: none;
+  }
+  #ba-{{ section.id }}.ba--show-left .ba__caption-text--left {
+    display: block;
+  }
+  #ba-{{ section.id }}:not(.ba--show-left) .ba__caption-text--left {
+    display: none;
+  }
+  #ba-{{ section.id }}:not(.ba--show-left) .ba__caption-text--right {
+    display: block;
+  }
+  @media screen and (max-width:749px){
+  #ba-{{ section.id }} .ba__caption {
+    padding: 5px 20px 25px 20px;
+  }
+  #ba-{{ section.id }} .ba__caption-text--left {
+    margin-bottom: 10px;
+}
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="ba-{{ section.id }}"
+    class="ba section-{{ section.id }}-padding ba--{{ align }}"
+  >
+    <div class="page-width">
+      {%- if section.settings.heading != blank or section.settings.text != blank -%}
+        <div class="ba__head{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="ba__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <div class="ba__text rte {{ text_size }}">{{ section.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div
+        class="ba__frame"
+        style="--ba-pos: {{ start }}%;"
+      >
+        <div class="ba__image ba__image--base">
+          {%- if right_img != blank -%}
+            <img
+              src="{{ right_img | image_url: width: 1200 }}"
+              srcset="{{ right_img | image_url: width: 700 }} 700w, {{ right_img | image_url: width: 1100 }} 1100w, {{ right_img | image_url: width: 1500 }} 1500w, {{ right_img | image_url: width: 2000 }} 2000w"
+              sizes="(min-width: 1200px) 1200px, 100vw"
+              alt="{{ right_img.alt | escape | default: section.settings.right_label | escape }}"
+              width="{{ right_img.width }}"
+              height="{{ right_img.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <div class="ba__image ba__image--reveal">
+          {%- if left_img != blank -%}
+            <img
+              src="{{ left_img | image_url: width: 1200 }}"
+              srcset="{{ left_img | image_url: width: 700 }} 700w, {{ left_img | image_url: width: 1100 }} 1100w, {{ left_img | image_url: width: 1500 }} 1500w, {{ left_img | image_url: width: 2000 }} 2000w"
+              sizes="(min-width: 1200px) 1200px, 100vw"
+              alt="{{ left_img.alt | escape | default: section.settings.left_label | escape }}"
+              width="{{ left_img.width }}"
+              height="{{ left_img.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        <div class="ba__divider" aria-hidden="true"></div>
+
+        <div
+          class="ba__handle"
+          role="slider"
+          tabindex="0"
+          aria-label="{{ 'general.slider.of' | t | default: 'Drag to compare' }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="{{ start }}"
+        >
+          <svg class="ba__handle-arrows" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10 8l-4 4 4 4M14 8l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        {%- if section.settings.left_label != blank or section.settings.left_link != blank -%}
+          <div class="ba__look ba__look--left">
+            {%- if section.settings.left_button_label != blank -%}
+              <a class="ba__look-btn" href="{{ section.settings.left_link | default: '#' }}">{{ section.settings.left_button_label | escape }}</a>
+            {%- endif -%}
+            {%- if section.settings.left_label != blank -%}
+              <span class="ba__look-label h3">{{ section.settings.left_label | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.right_label != blank or section.settings.right_link != blank -%}
+          <div class="ba__look ba__look--right">
+            {%- if section.settings.right_button_label != blank -%}
+              <a class="ba__look-btn" href="{{ section.settings.right_link | default: '#' }}">{{ section.settings.right_button_label | escape }}</a>
+            {%- endif -%}
+            {%- if section.settings.right_label != blank -%}
+              <span class="ba__look-label h3">{{ section.settings.right_label | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.caption_text_left != blank or section.settings.caption_text_right != blank or section.settings.caption_button_label != blank -%}
+  <div class="ba__caption">
+      {%- if section.settings.caption_text_left != blank -%}
+        <p class="ba__caption-text ba__caption-text--left typeset2">{{ section.settings.caption_text_left }}</p>
+      {%- endif -%}
+      {%- if section.settings.caption_text_right != blank -%}
+        <p class="ba__caption-text ba__caption-text--right typeset2">{{ section.settings.caption_text_right }}</p>
+      {%- endif -%}
+          {%- if section.settings.caption_button_label != blank -%}
+            <a
+              href="{{ section.settings.caption_button_link | default: '#' }}"
+              class="button button--primary ba__caption-btn"
+            >
+              {{ section.settings.caption_button_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-before-after.js' | asset_url }}" defer="defer"></script>
+
+<script>
+  (function () {
+    var wrapper = document.getElementById('ba-{{ section.id }}');
+    if (!wrapper) return;
+    var frame = wrapper.querySelector('.ba__frame');
+    if (!frame) return;
+
+    function updateCaption() {
+      var posStyle = frame.style.getPropertyValue('--ba-pos');
+      var pos = parseFloat(posStyle) || 50;
+      if (pos >= 50) {
+        wrapper.classList.add('ba--show-left');
+      } else {
+        wrapper.classList.remove('ba--show-left');
+      }
+    }
+
+    updateCaption();
+
+    var observer = new MutationObserver(updateCaption);
+    observer.observe(frame, { attributes: true, attributeFilter: ['style'] });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Before after v1",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Same You, Different Fits"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "info": "Leave blank to hide.",
+      "default": "<p>Your current favorites in the world of Body Politix dresses</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset0"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Left look (revealed)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "left_label",
+      "label": "Label",
+      "default": "Athletic"
+    },
+    {
+      "type": "text",
+      "id": "left_button_label",
+      "label": "Button label",
+      "default": "SHOP LOOK"
+    },
+    {
+      "type": "url",
+      "id": "left_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Right look (base)"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "right_label",
+      "label": "Label",
+      "default": "Night-Out"
+    },
+    {
+      "type": "text",
+      "id": "right_button_label",
+      "label": "Button label",
+      "default": "SHOP LOOK"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Comparison"
+    },
+    {
+      "type": "range",
+      "id": "start_position",
+      "label": "Start position",
+      "min": 10,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider & handle color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "image_height_desktop",
+      "label": "Height (desktop)",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "420", "label": "420px" },
+        { "value": "460", "label": "460px" },
+        { "value": "500", "label": "500px" },
+        { "value": "540", "label": "540px" },
+        { "value": "580", "label": "580px" },
+        { "value": "620", "label": "620px" },
+        { "value": "680", "label": "680px" }
+      ],
+      "default": "540"
+    },
+    {
+      "type": "select",
+      "id": "image_height_mobile",
+      "label": "Height (mobile)",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "320", "label": "320px" },
+        { "value": "380", "label": "380px" },
+        { "value": "440", "label": "440px" },
+        { "value": "500", "label": "500px" },
+        { "value": "560", "label": "560px" }
+      ],
+      "default": "440"
+    },
+    {
+      "type": "header",
+      "content": "Caption bar (below slider)"
+    },
+    {
+      "type": "text",
+      "id": "caption_text_left",
+      "label": "Caption text (left / before image)",
+      "default": "Athletic look"
+    },
+    {
+      "type": "text",
+      "id": "caption_text_right",
+      "label": "Caption text (right / after image)",
+      "default": "Weekend / Chill — styled with Body Politix dresses"
+    },
+    {
+      "type": "text",
+      "id": "caption_button_label",
+      "label": "Button label",
+      "default": "SHOP LOOK"
+    },
+    {
+      "type": "url",
+      "id": "caption_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "caption_bg_color",
+      "label": "Background color",
+      "default": "#F0EDE6"
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Before after v1"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,407 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="bp-values color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div
+      class="bp-values__header"
+      data-align="{{ section.settings.content_alignment }}"
+      data-align-mobile="{{ section.settings.content_alignment_mobile }}"
+    >
+      {%- if section.settings.subheading != blank -%}
+        <p class="bp-values__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="bp-values__heading {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="bp-values__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="bp-values__grid">
+        {%- for block in section.blocks -%}
+          <div class="bp-values-card" data-bp-value-card {{ block.shopify_attributes }}>
+            <div class="bp-values-card__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 800
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '300, 450, 600, 800',
+                    sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 100vw',
+                    alt: block.settings.image.alt | escape
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'bp-values-card__placeholder placeholder' }}
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.text != blank -%}
+              <div
+                class="bp-values-card__reveal color-{{ section.settings.footer_color_scheme }}"
+                id="BpValueReveal-{{ block.id }}"
+              >
+                <div class="bp-values-card__text">{{ block.settings.text }}</div>
+              </div>
+            {%- endif -%}
+
+            <button
+              type="button"
+              class="bp-values-card__footer color-{{ section.settings.footer_color_scheme }}"
+              data-bp-value-toggle
+              aria-expanded="false"
+              {% if block.settings.text != blank %}aria-controls="BpValueReveal-{{ block.id }}"{% endif %}
+            >
+              <span class="bp-values-card__title h3">{{ block.settings.heading | default: 'Value' }}</span>
+              {%- if block.settings.text != blank -%}
+                <span class="bp-values-card__icon" aria-hidden="true">
+                  <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              {%- endif -%}
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.bp-values__header {
+  margin-bottom: 2.5rem;
+}
+
+.bp-values__subheading {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.13rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+}
+
+.bp-values__heading {
+  margin: 0 0 1.6rem;
+  line-height: 1.1;
+  color: rgb(var(--color-foreground));
+}
+
+.bp-values__text {
+  max-width: 60rem;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.bp-values__text p { margin: 0 0 1.2rem; }
+.bp-values__text p:last-child { margin-bottom: 0; }
+
+/* Header alignment — mobile (base) */
+.bp-values__header[data-align-mobile='left'] { text-align: left; }
+.bp-values__header[data-align-mobile='center'] { text-align: center; }
+.bp-values__header[data-align-mobile='right'] { text-align: right; }
+.bp-values__header[data-align-mobile='left'] .bp-values__text { margin-right: auto; margin-left: 0; }
+.bp-values__header[data-align-mobile='center'] .bp-values__text { margin-left: auto; margin-right: auto; }
+.bp-values__header[data-align-mobile='right'] .bp-values__text { margin-left: auto; margin-right: 0; }
+
+/* Grid */
+.bp-values__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Card */
+.bp-values-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 9 / 10;
+  background-color: #161616;
+  border-radius: 0;
+}
+
+.bp-values-card__media { position: absolute; inset: 0; }
+.bp-values-card__media img,
+.bp-values-card__placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Reveal — full-card overlay that slides up from the bottom */
+.bp-values-card__reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 2.6rem 2rem 9.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  transform: translateY(100%);
+  transition: transform 0.45s ease;
+}
+.bp-values-card.is-open .bp-values-card__reveal {
+  transform: translateY(0);
+}
+.bp-values-card__text {
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+.bp-values-card__text p { margin: 0 0 1.2rem; }
+.bp-values-card__text p:last-child { margin-bottom: 0; }
+.bp-values-card__text a { color: inherit; text-decoration: underline; text-underline-offset: 0.3rem; }
+
+/* Footer (heading + plus) — pinned to the bottom, above the reveal */
+.bp-values-card__footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  padding: 2.6rem 2rem;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+.bp-values-card__title {
+  line-height: 1.25;
+}
+
+/* Icon box stays square; only the SVG rotates */
+.bp-values-card__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+.bp-values-card__icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  transition: transform 0.3s ease;
+}
+.bp-values-card.is-open .bp-values-card__icon svg {
+  transform: rotate(45deg);
+}
+
+/* Desktop */
+@media screen and (min-width: 750px) {
+  .bp-values__header { margin-bottom: 3.8rem; }
+
+  .bp-values__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+
+  .bp-values__header[data-align='left'] { text-align: left; }
+  .bp-values__header[data-align='center'] { text-align: center; }
+  .bp-values__header[data-align='right'] { text-align: right; }
+  .bp-values__header[data-align='left'] .bp-values__text { margin-right: auto; margin-left: 0; }
+  .bp-values__header[data-align='center'] .bp-values__text { margin-left: auto; margin-right: auto; }
+  .bp-values__header[data-align='right'] .bp-values__text { margin-left: auto; margin-right: 0; }
+}
+
+@media screen and (min-width: 990px) {
+  .bp-values__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('[data-bp-value-toggle]');
+  if (!btn) return;
+  var card = btn.closest('[data-bp-value-card]');
+  if (!card) return;
+  var isOpen = card.classList.toggle('is-open');
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+});
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "About values",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Section color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "footer_color_scheme",
+      "label": "Card footer color scheme",
+      "info": "Controls the card bar + reveal panel. Pick a dark scheme for the black look. The + icon box uses the scheme's text colour so it always contrasts.",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Our values"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What We Believe"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h0"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>At Body Politix, everything we create is driven by inclusivity, comfort, and confidence designed to help every woman look and feel her best, every day.</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment_mobile",
+      "label": "Content alignment (mobile)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Value title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Reveal text",
+          "default": "<p>Describe this value. This text slides up over the image when the card is opened.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "About values",
+      "blocks": [
+        { "type": "value", "settings": { "heading": "Inclusive by Design" } },
+        { "type": "value", "settings": { "heading": "Comfortable" } },
+        { "type": "value", "settings": { "heading": "Confidence Every Day" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

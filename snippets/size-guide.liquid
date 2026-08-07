@@ -1,0 +1,317 @@
+{% comment %}
+  Size Guide — Body Politix
+  Render once near the section root (see install note):
+    {% render 'size-guide', product: product, section: section %}
+
+  All text + the table are editable in Theme Editor → product section → "Size guide".
+  Table format: one size per line, columns separated by commas (Size, Bust, Waist, Hips).
+  Trigger only renders when the product has a "Size" option, injected to the right of that option's label.
+{% endcomment %}
+
+{%- liquid
+  assign size_option_name = ''
+  for option in product.options_with_values
+    assign opt_down = option.name | downcase
+    if opt_down contains 'size'
+      assign size_option_name = option.name
+      break
+    endif
+  endfor
+-%}
+
+{%- unless section.settings.size_guide_enabled == false -%}
+  {%- if size_option_name != blank -%}
+
+    {%- assign sg_img = section.settings.size_guide_image -%}
+    {%- assign sg_img_pos = section.settings.size_guide_image_position | default: 'top' -%}
+    {%- assign sg_button_text = section.settings.size_guide_button_text | default: 'Size Guide' -%}
+    {%- assign sg_title = section.settings.size_guide_title | default: 'Size Guide' -%}
+
+    {%- capture sg_image_markup -%}
+      {%- if sg_img != blank -%}
+        <div class="size-guide-modal__image">
+          {{ sg_img | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 66rem, 100vw', widths: '400, 600, 800, 1200', alt: sg_img.alt | default: sg_title }}
+        </div>
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- comment -%} Trigger button (cloned into the Size label row by JS) {%- endcomment -%}
+    <template id="SizeGuideOpenerTemplate-{{ section.id }}">
+      <modal-opener class="size-guide-opener" data-modal="#SizeGuideModal-{{ section.id }}">
+        <button class="size-guide-opener__button" type="button" aria-haspopup="dialog">
+          <span class="size-guide-opener__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 11v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="7.75" r="1" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="size-guide-opener__label">{{ sg_button_text }}</span>
+        </button>
+      </modal-opener>
+    </template>
+
+    {%- comment -%} Popup {%- endcomment -%}
+    <modal-dialog id="SizeGuideModal-{{ section.id }}" class="size-guide-modal">
+      <div role="dialog" aria-label="{{ sg_title | escape }}" aria-modal="true" class="size-guide-modal__content" tabindex="-1">
+        <header class="size-guide-modal__header">
+          <h2 class="size-guide-modal__title">{{ sg_title }}</h2>
+          <button
+            id="ModalClose-sizeguide-{{ section.id }}"
+            type="button"
+            class="size-guide-modal__close"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </button>
+        </header>
+
+        <div class="size-guide-modal__body">
+          {%- if sg_img_pos == 'top' -%}{{ sg_image_markup }}{%- endif -%}
+
+          {%- if section.settings.size_guide_fitnotes_heading != blank
+                or section.settings.size_guide_fitnotes_text != blank
+                or section.settings.size_guide_inseam_heading != blank
+                or section.settings.size_guide_inseam_text != blank -%}
+            <div class="size-guide-modal__notes">
+              {%- if section.settings.size_guide_fitnotes_heading != blank -%}
+                <h3 class="size-guide-modal__subtitle">{{ section.settings.size_guide_fitnotes_heading }}</h3>
+              {%- endif -%}
+              {%- if section.settings.size_guide_fitnotes_text != blank -%}
+                <div class="size-guide-modal__rte">{{ section.settings.size_guide_fitnotes_text }}</div>
+              {%- endif -%}
+              {%- if section.settings.size_guide_inseam_heading != blank -%}
+                <h3 class="size-guide-modal__subtitle">{{ section.settings.size_guide_inseam_heading }}</h3>
+              {%- endif -%}
+              {%- if section.settings.size_guide_inseam_text != blank -%}
+                <p class="size-guide-modal__inseam">{{ section.settings.size_guide_inseam_text | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.size_guide_table_heading != blank
+                or section.settings.size_guide_table_rows != blank
+                or section.settings.size_guide_footnote != blank -%}
+            <div class="size-guide-modal__measurements">
+              {%- if section.settings.size_guide_table_heading != blank -%}
+                <h3 class="size-guide-modal__subtitle">{{ section.settings.size_guide_table_heading }}</h3>
+              {%- endif -%}
+
+              {%- if section.settings.size_guide_table_rows != blank -%}
+                <div class="size-guide-modal__table-wrap">
+                  <table class="size-guide-modal__table">
+                    {%- assign header_cells = section.settings.size_guide_table_headers | split: ',' -%}
+                    {%- if header_cells.size > 0 -%}
+                      <thead>
+                        <tr>
+                          {%- for h in header_cells -%}<th scope="col">{{ h | strip }}</th>{%- endfor -%}
+                        </tr>
+                      </thead>
+                    {%- endif -%}
+                    <tbody>
+                      {%- assign row_lines = section.settings.size_guide_table_rows | strip | newline_to_br | split: '<br />' -%}
+                      {%- for line in row_lines -%}
+                        {%- assign line_clean = line | strip -%}
+                        {%- if line_clean != blank -%}
+                          <tr>
+                            {%- assign cells = line_clean | split: ',' -%}
+                            {%- for cell in cells -%}<td>{{ cell | strip }}</td>{%- endfor -%}
+                          </tr>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.size_guide_footnote != blank -%}
+                <p class="size-guide-modal__footnote">{{ section.settings.size_guide_footnote | newline_to_br }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if sg_img_pos == 'bottom' -%}{{ sg_image_markup }}{%- endif -%}
+        </div>
+      </div>
+    </modal-dialog>
+
+    <script>
+      (function () {
+        var SECTION_ID = {{ section.id | json }};
+        var SIZE_NAME = {{ size_option_name | downcase | json }};
+
+        function findSizeLabel(container) {
+          var labels = container.querySelectorAll('legend.form__label, .form__label');
+          for (var i = 0; i < labels.length; i++) {
+            var txt = (labels[i].textContent || '').trim().toLowerCase();
+            if (txt.indexOf(SIZE_NAME) === 0) return labels[i];
+          }
+          return null;
+        }
+
+        function injectButton(container) {
+          var label = findSizeLabel(container);
+          if (!label || label.querySelector('.size-guide-opener')) return;
+          var tpl = document.getElementById('SizeGuideOpenerTemplate-' + SECTION_ID);
+          if (!tpl) return;
+          label.classList.add('size-guide-legend');
+          label.insertAdjacentHTML('beforeend', tpl.innerHTML);
+        }
+
+        function start() {
+          var container = document.getElementById('ProductInfo-' + SECTION_ID);
+          if (!container) return false;
+          injectButton(container);
+          new MutationObserver(function () { injectButton(container); })
+            .observe(container, { childList: true, subtree: true });
+          return true;
+        }
+
+        var modalEl = document.getElementById('SizeGuideModal-' + SECTION_ID);
+        if (modalEl) {
+          modalEl.addEventListener('click', function (e) {
+            if (e.target === modalEl && typeof modalEl.hide === 'function') modalEl.hide();
+          });
+        }
+
+        if (!start()) document.addEventListener('DOMContentLoaded', start);
+      })();
+    </script>
+
+    <style>
+      /* ---- Trigger (sits on the right of the Size label row) ---- */
+      .size-guide-legend { position: relative; display: block; width: 100%; }
+      .size-guide-opener {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        display: inline-flex;
+      }
+      .size-guide-opener__button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        font-size: 1.3rem;
+        line-height: 1;
+        color: rgb(var(--color-foreground));
+      }
+      .size-guide-opener__icon { display: inline-flex; }
+      .size-guide-opener__icon svg { width: 1.6rem; height: 1.6rem; }
+      .size-guide-opener__label {
+        text-decoration: underline;
+        text-underline-offset: 0.3rem;
+        text-decoration-thickness: 0.1rem;
+      }
+      .size-guide-opener__button:hover .size-guide-opener__label { text-decoration-thickness: 0.15rem; }
+
+      /* ---- Popup ---- */
+      .size-guide-modal {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        background: rgba(var(--color-foreground), 0.5);
+        opacity: 0;
+        visibility: hidden;
+        z-index: -1;
+        transition: opacity 0.2s ease;
+      }
+      .size-guide-modal[open] { opacity: 1; visibility: visible; z-index: 102; }
+      .size-guide-modal__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 66rem;
+        max-height: min(86vh, 82rem);
+        background: rgb(var(--color-background));
+        border-radius: 1.2rem;
+        overflow: hidden;
+        box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.25);
+      }
+      .size-guide-modal__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 2rem 2.4rem;
+        flex: 0 0 auto;
+      }
+      .size-guide-modal__title { margin: 0; font-size: 2.2rem; line-height: 1.2; }
+      .size-guide-modal__close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.2rem;
+        height: 3.2rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: rgb(var(--color-foreground));
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .size-guide-modal__close svg,
+      .size-guide-modal__close .icon { width: 1.8rem; height: 1.8rem; }
+      .size-guide-modal__body { flex: 1 1 auto; overflow-y: auto; }
+      .size-guide-modal__image img { display: block; width: 100%; height: auto; }
+      .size-guide-modal__notes { background: #f7f4f0; padding: 2rem 2.4rem; }
+      .size-guide-modal__measurements { padding: 2rem 2.4rem 2.4rem; }
+      .size-guide-modal__subtitle {
+        margin: 0 0 0.8rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
+      }
+      .size-guide-modal__notes .size-guide-modal__rte p,
+      .size-guide-modal__notes .size-guide-modal__inseam {
+        margin: 0 0 1.6rem;
+        font-size: 1.4rem;
+        line-height: 1.5;
+      }
+      .size-guide-modal__notes .size-guide-modal__rte p:last-child,
+      .size-guide-modal__notes .size-guide-modal__inseam:last-child { margin-bottom: 0; }
+      .size-guide-modal__notes .size-guide-modal__rte a { color: inherit; }
+      .size-guide-modal__notes .size-guide-modal__subtitle:not(:first-child) { margin-top: 1.6rem; }
+
+      .size-guide-modal__table-wrap { overflow-x: auto; }
+      .size-guide-modal__table { width: 100%; border-collapse: collapse; font-size: 1.4rem; }
+      .size-guide-modal__table th {
+        text-align: left;
+        font-weight: 600;
+        font-size: 1.1rem;
+        letter-spacing: 0.06rem;
+        text-transform: uppercase;
+        color: rgba(var(--color-foreground), 0.6);
+        padding: 1rem 1.2rem;
+        border: 0;
+      }
+      .size-guide-modal__table td { padding: 1.2rem; border: 0; }
+      .size-guide-modal__table tbody tr:nth-child(even) { background: rgba(var(--color-foreground), 0.04); }
+      .size-guide-modal__footnote {
+        margin: 1.6rem 0 0;
+        font-size: 1.3rem;
+        line-height: 1.5;
+        color: rgba(var(--color-foreground), 0.7);
+      }
+
+      @media screen and (max-width: 749px) {
+        .size-guide-modal { padding: 1.5rem 1rem; }
+        .size-guide-modal__header,
+        .size-guide-modal__notes,
+        .size-guide-modal__measurements {
+          padding-left: 1.6rem;
+          padding-right: 1.6rem;
+        }
+      }
+    </style>
+
+  {%- endif -%}
+{%- endunless -%}

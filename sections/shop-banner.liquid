@@ -1,0 +1,378 @@
+{{ 'section-shop-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign total = section.blocks.size
+  if total < 10
+    assign total_str = '0' | append: total
+  else
+    assign total_str = total | append: ''
+  endif
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  #shopify-section-template--28007005585772__shop_banner_ECA3Cm {
+      margin-bottom: 10px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  @media screen and (min-width:750px){
+  #shopify-section-template--28007005585772__shop_banner_ECA3Cm {
+      margin-bottom: 20px;
+  }
+  }
+  #sb-{{ section.id }} {
+    --sb-h-m: {{ section.settings.height_mobile }}px;
+    --sb-h-d: {{ section.settings.height_desktop }}px;
+    --sb-radius: {{ section.settings.corner_radius }}px;
+    --sb-dot: {{ section.settings.dot_size }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div id="sb-{{ section.id }}" class="sb section-{{ section.id }}-padding">
+
+    <div class="sb__stage">
+      {%- if section.blocks.size > 0 -%}
+        <div class="sb__swiper swiper" data-total="{{ total }}" data-loop="{% if section.settings.loop %}true{% else %}false{% endif %}">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign img = block.settings.image
+              -%}
+              <div class="sb__slide swiper-slide" {{ block.shopify_attributes }}>
+                <div class="sb__media">
+                  {%- if img != blank -%}
+                    <img
+                      src="{{ img | image_url: width: 1800 }}"
+                      srcset="{{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1600 }} 1600w, {{ img | image_url: width: 2000 }} 2000w, {{ img | image_url: width: 2400 }} 2400w"
+                      sizes="100vw"
+                      alt="{{ img.alt | escape }}"
+                      width="{{ img.width }}"
+                      height="{{ img.height }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+
+                <div class="sb__dots">
+                  {%- for n in (1..3) -%}
+                    {%- liquid
+                      assign pkey = 'dot' | append: n | append: '_product'
+                      assign xkey = 'dot' | append: n | append: '_x'
+                      assign ykey = 'dot' | append: n | append: '_y'
+                      assign xmkey = 'dot' | append: n | append: '_x_mobile'
+                      assign ymkey = 'dot' | append: n | append: '_y_mobile'
+                      assign prod = block.settings[pkey]
+                    -%}
+                    {%- if prod != blank -%}
+                      {%- assign price = prod.price | money | replace: '.00', '' -%}
+                      <div
+                        class="sb__dot"
+                        style="--x: {{ block.settings[xkey] }}%; --y: {{ block.settings[ykey] }}%; --xm: {{ block.settings[xmkey] }}%; --ym: {{ block.settings[ymkey] }}%;"
+                      >
+                        <button type="button" class="sb__dot-btn" aria-label="{{ prod.title | escape }}">
+                          <span class="sb__dot-core" aria-hidden="true"></span>
+                        </button>
+                        <a class="sb__tip" href="{{ prod.url }}">
+                          <span class="sb__tip-card">
+                            {%- if prod.featured_image -%}
+                              <img class="sb__tip-img" src="{{ prod.featured_image | image_url: width: 180 }}" alt="{{ prod.featured_image.alt | escape | default: prod.title | escape }}" width="70" height="90" loading="lazy">
+                            {%- endif -%}
+                            <span class="sb__tip-info">
+                              <span class="sb__tip-title">{{ prod.title | escape }}</span>
+                              <span class="sb__tip-price">{{ price }}</span>
+                              <span class="sb__tip-cta">{{ section.settings.shop_now_label | escape | default: 'Shop Now' }}</span>
+                            </span>
+                          </span>
+                          <span class="sb__tip-caret" aria-hidden="true">
+                            <svg class="sb__caret-svg" viewBox="0 0 17 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M16.6048 1.91603C16.0838 1.06303 15.0558 0.508032 13.5248 0.262032C11.9178 0.0820316 10.2508 -0.010968 8.49977 0.00103196C6.75477 -0.00396804 5.0758 0.0820319 3.4478 0.265032C1.9528 0.497032 0.928802 1.04303 0.404802 1.89003C-0.0801976 2.67103 -0.129198 3.68503 0.256802 4.90303C0.260802 4.91503 0.264802 4.92703 0.269802 4.93803C1.3738 7.67606 3.7018 11.3931 5.6798 13.5781C6.58777 14.6121 7.53577 15.1361 8.49577 15.1371H8.49677C9.45677 15.1371 10.4048 14.6121 11.3098 13.5831C13.2928 11.3911 15.6208 7.67406 16.7348 4.90603C17.1258 3.70203 17.0818 2.69603 16.6048 1.91603Z" fill="currentColor"/></svg>
+                          </span>
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_scroll -%}
+        <button type="button" class="sb__scroll" aria-label="{{ section.settings.scroll_label | escape | default: 'Scroll' }}">
+          <svg class="sb__scroll-ring" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <path id="sbCircle-{{ section.id }}" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/>
+            </defs>
+            <text>
+              <textPath href="#sbCircle-{{ section.id }}" startOffset="0" textLength="289" lengthAdjust="spacing">
+                {%- assign ct = section.settings.scroll_text | append: '  •  ' -%}{{ ct }}{{ ct }}
+              </textPath>
+            </text>
+          </svg>
+          <span class="sb__scroll-center">
+            <svg class="sb__scroll-arrow" viewBox="0 0 28 50" fill="none" aria-hidden="true">
+              <path d="M0 35.1514C1.75096 35.1514 3.48478 35.4962 5.10244 36.1664C6.72012 36.8364 8.18998 37.8184 9.4281 39.0566C10.6662 40.2948 11.6483 41.7646 12.3184 43.3822C12.9885 45 13.3333 46.7338 13.3333 48.4846" stroke="currentColor" stroke-width="2"/>
+            <path d="M26.6668 35.1514C24.9158 35.1514 23.182 35.4962 21.5644 36.1664C19.9467 36.8364 18.4769 37.8184 17.2387 39.0566C16.0006 40.2948 15.0185 41.7646 14.3484 43.3822C13.6784 45 13.3335 46.7338 13.3335 48.4846" stroke="currentColor" stroke-width="2"/>
+              <path d="M13.3467 0V48.4848" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="sb__scroll-label">{{ section.settings.scroll_label | escape | default: 'SCROLL' }}</span>
+          </span>
+        </button>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="sb__footer page-width">
+        <div class="sb__controls">
+          <button type="button" class="sb__nav sb__nav--prev">
+            <span class="sb__nav-label">{{ section.settings.prev_label | escape | default: 'PREV' }}</span>
+            <svg class="sb__arrow" viewBox="0 0 60 22" fill="none" aria-hidden="true">
+              <path d="M48 22C48 20.5555 48.2845 19.1251 48.8373 17.7905C49.3901 16.4559 50.2004 15.2433 51.2218 14.2218C52.2433 13.2004 53.4559 12.3901 54.7905 11.8373C56.1251 11.2845 57.5555 11 59 11" stroke="currentColor"/>
+              <path d="M48 0C48 1.44454 48.2845 2.87494 48.8373 4.20952C49.3901 5.5441 50.2004 6.75673 51.2218 7.77817C52.2433 8.79962 53.4559 9.60987 54.7905 10.1627C56.1251 10.7155 57.5555 11 59 11" stroke="currentColor"/>
+              <path d="M0 11H60" stroke="currentColor"/>
+            </svg>
+          </button>
+
+          <span class="sb__count"><span class="sb__count-cur">01</span> / <span class="sb__count-total">{{ total_str }}</span></span>
+
+          <button type="button" class="sb__nav sb__nav--next">
+            <svg class="sb__arrow" viewBox="0 0 60 22" fill="none" aria-hidden="true">
+              <path d="M48 22C48 20.5555 48.2845 19.1251 48.8373 17.7905C49.3901 16.4559 50.2004 15.2433 51.2218 14.2218C52.2433 13.2004 53.4559 12.3901 54.7905 11.8373C56.1251 11.2845 57.5555 11 59 11" stroke="currentColor"/>
+              <path d="M48 0C48 1.44454 48.2845 2.87494 48.8373 4.20952C49.3901 5.5441 50.2004 6.75673 51.2218 7.77817C52.2433 8.79962 53.4559 9.60987 54.7905 10.1627C56.1251 10.7155 57.5555 11 59 11" stroke="currentColor"/>
+              <path d="M0 11H60" stroke="currentColor"/>
+            </svg>
+            <span class="sb__nav-label">{{ section.settings.next_label | escape | default: 'NEXT' }}</span>
+          </button>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'section-shop-banner.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Shop banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Height (desktop)",
+      "min": 260,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height (mobile)",
+      "min": 260,
+      "max": 560,
+      "step": 10,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "label": "Dot size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Hotspot card"
+    },
+    {
+      "type": "text",
+      "id": "shop_now_label",
+      "label": "Shop now label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Controls"
+    },
+    {
+      "type": "text",
+      "id": "prev_label",
+      "label": "Previous label",
+      "default": "PREV"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next label",
+      "default": "NEXT"
+    },
+    {
+      "type": "header",
+      "content": "Scroll indicator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll",
+      "label": "Show scroll button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "scroll_text",
+      "label": "Rotating text",
+      "default": "DISCOVER MORE"
+    },
+    {
+      "type": "text",
+      "id": "scroll_label",
+      "label": "Center label",
+      "default": "SCROLL"
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner image"
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 1"
+        },
+        { "type": "product", "id": "dot1_product", "label": "Product" },
+        { "type": "range", "id": "dot1_x", "label": "Position X (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+        { "type": "range", "id": "dot1_y", "label": "Position Y (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 60 },
+        { "type": "range", "id": "dot1_x_mobile", "label": "Position X (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 30 },
+        { "type": "range", "id": "dot1_y_mobile", "label": "Position Y (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 60 },
+        {
+          "type": "header",
+          "content": "Hotspot 2"
+        },
+        { "type": "product", "id": "dot2_product", "label": "Product" },
+        { "type": "range", "id": "dot2_x", "label": "Position X (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 54 },
+        { "type": "range", "id": "dot2_y", "label": "Position Y (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 40 },
+        { "type": "range", "id": "dot2_x_mobile", "label": "Position X (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 54 },
+        { "type": "range", "id": "dot2_y_mobile", "label": "Position Y (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 40 },
+        {
+          "type": "header",
+          "content": "Hotspot 3"
+        },
+        { "type": "product", "id": "dot3_product", "label": "Product" },
+        { "type": "range", "id": "dot3_x", "label": "Position X (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 70 },
+        { "type": "range", "id": "dot3_y", "label": "Position Y (desktop)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 60 },
+        { "type": "range", "id": "dot3_x_mobile", "label": "Position X (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 70 },
+        { "type": "range", "id": "dot3_y_mobile", "label": "Position Y (mobile)", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 60 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop banner",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

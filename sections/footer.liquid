@@ -1,0 +1,448 @@
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .bpf {
+    margin-top: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    --menu-sale-color: #e02b27;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mob }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mob }}px;
+  }
+
+  /* Auto red for "Sale" links in footer menus */
+  .bpf .menu-link--sale,
+  .bpf .menu-link--sale:hover {
+    color: var(--menu-sale-color) !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .bpf {
+      margin-top: {{ section.settings.margin_top }}px;
+    }
+
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<footer class="bpf color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="bpf__inner page-width">
+
+    {%- comment -%} ---------- Top: brand + menu columns ---------- {%- endcomment -%}
+    <div class="bpf__top">
+      <div class="bpf__brand">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'image' -%}
+            <div class="bpf__brand-item {{ block.settings.alignment }}" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                {%- assign lw = block.settings.image_width -%}
+                {%- assign lh = lw | divided_by: block.settings.image.aspect_ratio | round: 0 -%}
+                {%- capture sizes -%}(max-width: 749px) 60vw, {{ lw }}px{%- endcapture -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1100
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '100, 150, 200, 260, 320, 400, 520, 700, 900, 1100',
+                    width: lw,
+                    height: lh,
+                    sizes: sizes,
+                    class: 'bpf__logo-img',
+                    alt: block.settings.image.alt | default: shop.name
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'bpf__logo-img placeholder-svg' }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="bpf__menus">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'link_list' -%}
+              <div class="bpf__col bpf__col--accordion" {{ block.shopify_attributes }}>
+                <button
+                  type="button"
+                  class="bpf__col-head"
+                  aria-expanded="false"
+                  aria-controls="bpf-panel-{{ block.id }}"
+                >
+                  <span class="bpf__col-title">{{ block.settings.heading | default: 'Menu' }}</span>
+                  <svg class="bpf__caret" viewBox="0 0 24 15" fill="none" aria-hidden="true">
+                    <path d="M11.3626 14.7227L0.264334 3.1727C-0.0881112 2.80291 -0.0881112 2.20496 0.264334 1.83517L1.7491 0.277341C2.10155 -0.0924469 2.67146 -0.0924469 3.0239 0.277341L12 9.60071L20.9761 0.277341C21.3285 -0.0924469 21.8985 -0.0924469 22.2509 0.277341L23.7357 1.83517C24.0881 2.20496 24.0881 2.80291 23.7357 3.1727L12.6374 14.7227C12.285 15.0924 11.715 15.0924 11.3626 14.7227Z" fill="currentColor"/>
+                  </svg>
+                </button>
+                <div class="bpf__col-panel" id="bpf-panel-{{ block.id }}">
+                  <div class="bpf__col-panel-inner">
+                    {%- if block.settings.menu != blank -%}
+                      <ul class="bpf__menu-list" role="list">
+                        {%- for link in block.settings.menu.links -%}
+                          {%- liquid
+                            assign footer_link_sale = false
+                            assign footer_link_handle = link.title | handleize
+                            if footer_link_handle == 'sale'
+                              assign footer_link_sale = true
+                            endif
+                          -%}
+                          <li>
+                            <a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}{% if footer_link_sale %} class="menu-link--sale"{% endif %}>{{ link.title | escape }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- when 'text' -%}
+              <div class="bpf__col" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <div class="bpf__col-head bpf__col-head--static">
+                    <span class="bpf__col-title">{{ block.settings.heading }}</span>
+                  </div>
+                {%- endif -%}
+                <div class="bpf__col-panel">
+                  <div class="bpf__col-panel-inner">
+                    <div class="bpf__text rte">{{ block.settings.subtext }}</div>
+                  </div>
+                </div>
+              </div>
+            {%- when '@app' -%}
+              <div class="bpf__col" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%}
+        ---------- Newsletter + social (last column of the top grid) ----------
+        Social icons only render when the setting is on AND at least one social
+        URL is filled in Theme settings > Social media. The icon list itself is
+        the shared 'social-icons' snippet, which already skips blank links.
+      {%- endcomment -%}
+      {%- liquid
+        assign has_social_links = false
+        if settings.social_facebook_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_tiktok_link != blank or settings.social_twitter_link != blank or settings.social_pinterest_link != blank or settings.social_snapchat_link != blank or settings.social_tumblr_link != blank or settings.social_vimeo_link != blank
+          assign has_social_links = true
+        endif
+
+        assign show_social_block = false
+        if section.settings.show_social and has_social_links
+          assign show_social_block = true
+        endif
+      -%}
+      {%- if section.settings.newsletter_enable or show_social_block -%}
+        <div class="bpf__news">
+          {%- if section.settings.newsletter_enable -%}
+          {%- if section.settings.newsletter_heading != blank -%}
+            <h2 class="bpf__news-title">{{ section.settings.newsletter_heading }}</h2>
+          {%- endif -%}
+          <div class="bpf__news-right">
+            {%- form 'customer', id: 'ContactFooter', class: 'bpf__form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="bpf__field">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  id="NewsletterForm--{{ section.id }}"
+                  class="bpf__input"
+                  value="{{ form.email }}"
+                  placeholder="{{ section.settings.newsletter_placeholder }}"
+                  aria-label="{{ section.settings.newsletter_placeholder | escape }}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  autocomplete="email"
+                  required
+                  {% if form.errors %}aria-invalid="true"{% endif %}
+                >
+                <button
+                  type="submit"
+                  class="bpf__submit button{% if section.settings.newsletter_button_color_scheme != blank %} color-{{ section.settings.newsletter_button_color_scheme }}{% endif %}"
+                  name="commit"
+                >
+                  {{ section.settings.newsletter_button }}
+                </button>
+              </div>
+              {%- if section.settings.newsletter_subtext != blank -%}
+                <div class="bpf__news-note">{{ section.settings.newsletter_subtext }}</div>
+              {%- endif -%}
+              {%- if form.errors -%}
+                <small class="bpf__news-msg bpf__news-msg--error">
+                  {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+                </small>
+              {%- endif -%}
+              {%- if form.posted_successfully? -%}
+                <small class="bpf__news-msg bpf__news-msg--success">{{ 'newsletter.success' | t }}</small>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+          {%- endif -%}
+
+          {%- if show_social_block -%}
+            <div class="bpf__social">
+              {% render 'social-icons', class: 'bpf__social-list' %}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ---------- Policies + info ---------- {%- endcomment -%}
+    {%- liquid
+      assign show_terms = false
+      assign show_privacy = false
+      if section.settings.show_policy and shop.terms_of_service != blank
+        assign show_terms = true
+      endif
+      if section.settings.show_policy and shop.privacy_policy != blank
+        assign show_privacy = true
+      endif
+    -%}
+    {%- if show_terms or show_privacy or section.settings.info_text != blank -%}
+      <div class="bpf__info">
+        <div class="bpf__info-left">
+          {%- if show_terms or show_privacy -%}
+            <ul class="bpf__policy-list" role="list">
+              {%- if show_terms -%}
+                <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>
+              {%- endif -%}
+              {%- if show_privacy -%}
+                <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.info_text != blank -%}
+          <div class="bpf__info-text rte">{{ section.settings.info_text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</footer>
+
+<script src="{{ 'section-footer.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "image",
+      "name": "Logo image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 50,
+          "max": 550,
+          "step": 5,
+          "unit": "px",
+          "label": "Width",
+          "default": 200
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            { "value": "", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": ""
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Quick links",
+          "label": "Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "label": "Subtext"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "newsletter_enable",
+      "default": true,
+      "label": "Show newsletter signup"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "newsletter_heading",
+      "default": "Join Our Newsletter",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "default": "Email address",
+      "label": "Input placeholder"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "default": "Subscribe",
+      "label": "Button label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "newsletter_button_color_scheme",
+      "label": "Button color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "newsletter_subtext",
+      "default": "By subscribing you agree to our Privacy Policy and Terms of Service.",
+      "label": "Text below input"
+    },
+    {
+      "type": "header",
+      "content": "Social media"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": true,
+      "label": "Show social icons",
+      "info": "Shows below the newsletter. Only icons with a URL set in Theme settings > Social media are displayed; if none are set, nothing renders."
+    },
+    {
+      "type": "header",
+      "content": "Policies & info row"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy",
+      "default": true,
+      "label": "Show policy links",
+      "info": "Shows only Privacy Policy and Terms of Service (set them in Settings → Policies)."
+    },
+    {
+      "type": "richtext",
+      "id": "info_text",
+      "default": "<p>Simply Living brings order to the everyday — kitchen and home organisers built to last in Pakistani homes.</p>",
+      "label": "Right-side text"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer.settings.margin_top.label",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mob",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding (mobile)",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mob",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding (mobile)",
+      "default": 32
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link_list" },
+      { "type": "text" }
+    ]
+  }
+}
+{% endschema %}

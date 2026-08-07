@@ -1,0 +1,274 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "image_banner_fzF3dz": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_ENxMWV": {
+          "type": "heading",
+          "settings": {
+            "heading": "About Us",
+            "heading_size": "h0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ENxMWV"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/naomi-hebert-MP0bgaS_d1c-unsplash_1.webp",
+        "image_overlay_opacity": 30,
+        "image_height": "xs",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "image_with_text_custom_Tr7MkM": {
+      "type": "image-with-text-custom",
+      "blocks": {
+        "subheading_LRTnfx": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "About us"
+          }
+        },
+        "heading_VcE9qH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Who Is Simply Living?",
+            "heading_size": "h1"
+          }
+        },
+        "text_dk3n3f": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Simply Living is a Pakistani home and kitchen brand built on one idea: a home runs better when everything has its place. We source dish racks, drawer organisers and storage that hold up to daily use in real Pakistani kitchens.</p><p>Most kitchens here are short on counter and cabinet space, and humid enough to punish cheap steel. Every product we stock is chosen against that reality, checked for material and finish before it reaches you, and delivered to your door with cash on delivery across Pakistan.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_LRTnfx",
+        "heading_VcE9qH",
+        "text_dk3n3f"
+      ],
+      "name": "Image with text custom",
+      "settings": {
+        "color_scheme": "",
+        "full_width": false,
+        "image": "shopify://shop_images/someone-reaching-into-a-cabinet-or-setting-dishes-onto-a-drying-rack-warm-morning-light-a-real-pakistani-home-rather-than-a-showroom-some-clutter-is-good-here-wide-crop-roughly-1200-8.png",
+        "image_placement": "left",
+        "image_placement_mobile": "top",
+        "padding_top": 60,
+        "padding_bottom": 40,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "about_values_nazWDN": {
+      "type": "about-values",
+      "blocks": {
+        "value_GFM3ji": {
+          "type": "value",
+          "settings": {
+            "heading": "Built To Last",
+            "text": "<p>Rust-resistant finishes and solid construction, chosen for humid kitchens and daily use. We would rather stock fewer products that hold up than many that do not.</p>"
+          }
+        },
+        "value_zN4dmJ": {
+          "type": "value",
+          "settings": {
+            "heading": "Made For Small Spaces",
+            "text": "<p>Most Pakistani kitchens are short on counter and cabinet space. Every piece we stock is designed to add storage without taking over the room.</p>"
+          }
+        },
+        "value_z4DMtA": {
+          "type": "value",
+          "settings": {
+            "heading": "Honest Pricing",
+            "text": "<p>Clear prices in rupees, cash on delivery across Pakistan, and no surprises at the door. What you see is what you pay.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "value_GFM3ji",
+        "value_zN4dmJ",
+        "value_z4DMtA"
+      ],
+      "disabled": true,
+      "name": "About values",
+      "settings": {
+        "color_scheme": "scheme-ba9e2783-22fc-4682-a8d1-3da033163d17",
+        "footer_color_scheme": "",
+        "subheading": "Our values",
+        "heading": "What We Believe",
+        "heading_size": "h0",
+        "text": "<p>Every product we stock is chosen for how it performs in a working kitchen — humid, busy, and short on space.</p>",
+        "content_alignment": "left",
+        "content_alignment_mobile": "left",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "image_with_text_custom_6xDYD6": {
+      "type": "image-with-text-custom",
+      "blocks": {
+        "subheading_dejKMW": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "OUR MISSION"
+          }
+        },
+        "heading_4UPgV6": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our Mission & Vision",
+            "heading_size": "h1"
+          }
+        },
+        "text_pDdNYR": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our mission is to make well-made home organisation affordable and available across Pakistan, not just in the big cities. We keep the range small and carefully chosen, so every product earns its place on your counter.<br/>We want a customer in Multan or Peshawar to have the same experience as one in Karachi: the same products, the same prices, cash on delivery, and the same straightforward returns if something is not right.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_dejKMW",
+        "heading_4UPgV6",
+        "text_pDdNYR"
+      ],
+      "name": "Image with text custom",
+      "settings": {
+        "color_scheme": "",
+        "full_width": false,
+        "image": "shopify://shop_images/overhead-shot-of-a-drawer-with-dividers-or-organisers-arranged-on-a-counter-calm-graphic-no-people-same-1200-800-crop-the-contrast-between-a-warm-in-use-shot-and-a-clean-overhead-is-w.png",
+        "image_placement": "right",
+        "image_placement_mobile": "top",
+        "padding_top": 40,
+        "padding_bottom": 60,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 32
+      }
+    },
+    "bp_instagram_feed_WBRMPX": {
+      "type": "bp-instagram-feed",
+      "blocks": {
+        "image_LdMikQ": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_WTjF9p": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_3ANWiB": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_Kaq9M4": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_dxpEz7": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_KgPrT7": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_FccrJn": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "image_LdMikQ",
+        "image_WTjF9p",
+        "image_3ANWiB",
+        "image_Kaq9M4",
+        "image_dxpEz7",
+        "image_KgPrT7",
+        "image_FccrJn"
+      ],
+      "disabled": true,
+      "name": "Instagram Feed",
+      "settings": {
+        "heading": "Follow Us On Instagram",
+        "heading_size": "h1",
+        "subheading": "#SimplyLiving",
+        "instagram_url": "",
+        "full_width": true,
+        "image_ratio": "1 / 1",
+        "show_icon": true,
+        "slides_desktop": 6,
+        "slides_tablet": 3,
+        "slides_mobile": 1.5,
+        "spacing_desktop": 16,
+        "spacing_mobile": 10,
+        "enable_loop": true,
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "show_arrows": true,
+        "show_dots": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_fzF3dz",
+    "image_with_text_custom_Tr7MkM",
+    "about_values_nazWDN",
+    "image_with_text_custom_6xDYD6",
+    "bp_instagram_feed_WBRMPX"
+  ]
+}

@@ -1,0 +1,84 @@
+.icon-row__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 0 3.2rem;
+  max-width: 60rem;
+}
+
+.icon-row__heading {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.icon-row__text {
+  margin: 0;
+}
+
+.icon-row__text > :first-child {
+  margin-top: 0;
+}
+
+.icon-row__text > :last-child {
+  margin-bottom: 0;
+}
+
+.icon-row__grid {
+  display: grid;
+}
+
+.icon-row__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.icon-row__link {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  gap: inherit;
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon-row__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.icon-row__icon svg,
+.icon-row__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.icon-row__icon-ph {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.6rem;
+  background: rgb(var(--color-foreground) / 0.06);
+}
+
+.icon-row__label {
+  margin: 0;
+}
+
+/* ---------- Alignment ---------- */
+.icon-row--center .icon-row__head {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  align-items: center;
+}
+
+.icon-row--left .icon-row__item,
+.icon-row--left .icon-row__link {
+  align-items: flex-start;
+  text-align: left;
+}

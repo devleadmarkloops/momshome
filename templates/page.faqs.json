@@ -1,0 +1,243 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "image_banner_mXwnU3": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_cRktHt": {
+          "type": "heading",
+          "settings": {
+            "heading": "Frequently Asked Questions",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_cRktHt"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Rectangle_3_4.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "faq_gA4CGf": {
+      "type": "faq",
+      "blocks": {
+        "category_7QMMCw": {
+          "type": "category",
+          "settings": {
+            "title": "Orders"
+          }
+        },
+        "question_yq7hKH": {
+          "type": "question",
+          "settings": {
+            "question": "When Will My Order Be Processed?",
+            "answer": "<p>All orders are processed within 1–3 business days (Monday to Friday, excluding public holidays). Orders placed on weekends or holidays are processed the next business day. During new drops and sale periods, processing may take slightly longer.</p>",
+            "open": false
+          }
+        },
+        "question_V9zWTQ": {
+          "type": "question",
+          "settings": {
+            "question": "How Can I Track My Order?",
+            "answer": "<p>As soon as your order ships, we email you a tracking number so you can follow your package every step of the way. Please allow 24–48 hours for tracking information to update after dispatch.</p>",
+            "open": false
+          }
+        },
+        "question_fFQ6Da": {
+          "type": "question",
+          "settings": {
+            "question": "Can I Change Or Cancel My Order After Checkout?",
+            "answer": "<p>Contact us as soon as possible after placing your order. We can update or cancel an order only if it has not yet been dispatched. Once your order has shipped, we are unable to make changes.</p>",
+            "open": false
+          }
+        },
+        "category_QP4CjL": {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        "question_rYCaD4": {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does Delivery Take?",
+            "answer": "<p>Once your order has been dispatched: 1–3 business days within Lagos, 3–7 business days across the rest of Nigeria, and 7–14 business days for international orders, depending on your location.</p>",
+            "open": false
+          }
+        },
+        "question_RhRnjB": {
+          "type": "question",
+          "settings": {
+            "question": "Do You Deliver Across Pakistan?",
+            "answer": "<p>Yes. We deliver to all major cities and towns across Pakistan through our courier partners, with cash on delivery available nationwide.</p>",
+            "open": false
+          }
+        },
+        "question_EM3Rf3": {
+          "type": "question",
+          "settings": {
+            "question": "How Much Does Shipping Cost?",
+            "answer": "<p>Shipping rates are calculated at checkout based on your delivery location. Enjoy free shipping on all orders of $150 or more.</p>",
+            "open": false
+          }
+        },
+        "question_ELD8pi": {
+          "type": "question",
+          "settings": {
+            "question": "Will I Pay Customs Duties On International Orders?",
+            "answer": "<p>International orders may be subject to import duties, taxes, or customs fees charged by your country. These charges are determined by your local customs office and are the responsibility of the customer.</p>",
+            "open": false
+          }
+        },
+        "category_MWE7PC": {
+          "type": "category",
+          "settings": {
+            "title": "Returns & Exchanges"
+          }
+        },
+        "question_HVQRUj": {
+          "type": "question",
+          "settings": {
+            "question": "Do You Accept Returns?",
+            "answer": "<p>Yes. Items can be returned within 7 days of delivery, provided they are unworn, unwashed, and in their original condition with tags attached. Reach out through our Contact Us page to start a return.</p>",
+            "open": false
+          }
+        },
+        "question_aVXKCp": {
+          "type": "question",
+          "settings": {
+            "question": "Can I Exchange My Item For Another Size?",
+            "answer": "<p>Yes, exchanges are available subject to stock. Contact us with your order number and the size you need, and we will confirm availability.</p>",
+            "open": false
+          }
+        },
+        "question_G4p68L": {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does The Return Process Take?",
+            "answer": "<p>Once we receive your item, refunds or exchanges are processed within 5–7 business days. Refunds are issued to your original payment method.</p>",
+            "open": false
+          }
+        },
+        "category_VE36K4": {
+          "type": "category",
+          "settings": {
+            "title": "Sizing & Fit"
+          }
+        },
+        "question_QaH33P": {
+          "type": "question",
+          "settings": {
+            "question": "How Do I Know My Size?",
+            "answer": "<p>Use our size guide before placing your order. If you are between sizes, we recommend sizing based on your preferred fit.</p>",
+            "open": false
+          }
+        },
+        "question_tQJaHH": {
+          "type": "question",
+          "settings": {
+            "question": "Are Body Politix Pieces True To Size?",
+            "answer": "<p>Our pieces are designed to fit true to size across all body types. If a particular style fits differently, we note it on the product page.</p>",
+            "open": false
+          }
+        },
+        "category_7hYRbr": {
+          "type": "category",
+          "settings": {
+            "title": "Payments"
+          }
+        },
+        "question_9e7Rry": {
+          "type": "question",
+          "settings": {
+            "question": "What Payment Methods Do You Accept?",
+            "answer": "<p>We accept all major debit and credit cards along with the secure payment options shown at checkout. You can shop in NGN, USD, GBP, or EUR using the currency selector.</p>",
+            "open": false
+          }
+        },
+        "question_jQRNzi": {
+          "type": "question",
+          "settings": {
+            "question": "Is My Payment Information Secure?",
+            "answer": "<p>Yes. All payments are processed through a secure, encrypted checkout. We never store your card details.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "category_7QMMCw",
+        "question_yq7hKH",
+        "question_V9zWTQ",
+        "question_fFQ6Da",
+        "category_QP4CjL",
+        "question_rYCaD4",
+        "question_RhRnjB",
+        "question_EM3Rf3",
+        "question_ELD8pi",
+        "category_MWE7PC",
+        "question_HVQRUj",
+        "question_aVXKCp",
+        "question_G4p68L",
+        "category_VE36K4",
+        "question_QaH33P",
+        "question_tQJaHH",
+        "category_7hYRbr",
+        "question_9e7Rry",
+        "question_jQRNzi"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "color_scheme": "",
+        "card_color_scheme": "",
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "alignment": "center",
+        "category_size": "h3",
+        "group_gap": 28,
+        "question_size": "s",
+        "answer_size": "typeset0",
+        "single_open": true,
+        "max_width": 780,
+        "card_gap": 10,
+        "card_radius": 4,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_mXwnU3",
+    "faq_gA4CGf"
+  ]
+}

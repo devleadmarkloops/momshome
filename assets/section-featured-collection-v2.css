@@ -1,0 +1,219 @@
+/* ==========================================================================
+   Featured collection v2
+   ========================================================================== */
+
+/* Section-scoped grid spacing. Overriding Dawn's grid vars here keeps the
+   gaps AND the grid__item width calcs (which reference these same vars) in
+   sync — desktop 2.4rem, mobile 1rem. */
+.ftc {
+  --grid-mobile-horizontal-spacing: 1rem;
+  --grid-mobile-vertical-spacing: 1rem;
+  --grid-desktop-horizontal-spacing: 2.4rem;
+  --grid-desktop-vertical-spacing: 2.4rem;
+  --ftc-mgap: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.ftc__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .ftc__header {
+    margin-bottom: 3.5rem;
+  }
+}
+
+.ftc__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.ftc__header .ftc__title {
+  margin: 0;
+}
+
+.ftc__description {
+  margin: 0;
+}
+
+/* Centered header */
+.ftc__header--center {
+  align-items: center;
+  text-align: center;
+}
+
+.ftc__header--center .ftc__intro {
+  align-items: center;
+}
+
+.ftc__header--center .ftc__tabs {
+  justify-content: center;
+}
+
+/* Left header with tabs: title left, tabs right on the same row (desktop) */
+@media screen and (min-width: 990px) {
+  .ftc__header--left.ftc__header--has-tabs {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+  }
+  .ftc__tab {
+    min-width: 122px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Tabs
+   -------------------------------------------------------------------------- */
+
+.ftc__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.ftc__tab {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    line-height: 1;
+    justify-content: center;
+    padding: 1.15rem 2.1rem;
+    font-family: var(--font-button-family);
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground));
+    background: transparent;
+    border: .1rem solid rgba(var(--color-foreground));
+    border-radius: var(--buttons-radius, .4rem);
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.ftc__tab:hover {
+  border-color: rgb(var(--color-foreground));
+}
+
+.ftc__tab.is-active {
+  color: rgb(var(--color-background));
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+}
+
+.ftc__tab:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+}
+
+/* Mobile: let the tab row scroll horizontally instead of wrapping */
+@media screen and (max-width: 749px) {
+  .ftc__tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 -1.5rem;
+    padding: 0.2rem 1.5rem;
+  }
+  .ftc__tab {
+    padding: 0.85rem 1.6rem;
+  }
+  .ftc__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ftc__header--center .ftc__tabs {
+    justify-content: flex-start;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Panels
+   -------------------------------------------------------------------------- */
+
+.ftc__panel[hidden] {
+  display: none;
+}
+
+.ftc__panel-inner--full {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .ftc__panel-inner--full {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+.ftc__view-all {
+  margin-top: 3.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .ftc__view-all {
+    margin-top: 4rem;
+  }
+}
+
+/* Entrance animation applied to the incoming panel on tab switch.
+   Replayed from JS by removing/re-adding the class. */
+@media (prefers-reduced-motion: no-preference) {
+  .ftc__panel--in {
+    animation: ftcPanelIn 0.45s var(--ease-out-slow, cubic-bezier(0, 0, 0.3, 1)) both;
+  }
+
+  @keyframes ftcPanelIn {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile swipe (scroll-snap) — overrides Dawn's tablet-down grid
+   -------------------------------------------------------------------------- */
+
+@media screen and (max-width: 749px) {
+  .ftc__grid--swipe {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(
+      (100% - (var(--ftc-mcols, 2.15) - 1) * var(--ftc-mgap, 1rem)) / var(--ftc-mcols, 2.15)
+    );
+    gap: var(--ftc-mgap, 1rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem 0.4rem;
+  }
+
+  .ftc__grid--swipe::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ftc__grid--swipe > .ftc__slide {
+    scroll-snap-align: start;
+  }
+}

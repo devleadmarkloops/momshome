@@ -1,0 +1,481 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    .bp-cform__label {
+      font-size:20px;
+    }
+    .bp-cform__intro {
+        max-width: 500px;
+    }
+  }
+{%- endstyle -%}
+
+{%- assign form_id = 'BpContactForm-' | append: section.id -%}
+
+<div class="bp-cform color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="bp-cform__grid">
+      <div class="bp-cform__intro">
+        {%- if section.settings.subheading != blank -%}
+          <p class="bp-cform__subheading">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="bp-cform__heading {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.intro_text != blank -%}
+          <div class="bp-cform__intro-text">{{ section.settings.intro_text }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="bp-cform__box color-{{ section.settings.box_color_scheme }} gradient">
+        {%- form 'contact', id: form_id, class: 'bp-cform__form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="bp-cform__banner bp-cform__banner--success" role="status" tabindex="-1" autofocus>
+              {{ section.settings.success_text }}
+            </div>
+          {%- elsif form.errors -%}
+            <div class="bp-cform__banner bp-cform__banner--error" role="alert" tabindex="-1" autofocus>
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="bp-cform__field">
+            <label class="bp-cform__label" for="{{ form_id }}-name">{{ section.settings.name_label }}</label>
+            <input
+              class="bp-cform__input"
+              type="text"
+              id="{{ form_id }}-name"
+              name="contact[Full Name]"
+              autocomplete="name"
+              value="{{ form.name }}"
+              placeholder="{{ section.settings.name_placeholder }}"
+              {% if section.settings.name_required %}required{% endif %}
+            >
+          </div>
+
+          <div class="bp-cform__field">
+            <label class="bp-cform__label" for="{{ form_id }}-email">{{ section.settings.email_label }}</label>
+            <input
+              class="bp-cform__input"
+              type="email"
+              id="{{ form_id }}-email"
+              name="contact[email]"
+              autocomplete="email"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{{ form.email }}"
+              placeholder="{{ section.settings.email_placeholder }}"
+              required
+            >
+          </div>
+
+          <div class="bp-cform__field">
+            <label class="bp-cform__label" for="{{ form_id }}-subject">{{ section.settings.subject_label }}</label>
+            <div class="bp-cform__select-wrap">
+              <select
+                class="bp-cform__select"
+                id="{{ form_id }}-subject"
+                name="contact[Subject]"
+                {% if section.settings.subject_required %}required{% endif %}
+              >
+                <option value="" disabled selected>{{ section.settings.subject_placeholder }}</option>
+                {%- assign subject_options = section.settings.subject_options | newline_to_br | split: '<br />' -%}
+                {%- for option in subject_options -%}
+                  {%- assign option_clean = option | strip -%}
+                  {%- if option_clean != blank -%}
+                    <option value="{{ option_clean | escape }}">{{ option_clean }}</option>
+                  {%- endif -%}
+                {%- endfor -%}
+              </select>
+              <svg class="bp-cform__chevron" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bp-cform__field">
+            <label class="bp-cform__label" for="{{ form_id }}-body">{{ section.settings.message_label }}</label>
+            <textarea
+              class="bp-cform__textarea"
+              id="{{ form_id }}-body"
+              name="contact[body]"
+              rows="5"
+              placeholder="{{ section.settings.message_placeholder }}"
+              {% if section.settings.message_required %}required{% endif %}
+            >{{ form.body }}</textarea>
+          </div>
+
+          <button type="submit" class="bp-cform__button button">
+            {{ section.settings.button_label }}
+          </button>
+
+          {%- if section.settings.footer_text != blank -%}
+            <div class="bp-cform__note">{{ section.settings.footer_text }}</div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+.bp-cform__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.2rem;
+}
+
+/* Intro (left) */
+.bp-cform__subheading {
+  margin: 0 0 1.2rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+}
+.bp-cform__heading {
+  margin: 0;
+  line-height: 1.08;
+  color: rgb(var(--color-foreground));
+}
+.bp-cform__intro-text {
+  margin-top: 1.6rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.75);
+}
+.bp-cform__intro-text p { margin: 0 0 1.2rem; }
+.bp-cform__intro-text p:last-child { margin-bottom: 0; }
+
+/* Box (right) */
+.bp-cform__box {
+  padding: 2.6rem 2rem;
+}
+
+.bp-cform__form { width: 100%; }
+button.bp-cform__button.button {
+    width: 100%;
+}
+/* Banners */
+.bp-cform__banner {
+  margin-bottom: 2rem;
+  padding: 1.4rem 1.6rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  border-radius: 0;
+}
+.bp-cform__banner--success {
+  background-color: #e7f3ea;
+  color: #1c5b2e;
+  border: 1px solid #bcdcc4;
+}
+.bp-cform__banner--error {
+  background-color: #fbeaea;
+  color: #8a1f1f;
+  border: 1px solid #e8c2c2;
+}
+.bp-cform__banner--error ul { margin: 0; padding-left: 1.8rem; }
+.bp-cform__banner a { color: inherit; }
+
+/* Fields */
+.bp-cform__field { margin-bottom: 2rem; }
+
+.bp-cform__label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground));
+}
+
+.bp-cform__input,
+.bp-cform__select,
+.bp-cform__textarea {
+  width: 100%;
+  padding: 1.4rem 1.6rem;
+  font-family: inherit;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: rgb(var(--color-foreground));
+  background-color: #fff;
+  border: 1px solid rgba(18, 18, 18, 0.12);
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.15s ease;
+}
+.bp-cform__input::placeholder,
+.bp-cform__textarea::placeholder {
+    color: rgb(var(--color-foreground));
+}
+.bp-cform__input:focus,
+.bp-cform__select:focus,
+.bp-cform__textarea:focus {
+  outline: none;
+  border-color: #121212;
+}
+
+.bp-cform__textarea {
+  min-height: 16rem;
+  resize: vertical;
+}
+
+/* Select + chevron */
+.bp-cform__select-wrap { position: relative; }
+.bp-cform__select {
+  padding-right: 4.4rem;
+  cursor: pointer;
+}
+.bp-cform__chevron {
+  position: absolute;
+  top: 50%;
+  right: 1.6rem;
+  width: 1.3rem;
+  height: 0.8rem;
+  transform: translateY(-50%);
+  color: #121212;
+  pointer-events: none;
+}
+
+
+.bp-cform__button:hover { opacity: 0.88; }
+
+/* Footer note */
+.bp-cform__note {
+  margin-top: 1.4rem;
+  text-align: center;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+.bp-cform__note p { margin: 0; }
+.bp-cform__note a {
+  color: rgba(var(--color-foreground), 0.85);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* Desktop */
+@media screen and (min-width: 990px) {
+  .bp-cform__grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 6rem;
+    align-items: start;
+  }
+  .bp-cform__box { padding: 3.6rem 3.4rem; }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact form v1",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Reach out to us"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Please fill out the contact form"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h0"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Form fields"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name label",
+      "default": "Full Name"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name placeholder",
+      "default": "John Smith"
+    },
+    {
+      "type": "checkbox",
+      "id": "name_required",
+      "label": "Name required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "johnsmith@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "subject_label",
+      "label": "Subject label",
+      "default": "Subject"
+    },
+    {
+      "type": "text",
+      "id": "subject_placeholder",
+      "label": "Subject placeholder",
+      "default": "Choose Subject"
+    },
+    {
+      "type": "textarea",
+      "id": "subject_options",
+      "label": "Subject options",
+      "info": "One option per line.",
+      "default": "General Enquiry\nOrder Support\nReturns & Exchanges\nWholesale & Partnerships\nOther"
+    },
+    {
+      "type": "checkbox",
+      "id": "subject_required",
+      "label": "Subject required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message label",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message placeholder",
+      "default": "Hi, I am just wondering where can I find your refund policy?"
+    },
+    {
+      "type": "checkbox",
+      "id": "message_required",
+      "label": "Message required",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Send Message"
+    },
+    {
+      "type": "header",
+      "content": "Confirmation & footer"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success message",
+      "default": "Thanks for reaching out — we'll get back to you within 24–48 hours."
+    },
+    {
+      "type": "richtext",
+      "id": "footer_text",
+      "label": "Footer note (below button)",
+      "default": "<p>Or reach us directly on <a href=\"https://wa.me/2349168630776\">WhatsApp</a></p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Section color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "box_color_scheme",
+      "label": "Contact box color scheme",
+      "info": "The form box background and labels use this scheme. Inputs stay white. Pick your cream scheme to match the mockup.",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form v1"
+    }
+  ]
+}
+{% endschema %}

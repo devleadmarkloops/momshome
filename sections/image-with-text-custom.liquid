@@ -1,0 +1,326 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  class="bp-image-text color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding{% if section.settings.full_width %} bp-image-text--full{% endif %}{% if section.settings.image_placement == 'right' %} bp-image-text--img-right{% endif %}{% if section.settings.image_placement_mobile == 'bottom' %} bp-image-text--mobile-img-bottom{% endif %}"
+>
+  <div class="bp-image-text__container{% unless section.settings.full_width %} page-width{% endunless %}">
+    <div class="bp-image-text__grid">
+      <div class="bp-image-text__media">
+        {%- if section.settings.image != blank -%}
+          {{
+            section.settings.image
+            | image_url: width: 1600
+            | image_tag:
+              loading: 'lazy',
+              widths: '375, 550, 750, 1100, 1500, 1600',
+              sizes: '(min-width: 750px) 55vw, 100vw',
+              alt: section.settings.image.alt | escape
+          }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'bp-image-text__placeholder placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="bp-image-text__content">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'subheading' -%}
+              {%- if block.settings.subheading != blank -%}
+                <p class="bp-image-text__subheading" {{ block.shopify_attributes }}>
+                  {{- block.settings.subheading -}}
+                </p>
+              {%- endif -%}
+
+            {%- when 'heading' -%}
+              {%- if block.settings.heading != blank -%}
+                <h2
+                  class="bp-image-text__heading {{ block.settings.heading_size }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{- block.settings.heading -}}
+                </h2>
+              {%- endif -%}
+
+            {%- when 'text' -%}
+              {%- if block.settings.text != blank -%}
+                <div class="bp-image-text__text" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+
+.bp-image-text__container {
+  width: 100%;
+}
+
+.bp-image-text--full .bp-image-text__container {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.bp-image-text__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.6rem;
+}
+
+.bp-image-text__media {
+  margin: 0;
+}
+
+.bp-image-text__media img,
+.bp-image-text__placeholder {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+.bp-image-text__placeholder {
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+.bp-image-text__content {
+  display: block;
+}
+
+.bp-image-text__subheading {
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.13rem;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+}
+
+.bp-image-text__heading {
+  margin: 0 0 2.4rem;
+  line-height: 1.1;
+  color: rgb(var(--color-foreground));
+}
+.bp-image-text__heading {
+  margin-bottom: 15px;
+}
+.bp-image-text__text {
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.bp-image-text__text p {
+  margin: 0 0 1.6rem;
+}
+
+.bp-image-text__text p:last-child {
+  margin-bottom: 0;
+}
+
+.bp-image-text__text a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* Mobile image placement */
+@media screen and (max-width: 749px) {
+  .bp-image-text--mobile-img-bottom .bp-image-text__media {
+    order: 2;
+  }
+}
+
+/* Desktop: two columns, image is the wider one, text vertically centered */
+@media screen and (min-width: 750px) {
+  .bp-image-text__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .bp-image-text--img-right .bp-image-text__media {
+    order: 2;
+  }
+
+  .bp-image-text--img-right .bp-image-text__content {
+    order: 1;
+  }
+
+  .bp-image-text--full .bp-image-text__container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Image with text custom",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_placement",
+      "label": "Desktop image placement",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_placement_mobile",
+      "label": "Mobile image placement",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "About us"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Who is Body Politix?"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "options": [
+            { "value": "h2", "label": "Small" },
+            { "value": "h1", "label": "Medium" },
+            { "value": "h0", "label": "Large" }
+          ],
+          "default": "h0"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share the brand story here. Add a second paragraph for more detail.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text custom",
+      "blocks": [
+        { "type": "subheading" },
+        { "type": "heading" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

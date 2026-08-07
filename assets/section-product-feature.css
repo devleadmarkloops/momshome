@@ -1,0 +1,296 @@
+.pf {
+  overflow: hidden; /* contain the left-bleed image, no horizontal scroll */
+}
+
+.pf__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.pf__media {
+  position: relative;
+}
+
+.pf__media picture {
+  display: block;
+}
+
+.pf__media img,
+.pf__media .placeholder-svg {
+  width: 100%;
+  height: var(--pf-img-h-m, auto);
+  object-fit: cover;
+  display: block;
+}
+
+.pf__media-placeholder {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: rgb(var(--color-foreground) / 0.04);
+}
+
+.pf__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+  padding: 0 1.5rem;
+}
+
+.pf__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.pf__heading {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.pf__desc {
+  margin: 0;
+  max-width: 52rem;
+}
+
+.pf__desc > :first-child {
+  margin-top: 0;
+}
+
+.pf__desc > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Slider (Swiper) ---------- */
+.pf__slider {
+  position: relative;
+}
+
+.pf__cards.swiper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.pf__cards .swiper-wrapper {
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.pf__cards .swiper-slide {
+  flex-shrink: 0;
+  height: auto;
+}
+
+.pf__slide {
+  display: flex;
+}
+
+.pf__slide > * {
+  width: 100%;
+}
+
+/* Fallback if Swiper fails to load */
+.pf__cards--fallback .swiper-wrapper {
+  gap: 1.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pf__cards--fallback .swiper-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.pf__cards--fallback .pf__slide {
+  flex: 0 0 70%;
+}
+
+/* ---------- Nav arrows ---------- */
+.pf__nav {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  margin-bottom: 1.2rem;
+}
+
+.pf__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 0.1rem solid rgb(var(--color-foreground) / 0.2);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.pf__nav-btn svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.pf__nav-btn:hover {
+  border-color: rgb(var(--color-foreground) / 0.5);
+}
+
+.pf__nav-btn[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ---------- Mobile image order ---------- */
+@media screen and (max-width: 989px) {
+  .pf--m-top .pf__media {
+    order: -1;
+  }
+
+  .pf--m-bottom .pf__media {
+    order: 1;
+  }
+
+  .pf--m-hidden .pf__media {
+    display: none;
+  }
+}
+
+/* ---------- Desktop: left-bleed image + page-width-aligned content ---------- */
+@media screen and (min-width: 990px) {
+  .pf__inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 4.8rem;
+    /* no left padding -> image bleeds to the viewport's left edge;
+       right padding lands the content's right edge on the page-width gutter */
+    padding-right: max(5rem, calc((100% - var(--page-width, 120rem)) / 2 + 5rem));
+  }
+
+  .pf__media {
+    flex: 0 0 var(--pf-image-w, 40%);
+  }
+
+  .pf__media img,
+  .pf__media .placeholder-svg {
+    height: var(--pf-img-h-d, auto);
+  }
+
+  .pf__content {
+    flex: 1 1 auto;
+    gap: 2.8rem;
+    padding: 0;
+  }
+}
+
+/* ============================================================
+   NEW: append these rules to your existing
+   assets/section-product-feature.css
+   ============================================================ */
+
+/* ---------- Top header row: subheading/heading + view all ---------- */
+.pf__top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.pf__subheading {
+  margin: 0 0 0.8rem;
+  letter-spacing: 3px;
+}
+
+.pf__top .pf__heading {
+  margin: 0;
+}
+
+.pf__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.pf__view-all-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+@media screen and (max-width: 749px) {
+  .pf__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+}
+
+/* ---------- Badge over the feature image ---------- */
+.pf__media-image {
+  position: relative;
+}
+
+.pf__badge {
+  position: absolute;
+  top: 1.6rem;
+  left: 1.6rem;
+  z-index: 2;
+  background: rgb(var(--color-background));
+  padding: 0.6rem 1.2rem;
+}
+
+/* ---------- Caption bar under the feature image ---------- */
+.pf__look-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-top: 1.6rem;
+  flex-wrap: wrap;
+}
+
+.pf__look-label {
+  font-size: 13px;
+  margin: 0 0 .3rem;
+  color: rgba(var(--color-foreground), .65);
+  letter-spacing: 2px;
+}
+
+.pf__look-heading {
+  font-size: 20px;
+  margin: 0;
+  font-weight: 500;
+}
+
+.pf__look-button {
+  flex-shrink: 0;
+}
+@media screen and (max-width: 749px) {
+.pf__look-heading {
+  font-size: 16px;
+}
+.pf__look-label {
+  font-size: 12px;
+}
+}
+
+/* ---------- Equal card size (feature image matches product card) ---------- */
+@media screen and (min-width: 990px) {
+  .pf--equal-size .pf__media {
+    flex-shrink: 0;
+    width: calc(25% - 28px);
+    flex: 0 0 calc(25% - 28px);
+  }
+
+  .pf--equal-size .pf__media img,
+  .pf--equal-size .pf__media .placeholder-svg,
+  .pf--equal-size .pf__media-image {
+    width: 100%;
+    object-fit: cover;
+  }
+
+}

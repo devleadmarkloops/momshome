@@ -1,0 +1,344 @@
+{% comment %}
+  Product card v2 — global, reusable.
+
+  Render anywhere:
+  {% render 'card-product-v2', card_product: product, section_id: section.id %}
+
+  Accepts:
+  - card_product:        {Object}  Product (omit for placeholder)
+  - section_id:          {String}  Unique id for the form
+  - media_aspect_ratio:  {String}  adapt | portrait | square (default square)
+  - image_fit:           {String}  cover | contain (default contain)
+  - enable_quick_add:    {Boolean} show the size + add-to-cart box (default true)
+  - lazy_load:           {Boolean} (default true)
+  - skip_styles:         {Boolean} skip asset loading when rendering in a loop
+  - placeholder_image:   {String}  placeholder svg name
+
+  Honors theme settings:
+  - Product cards: card_style, card_color_scheme, card_text_alignment,
+    card_image_padding, card_corner_radius, border + shadow.
+  - Badges: badge_position, badge_corner_radius, custom_badge_color_scheme,
+    sale_badge_color_scheme, sold_out_badge_color_scheme.
+
+  Colour swatches = product's "Colour" option (swaps the image on click).
+  Size pills = product's "Size" option (resolved with colour to a variant).
+  Custom badge text = product metafield custom.badge.
+{% endcomment %}
+
+{%- unless skip_styles -%}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-card-v2.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'card-product-v2.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- liquid
+  assign card_style = settings.card_style
+  assign align = settings.card_text_alignment
+  assign fit = image_fit | default: 'contain'
+
+  assign ratio = 1
+  if media_aspect_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif media_aspect_ratio == 'adapt' and card_product.featured_media
+    assign ratio = card_product.featured_media.aspect_ratio
+  endif
+  if ratio == 0 or ratio == null
+    assign ratio = 1
+  endif
+  assign pc_ratio = 1 | divided_by: ratio | times: 100
+-%}
+
+{%- capture pc_vars -%}
+  --pc-ratio: {{ pc_ratio }}%;
+  --pc-img-pad: {{ settings.card_image_padding }}px;
+  --pc-radius: {{ settings.card_corner_radius }}px;
+  --pc-border-width: {{ settings.card_border_thickness }}px;
+  --pc-border-opacity: {{ settings.card_border_opacity | divided_by: 100.0 }};
+  --pc-shadow-opacity: {{ settings.card_shadow_opacity | divided_by: 100.0 }};
+  --pc-shadow-h: {{ settings.card_shadow_horizontal_offset }}px;
+  --pc-shadow-v: {{ settings.card_shadow_vertical_offset }}px;
+  --pc-shadow-blur: {{ settings.card_shadow_blur }}px;
+{%- endcapture -%}
+
+{%- if card_product == blank or card_product == empty -%}
+  <div
+    class="pcard pcard--{{ card_style }} pcard--align-{{ align }} pcard--fit-{{ fit }}{% if card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}"
+    style="{{ pc_vars }}"
+  >
+    <div class="pcard__media-wrap">
+      <div class="pcard__media{% if card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+        {{ placeholder_image | default: 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg pcard__placeholder' }}
+      </div>
+    </div>
+    <div class="pcard__info">
+      <span class="pcard__title">{{ 'onboarding.product_title' | t }}</span>
+      {% render 'price', placeholder: true, show_compare_at_price: true %}
+    </div>
+  </div>
+{%- else -%}
+  {%- liquid
+    assign product = card_product
+
+    assign color_opt = null
+    assign size_opt = null
+    assign color_index = 0
+    assign size_index = 0
+
+    for opt in product.options_with_values
+      assign nm = opt.name | downcase
+      if color_opt == null
+        if nm contains 'color'
+          assign color_opt = opt
+          assign color_index = forloop.index0
+        elsif nm contains 'colour'
+          assign color_opt = opt
+          assign color_index = forloop.index0
+        endif
+      endif
+      if size_opt == null
+        if nm contains 'size'
+          assign size_opt = opt
+          assign size_index = forloop.index0
+        endif
+      endif
+    endfor
+
+    if size_opt == null and color_opt == null and product.has_only_default_variant == false
+      assign size_opt = product.options_with_values.first
+      assign size_index = 0
+    endif
+
+    assign cur = product.selected_or_first_available_variant
+    if cur == null
+      assign cur = product.variants.first
+    endif
+
+    assign selected_color = ''
+    if color_opt
+      assign selected_color = cur.options[color_index]
+      if selected_color == blank
+        assign selected_color = color_opt.values.first.name
+      endif
+    endif
+
+    assign selected_size = ''
+    if size_opt
+      assign selected_size = cur.options[size_index]
+      if selected_size == blank
+        assign selected_size = size_opt.values.first.name
+      endif
+    endif
+
+    assign custom_badge = product.metafields.custom.badge
+    assign badge_scheme = settings.custom_badge_color_scheme | default: settings.sale_badge_color_scheme
+
+    if size_opt
+      assign add_label = 'Quick Add' 
+    else
+      assign add_label = 'Quick Add'
+    endif
+
+    assign form_id = 'pcard-' | append: section_id | append: '-' | append: product.id
+  -%}
+
+  <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'collection' | escape }}">
+    <div
+      class="pcard pcard--{{ card_style }} pcard--align-{{ align }} pcard--fit-{{ fit }}{% if card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}"
+      style="{{ pc_vars }}"
+    >
+      <div class="pcard__media-wrap">
+        <div class="pcard__media{% if card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+          {%- if product.featured_media -%}
+            <img
+              class="pcard__image"
+              src="{{ product.featured_media | image_url: width: 533 }}"
+              srcset="
+                {%- if product.featured_media.width >= 360 -%}{{ product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+                {%- if product.featured_media.width >= 533 -%}{{ product.featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+                {%- if product.featured_media.width >= 720 -%}{{ product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+                {%- if product.featured_media.width >= 940 -%}{{ product.featured_media | image_url: width: 940 }} 940w,{%- endif -%}
+                {{ product.featured_media | image_url }} {{ product.featured_media.width }}w
+              "
+              sizes="(min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+              alt="{{ product.featured_media.alt | escape }}"
+              width="{{ product.featured_media.width }}"
+              height="{{ product.featured_media.height }}"
+              {% unless lazy_load == false %}loading="lazy"{% endunless %}
+            >
+          {%- else -%}
+            {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg pcard__placeholder' }}
+          {%- endif -%}
+
+          {%- liquid
+            assign has_status = false
+            if product.available == false
+              assign has_status = true
+            elsif product.compare_at_price > product.price
+              assign has_status = true
+            endif
+          -%}
+          {%- if custom_badge != blank or has_status -%}
+            <div class="pcard__badges pcard__badges--{{ settings.badge_position | replace: ' ', '-' }}">
+              {%- if custom_badge != blank -%}
+                <span class="badge pcard__badge--custom color-{{ badge_scheme }}">
+                  {{- custom_badge -}}
+                </span>
+              {%- endif -%}
+              {%- if product.available == false -%}
+                <span class="badge color-{{ settings.sold_out_badge_color_scheme }}">
+                  {{- 'products.product.sold_out' | t -}}
+                </span>
+              {%- elsif product.compare_at_price > product.price -%}
+                <span class="badge color-{{ settings.sale_badge_color_scheme }}">
+                  {{- 'products.product.on_sale' | t -}}
+                </span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if enable_quick_add != false -%}
+          <div class="pcard__quick no-js-hidden">
+            {%- if size_opt -%}
+              <span class="pcard__quick-label">{{ size_opt.name | escape }}</span>
+              <div class="pcard__sizes" role="group" aria-label="{{ size_opt.name | escape }}">
+                {%- for value in size_opt.values -%}
+                  <button type="button" class="pcard__size" data-size="{{ value.name | escape }}" aria-pressed="false">
+                    {{- value.name | escape -}}
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <product-form data-section-id="{{ section_id }}">
+              {%- form 'product',
+                product,
+                id: form_id,
+                class: 'pcard__form',
+                novalidate: 'novalidate',
+                data-type: 'add-to-cart-form'
+              -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ cur.id }}"
+                  class="pcard__variant-id product-variant-id"
+                >
+                <button
+                  type="submit"
+                  name="add"
+                  class="pcard__add button button--full-width"
+                  data-add="{{ add_label | escape }}"
+                  data-sold-out="{{ 'products.product.sold_out' | t | escape }}"
+                  {% if product.available == false %}disabled{% endif %}
+                >
+                  <span class="pcard__add-label">
+                    {%- if product.available -%}{{ add_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+                  </span>
+                  {%- render 'loading-spinner' -%}
+                </button>
+              {%- endform -%}
+            </product-form>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="pcard__info">
+        {%- if color_opt and color_opt.values.size > 1 -%}
+          <div class="pcard__swatches" role="group" aria-label="{{ color_opt.name | escape }}">
+            {%- for value in color_opt.values -%}
+              {%- liquid
+                assign rep = null
+                for v in product.variants
+                  if rep == null
+                    assign vc = v.options[color_index]
+                    if vc == value.name
+                      assign rep = v
+                    endif
+                  endif
+                endfor
+                assign rep_img = rep.image
+                if rep_img == blank
+                  assign rep_img = product.featured_media
+                endif
+              -%}
+              <button
+                type="button"
+                class="pcard__swatch{% if value.name == selected_color %} is-selected{% endif %}"
+                data-color="{{ value.name | escape }}"
+                {% if rep_img != blank %}
+                  data-src="{{ rep_img | image_url: width: 533 }}"
+                  data-srcset="{{ rep_img | image_url: width: 360 }} 360w, {{ rep_img | image_url: width: 533 }} 533w, {{ rep_img | image_url: width: 720 }} 720w"
+                {% endif %}
+                aria-pressed="{% if value.name == selected_color %}true{% else %}false{% endif %}"
+                aria-label="{{ value.name | escape }}"
+                title="{{ value.name | escape }}"
+              >
+                <span
+                  class="pcard__swatch-dot"
+                  {% if value.swatch.color %}style="background:{{ value.swatch.color }}"
+                  {% elsif value.swatch.image %}style="background-image:url({{ value.swatch.image | image_url: width: 40 }})"
+                  {% elsif rep_img != blank %}style="background-image:url({{ rep_img | image_url: width: 60 }})"
+                  {% endif %}
+                ></span>
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <a href="{{ product.url }}" class="pcard__title">{{ product.title | escape }}</a>
+        {%- liquid
+          assign on_sale = false
+          if product.compare_at_price > product.price and product.available
+            assign on_sale = true
+          endif
+          if settings.currency_code_enabled
+            assign p_now = product.price | money_with_currency
+            assign p_cmp = product.compare_at_price | money_with_currency
+          else
+            assign p_now = product.price | money
+            assign p_cmp = product.compare_at_price | money
+          endif
+          assign p_now = p_now | replace: '.00', ''
+          assign p_cmp = p_cmp | replace: '.00', ''
+        -%}
+        <div class="price{% if on_sale %} price--on-sale{% endif %}{% unless product.available %} price--sold-out{% endunless %}">
+          <div class="price__container">
+            {%- if on_sale -%}
+              <span class="price-item price-item--regular"><s>{{ p_cmp }}</s></span>
+            {%- endif -%}
+            <span class="price-item price-item--{% if on_sale %}sale{% else %}regular{% endif %} price-item--last">
+              {%- if product.price_varies -%}
+                {{ 'products.product.price.from_price_html' | t: price: p_now }}
+              {%- else -%}
+                {{ p_now }}
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {%- unless product.has_only_default_variant -%}
+        <script type="application/json" class="pcard__data">
+          {
+            "hasColor": {% if color_opt %}true{% else %}false{% endif %},
+            "hasSize": {% if size_opt %}true{% else %}false{% endif %},
+            "selectedColor": {{ selected_color | json }},
+            "selectedSize": {{ selected_size | json }},
+            "variants": [
+              {%- for v in product.variants -%}
+                {
+                  "id": {{ v.id }},
+                  "color": {% if color_opt %}{{ v.options[color_index] | json }}{% else %}null{% endif %},
+                  "size": {% if size_opt %}{{ v.options[size_index] | json }}{% else %}null{% endif %},
+                  "available": {{ v.available }}
+                }{%- unless forloop.last -%},{%- endunless -%}
+              {%- endfor -%}
+            ]
+          }
+        </script>
+      {%- endunless -%}
+    </div>
+  </product-component>
+{%- endif -%}

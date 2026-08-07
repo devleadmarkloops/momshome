@@ -1,0 +1,556 @@
+{{ 'section-custom-hero-slider.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign d_h = section.settings.desktop_height
+  assign m_h = section.settings.mobile_height
+
+  assign first_block = section.blocks.first
+  assign d_aspect = 1.6
+  assign m_aspect = 0.8
+  if first_block.settings.image != blank
+    assign d_aspect = first_block.settings.image.aspect_ratio
+    assign m_aspect = first_block.settings.image.aspect_ratio
+  endif
+  if first_block.settings.image_mobile != blank
+    assign m_aspect = first_block.settings.image_mobile.aspect_ratio
+  endif
+-%}
+
+{%- style -%}
+  #HeroSlider-{{ section.id }} {
+    --hs-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --hs-content-max-width: {{ section.settings.content_max_width_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #HeroSlider-{{ section.id }} {
+      --hs-content-max-width: {{ section.settings.content_max_width }}px;
+    }
+  }
+
+  /* Slide height — mobile (base) */
+  {%- if m_h == 'adapt' -%}
+    #HeroSlider-{{ section.id }} .hero-slider__slide { height: auto; aspect-ratio: {{ m_aspect }}; }
+  {%- elsif m_h == 'full' -%}
+    #HeroSlider-{{ section.id }} .hero-slider__slide { height: calc(100vh - var(--hs-header-offset, 0px)); }
+    @supports (height: 100svh) {
+      #HeroSlider-{{ section.id }} .hero-slider__slide { height: calc(100svh - var(--hs-header-offset, 0px)); }
+    }
+  {%- else -%}
+    #HeroSlider-{{ section.id }} .hero-slider__slide { height: {{ m_h }}px; }
+  {%- endif -%}
+
+  /* Slide height — desktop */
+  @media screen and (min-width: 750px) {
+    {%- if d_h == 'adapt' -%}
+      #HeroSlider-{{ section.id }} .hero-slider__slide { height: auto; aspect-ratio: {{ d_aspect }}; }
+    {%- elsif d_h == 'full' -%}
+      #HeroSlider-{{ section.id }} .hero-slider__slide { height: calc(100vh - var(--hs-header-offset, 0px)); }
+    {%- else -%}
+      #HeroSlider-{{ section.id }} .hero-slider__slide { height: {{ d_h }}px; }
+    {%- endif -%}
+  }
+  {%- if d_h == 'full' -%}
+    @supports (height: 100svh) {
+      @media screen and (min-width: 750px) {
+        #HeroSlider-{{ section.id }} .hero-slider__slide { height: calc(100svh - var(--hs-header-offset, 0px)); }
+      }
+    }
+  {%- endif -%}
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="HeroSlider-{{ section.id }}"
+  class="hero-slider section-{{ section.id }}-padding hero-slider--align-{{ section.settings.desktop_content_alignment }}{% if section.settings.overlay_gradient %} hero-slider--overlay-gradient{% endif %}{% if section.blocks.size <= 1 %} hero-slider--single{% endif %}{% if d_h == 'full' or m_h == 'full' %} hero-slider--has-full{% endif %}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+  data-loop="{{ section.settings.loop }}"
+  data-effect="{{ section.settings.transition_effect }}"
+  data-pause-hover="{{ section.settings.pause_on_hover }}"
+>
+  <div class="swiper hero-slider__swiper">
+    <div class="swiper-wrapper">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign img = block.settings.image
+          assign img_m = block.settings.image_mobile
+          assign img_loading = 'lazy'
+          assign img_priority = 'auto'
+          if forloop.first
+            assign img_loading = 'eager'
+            if section.index == 1
+              assign img_priority = 'high'
+            endif
+          endif
+        -%}
+        <div class="swiper-slide hero-slider__slide" {{ block.shopify_attributes }}>
+          <div class="hero-slider__media">
+            {%- if img != blank -%}
+              <picture>
+                {%- if img_m != blank -%}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="{{ img_m | image_url: width: 550 }} 550w, {{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1100 }} 1100w, {{ img_m | image_url: width: 1500 }} 1500w"
+                    width="{{ img_m.width }}"
+                    height="{{ img_m.height }}"
+                  >
+                {%- endif -%}
+                <img
+                  src="{{ img | image_url: width: 1500 }}"
+                  srcset="{{ img | image_url: width: 750 }} 750w, {{ img | image_url: width: 1100 }} 1100w, {{ img | image_url: width: 1500 }} 1500w, {{ img | image_url: width: 1780 }} 1780w, {{ img | image_url: width: 2000 }} 2000w, {{ img | image_url: width: 2500 }} 2500w, {{ img | image_url: width: 3000 }} 3000w"
+                  sizes="100vw"
+                  alt="{{ img.alt | escape }}"
+                  width="{{ img.width }}"
+                  height="{{ img.height }}"
+                  loading="{{ img_loading }}"
+                  fetchpriority="{{ img_priority }}"
+                >
+              </picture>
+            {%- else -%}
+              {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg hero-slider__placeholder' }}
+            {%- endif -%}
+          </div>
+
+          <div class="hero-slider__content hero-slider__content--{{ section.settings.desktop_content_position }} hero-slider__content--align-{{ section.settings.desktop_content_alignment }} hero-slider__content--m-{{ section.settings.mobile_content_position }} hero-slider__content--m-align-{{ section.settings.mobile_content_alignment }}">
+            <div class="hero-slider__bound page-width">
+              <div class="hero-slider__content-inner color-{{ section.settings.color_scheme }}">
+                {%- if block.settings.heading != blank -%}
+                  <h2 class="hero-slider__heading inline-richtext {{ section.settings.heading_size }}">
+                    {{ block.settings.heading }}
+                  </h2>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="hero-slider__text rte {{ block.settings.text_size }} {{ block.settings.text_style }}">
+                    <p>{{ block.settings.text }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.button_label != blank -%}
+                  <div class="hero-slider__actions">
+                    <a
+                      {% if block.settings.button_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link }}"
+                      {% endif %}
+                      class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                    >
+                      {{- block.settings.button_label | escape -}}
+                    </a>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <div class="hero-slider__tabs color-{{ section.settings.color_scheme }}" role="tablist">
+      {%- for block in section.blocks -%}
+        <button
+          type="button"
+          class="hero-slider__tab{% if forloop.first %} is-active{% endif %}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          data-block-id="{{ block.id }}"
+        >
+          <span class="hero-slider__tab-label">{{ block.settings.tab_label | escape | default: forloop.index }}</span>
+          <span class="hero-slider__tab-track"><span class="hero-slider__tab-progress"></span></span>
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'section-custom-hero-slider.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Custom hero slider",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1",
+      "info": "Text and tabs sit directly on the image — pick a scheme with light text (e.g. your dark scheme)."
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+      ],
+      "default": "hxl"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Content position (desktop)",
+      "options": [
+        { "value": "top-left", "label": "Top left" },
+        { "value": "top-center", "label": "Top center" },
+        { "value": "top-right", "label": "Top right" },
+        { "value": "middle-left", "label": "Middle left" },
+        { "value": "middle-center", "label": "Middle center" },
+        { "value": "middle-right", "label": "Middle right" },
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "middle-left"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Content alignment (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Content position (mobile)",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "middle"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Content alignment (mobile)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width (desktop)",
+      "min": 320,
+      "max": 760,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "content_max_width_mobile",
+      "label": "Content max width (mobile)",
+      "min": 240,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 360
+    },
+    {
+      "type": "header",
+      "content": "Height"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Height (desktop)",
+      "info": "Full screen fills the viewport minus the header and announcement bar.",
+      "options": [
+        { "value": "500", "label": "500px" },
+        { "value": "550", "label": "550px" },
+        { "value": "600", "label": "600px" },
+        { "value": "650", "label": "650px" },
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "550"
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Height (mobile)",
+      "info": "Full screen fills the viewport minus the header and announcement bar.",
+      "options": [
+        { "value": "250", "label": "250px" },
+        { "value": "300", "label": "300px" },
+        { "value": "350", "label": "350px" },
+        { "value": "400", "label": "400px" },
+        { "value": "450", "label": "450px" },
+        { "value": "500", "label": "500px" },
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "450"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 35
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay_gradient",
+      "label": "Use directional gradient",
+      "info": "Darkens the content side and fades to clear, keeping the subject visible. Direction follows desktop content alignment.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Time per slide",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "transition_effect",
+      "label": "Transition",
+      "options": [
+        { "value": "fade", "label": "Fade" },
+        { "value": "slide", "label": "Slide" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image",
+          "info": "Optional. Falls back to the desktop image."
+        },
+        {
+          "type": "header",
+          "content": "Tab"
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "default": "Dresses"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Made to flatter every curve"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Bold silhouettes and elevated essentials made for women who dress with presence."
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "label": "Text style",
+          "options": [
+            { "value": "body", "label": "Body" },
+            { "value": "subtitle", "label": "Subtitle" },
+            { "value": "caption-with-letter-spacing", "label": "Uppercase" }
+          ],
+          "default": "body"
+        },
+        {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+            { "value": "typeset0", "label": "Small" },
+            { "value": "typeset",  "label": "Medium" },
+            { "value": "typeset2", "label": "Large" }
+        ],
+        "default": "typeset"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "label": "Use outline button style",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom hero slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "tab_label": "Dresses",
+            "heading": "Made to flatter every curve",
+            "text": "Bold silhouettes and elevated essentials made for women who dress with presence.",
+            "button_label": "Shop now"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "tab_label": "Everyday sets",
+            "heading": "Effortless sets, styled for you",
+            "text": "Mix-and-match pieces designed to move from morning to evening.",
+            "button_label": "Shop sets"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "tab_label": "New arrivals",
+            "heading": "Just landed this season",
+            "text": "The latest drops in considered fabrics and modern cuts.",
+            "button_label": "Shop new"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

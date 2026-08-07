@@ -1,0 +1,393 @@
+/* ============================================================
+   Body Politix — custom footer
+   ============================================================ */
+
+.bpf {
+  border-top: 0;
+}
+
+.bpf__inner {
+  width: 100%;
+}
+
+/* ---------- Top: brand + menus ---------- */
+.bpf__brand-item.center { text-align: center; }
+.bpf__brand-item.right { text-align: right; }
+
+.bpf__logo-img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+.bpf__col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.bpf__col-title {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: rgb(var(--color-foreground));
+}
+
+.bpf__caret {
+  flex: 0 0 auto;
+  width: 1.2rem;
+  height: auto;
+  color: currentColor;
+}
+
+.bpf__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.bpf__menu-list a,
+.bpf__text a {
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  transition: color 0.2s ease;
+}
+
+.bpf__menu-list a:hover,
+.bpf__text a:hover {
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.bpf__text {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.bpf__col-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ---------- Newsletter ---------- */
+.bpf__news {
+  padding: 3.2rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.bpf__news-title {
+  margin: 0 0 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 1);
+}
+
+.bpf__news-right { width: 100%; }
+
+.bpf__field {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.bpf__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  /* border: 0.1rem solid rgba(var(--color-foreground), 0.35); */
+  border: 0;
+  border-radius: 0;
+  color: rgb(var(--color-background));
+  background-color: rgb(var(--color-foreground));
+  padding: 1.44rem 1.4rem;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  box-shadow: none;
+}
+
+.bpf__input::placeholder { color: rgb(var(--color-background), 0.55); }
+
+.bpf__input:focus,
+.bpf__input:focus-visible {
+  outline: none;
+  border-color: color: rgb(var(--color-background), 0.75);;
+  box-shadow: none;
+}
+
+/* .bpf__submit {
+  flex: 0 0 auto;
+  background: #1F1D1D;
+  border: 0;
+  padding: 1.2rem 1.5rem;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-button-family);
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bpf__submit:hover {
+  opacity: 0.9;
+} */
+.bpf__submit {
+  flex: 0 0 auto;
+  /* background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground)); */
+  border: 0;
+  padding: 1.2rem 1.5rem;
+  font-family: var(--font-button-family);
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none !important;
+  min-width: fit-content
+}
+
+/* .bpf__submit:hover {
+  opacity: 0.9;
+} */
+.bpf__news-note {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.85);
+}
+
+.bpf__news-note a { color: inherit; text-decoration: underline; text-underline-offset: 0.2rem; }
+
+.bpf__news-msg { display: block; margin-top: 1rem; font-size: 1.2rem; }
+.bpf__news-msg--error { color: #ff8a8a; }
+.bpf__news-msg--success { color: rgba(var(--color-foreground), 0.9); }
+
+/* ---------- Social icons (below the newsletter) ----------
+   component-list-social.css defaults .list-social to justify-content: flex-end
+   (and center on mobile). In the footer column it should sit left, aligned with
+   the newsletter above it. */
+.bpf__social {
+  margin-top: 1.2rem;
+}
+
+.bpf__social .list-social {
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+.bpf__social .list-social__link {
+  padding: 0.6rem 1.2rem 0.6rem 0;
+  color: rgb(var(--color-foreground));
+  transition: opacity 0.2s ease;
+}
+
+.bpf__social .list-social__link:hover {
+  opacity: 0.7;
+}
+
+/* base.css sets .svg-wrapper to a fixed 20px and svg to 100% of it, so the
+   wrapper is what actually controls icon size here. */
+.bpf__social .list-social__item .icon,
+.bpf__social .list-social__link svg,
+.bpf__social .list-social__link .svg-wrapper {
+  height: 2rem;
+  width: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .bpf__social .list-social__item .icon,
+  .bpf__social .list-social__link svg,
+  .bpf__social .list-social__link .svg-wrapper {
+    height: 2.4rem;
+    width: 2.4rem;
+  }
+}
+
+/* ---------- Policies + info ---------- */
+.bpf__info {
+  padding: 2.4rem 0 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+}
+
+.bpf__policy-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+}
+
+.bpf__policy-list a {
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: none;
+  font-size: 1.4rem;
+}
+
+.bpf__policy-list a:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.bpf__info-text {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.bpf__info-text > :first-child { margin-top: 0; }
+.bpf__info-text > :last-child { margin-bottom: 0; }
+
+/* ============================================================
+   Desktop (>= 750px)
+   ============================================================ */
+@media screen and (min-width: 750px) {
+  /* brand | menus (2 cols) | newsletter — image and newsletter wider than the menus */
+  .bpf__top {
+    display: grid;
+    grid-template-columns: 1.2fr 1.4fr 1.4fr;
+    gap: 6rem;
+    align-items: start;
+    padding-bottom: 4.5rem;
+  }
+
+  .bpf__menus {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(3rem, 4vw, 6rem);
+  }
+
+  .bpf__caret { display: none; }
+  .bpf__col-head { cursor: default; }
+  .bpf__col-panel { display: block; }
+  .bpf__menu-list { margin-top: 1.8rem; }
+  .bpf__text { margin-top: 2rem; }
+
+  .bpf__news {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+    padding: 0;
+  }
+
+  .bpf__news-title { margin: 0; }
+  .bpf__news-right { width: 100%; }
+
+  .bpf__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .bpf__info-text {
+    max-width: 40rem;
+    text-align: right;
+  }
+}
+
+/* ============================================================
+   Mobile (<= 749px) — accordions
+   ============================================================ */
+@media screen and (max-width: 749px) {
+  .bpf__brand { margin-bottom: 1.8rem; }
+
+  .bpf__logo-img {
+    margin-inline: auto;
+    max-width: 200px;
+  }
+
+  .bpf__col--accordion {
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+  }
+  .bpf__input {
+      padding: 1.34rem 1.4rem;
+  }
+  .bpf__col--accordion:last-child {
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+  }
+
+  .bpf__col--accordion .bpf__col-head {
+    cursor: pointer;
+    padding: 1.6rem 0;
+  }
+
+  .bpf__col-title {
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  .bpf__menu-list a {
+    font-size: 1.4rem;
+  }
+
+  .bpf__caret {
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .bpf__col--accordion.is-open .bpf__caret {
+    transform: rotate(180deg);
+  }
+
+  .bpf__col--accordion .bpf__col-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+  }
+
+  .bpf__col--accordion.is-open .bpf__col-panel {
+    grid-template-rows: 1fr;
+  }
+
+  .bpf__col--accordion .bpf__menu-list {
+    padding-bottom: 1.8rem;
+  }
+
+  .bpf__news-title { margin-bottom: 1.5rem; font-size: 1.5rem; }
+  .bpf__news { text-align: left; }
+
+  .bpf__info { text-align: center; }
+  .bpf__policy-list {
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .bpf__info-text { text-align: center; }
+  .bpf__news {
+    padding: 2.4rem 0;
+  }
+  .bpf__news-note {
+    font-size: 1.1rem;
+    margin-top: 0.85rem;
+  }
+  .bpf__info {
+    padding: 1.8rem 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpf__col-panel,
+  .bpf__caret {
+    transition: none;
+  }
+}

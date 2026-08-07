@@ -1,0 +1,76 @@
+{% comment %}
+  Breadcrumbs — Body Politix
+  Render inside the product template:  {% render 'breadcrumbs' %}
+  Shop links to /collections/all — change the href below to a specific collection if needed.
+{% endcomment %}
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a href="{{ routes.root_url }}" class="breadcrumbs__link">Home</a>
+    </li>
+
+    <li class="breadcrumbs__sep" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="5" height="10" viewBox="0 0 5 10" fill="none">
+        <path d="M0.5 0.5L3.83333 4.66667L0.5 8.83333" stroke="#141511" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </li>
+    <li class="breadcrumbs__item">
+      <a href="{{ routes.all_products_collection_url }}" class="breadcrumbs__link">Shop</a>
+    </li>
+
+    <li class="breadcrumbs__sep" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="5" height="10" viewBox="0 0 5 10" fill="none">
+        <path d="M0.5 0.5L3.83333 4.66667L0.5 8.83333" stroke="#141511" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">{{ product.title }}</span>
+    </li>
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    padding: 0 0 1.6rem;
+  }
+  .breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .breadcrumbs__item {
+    display: inline-flex;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: #141511;
+  }
+  .breadcrumbs__link,
+  .breadcrumbs__current {
+    font-size: 1.3rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: rgb(var(--color-foreground));
+    text-decoration: none;
+  }
+  .breadcrumbs__link {
+    text-transform: uppercase;
+    color: #141511;
+  }
+  .breadcrumbs__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+  /* Current page — set opacity to 0.7 if you want it slightly muted */
+  .breadcrumbs__current {
+    color: rgb(var(--color-foreground));
+  }
+  .breadcrumbs__sep {
+    display: inline-flex;
+    align-items: center;
+  }
+</style>

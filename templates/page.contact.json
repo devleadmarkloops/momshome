@@ -1,0 +1,155 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_GM4TT4": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_jDFJEH": {
+          "type": "heading",
+          "settings": {
+            "heading": "Contact Us",
+            "heading_size": "h0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_jDFJEH"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/kam-idris-Ot2iTXgC6fY-unsplash_1.webp",
+        "image_overlay_opacity": 30,
+        "image_height": "xs",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "text_blocks_YBhNz9": {
+      "type": "text-blocks",
+      "blocks": {
+        "item_pmLYae": {
+          "type": "item",
+          "settings": {
+            "column": "left",
+            "heading": "Visit Here",
+            "text": "",
+            "caption": ""
+          }
+        },
+        "item_pRbNf4": {
+          "type": "item",
+          "settings": {
+            "column": "left",
+            "heading": "Hours Of Operation",
+            "text": "<p>Monday – Saturday: 10AM – 6PM (GMT)</p>",
+            "caption": "We aim to respond to all enquiries within 24–48 business hours."
+          }
+        },
+        "item_UBeRia": {
+          "type": "item",
+          "settings": {
+            "column": "right",
+            "heading": "Other Enquiries",
+            "text": "<p>For all other questions, please <br/>email <a href=\"mailto:info@body-politix.com\" title=\"mailto:info@body-politix.com\">info@body-politix.com</a> or message us on <a href=\"https://wa.me/2349168630776\">WhatsApp</a></p>",
+            "caption": ""
+          }
+        },
+        "item_grPb8r": {
+          "type": "item",
+          "settings": {
+            "column": "right",
+            "heading": "Returns & Exchanges",
+            "text": "<p>We accept returns within a reasonable timeframe. Items must be unworn and in original condition. For return requests, email <a href=\"mailto:sales@body-politix.com\" title=\"mailto:sales@body-politix.com\">sales@body-politix.com</a> with your order number.</p>",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_pmLYae",
+        "item_pRbNf4",
+        "item_UBeRia",
+        "item_grPb8r"
+      ],
+      "disabled": true,
+      "name": "Text blocks",
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "contact_form_v1_dfKbRi": {
+      "type": "contact-form-v1",
+      "name": "Contact form v1",
+      "settings": {
+        "subheading": "Reach out to us",
+        "heading": "Please fill out the contact form",
+        "heading_size": "h1",
+        "intro_text": "",
+        "name_label": "Full Name",
+        "name_placeholder": "John Smith",
+        "name_required": true,
+        "email_label": "Email Address",
+        "email_placeholder": "johnsmith@gmail.com",
+        "subject_label": "Subject",
+        "subject_placeholder": "Choose Subject",
+        "subject_options": "General Enquiry\nOrder Support\nReturns & Exchanges\nWholesale & Partnerships\nOther",
+        "subject_required": true,
+        "message_label": "Message",
+        "message_placeholder": "Hi, I am just wondering where can I find your refund policy?",
+        "message_required": true,
+        "button_label": "Send Message",
+        "success_text": "Thanks for reaching out — we'll get back to you within 24–48 hours.",
+        "footer_text": "<p>Or reach us directly on <a href=\"https://wa.me/2349168630776\">WhatsApp</a></p>",
+        "color_scheme": "",
+        "box_color_scheme": "scheme-3acb683e-36f7-4575-aec3-5b0ebd131901",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32
+      }
+    }
+  },
+  "order": [
+    "main",
+    "form",
+    "image_banner_GM4TT4",
+    "text_blocks_YBhNz9",
+    "contact_form_v1_dfKbRi"
+  ]
+}

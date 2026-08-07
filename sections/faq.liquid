@@ -1,0 +1,459 @@
+{%- comment -%}
+  FAQ section with category grouping (KAI-style reference).
+  Blocks flow in order: a "Category" block starts a new group with a heading;
+  every "Question" block after it renders inside that group until the next
+  Category block. Question blocks placed before any Category block render in
+  an untitled group, so existing instances (e.g. homepage) keep working
+  unchanged without adding categories.
+{%- endcomment -%}
+
+{{ 'section-faq.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign heading_size = section.settings.heading_size
+  assign cat_size = section.settings.category_size
+  assign q_size = section.settings.question_size
+  assign a_size = section.settings.answer_size
+  assign align = section.settings.alignment
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #faq-{{ section.id }} {
+    --faq-radius: {{ section.settings.card_radius }}px;
+    --faq-gap: {{ section.settings.card_gap }}px;
+    --faq-max: {{ section.settings.max_width }}px;
+    --faq-group-gap: {{ section.settings.group_gap }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="faq-{{ section.id }}"
+    class="faq section-{{ section.id }}-padding faq--{{ align }}"
+    data-single="{% if section.settings.single_open %}true{% else %}false{% endif %}"
+  >
+    <div class="page-width">
+      {%- if section.settings.heading != blank -%}
+        <div class="faq__head">
+          <h2 class="faq__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="faq__groups">
+          {%- assign list_open = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'category' -%}
+              {%- if list_open -%}
+                </div>
+                </div>
+              {%- endif -%}
+              <div class="faq__group" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="faq__group-title {{ cat_size }}">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+                <div class="faq__list">
+              {%- assign list_open = true -%}
+            {%- else -%}
+              {%- unless list_open -%}
+                <div class="faq__group">
+                  <div class="faq__list">
+                {%- assign list_open = true -%}
+              {%- endunless -%}
+
+              {%- assign is_open = block.settings.open -%}
+              <div class="faq__item color-{{ section.settings.card_color_scheme }} gradient{% if is_open %} is-open{% endif %}" {{ block.shopify_attributes }}>
+                <button
+                  type="button"
+                  class="faq__q-btn"
+                  id="faq-{{ section.id }}-h{{ forloop.index }}"
+                  aria-expanded="{% if is_open %}true{% else %}false{% endif %}"
+                  aria-controls="faq-{{ section.id }}-p{{ forloop.index }}"
+                >
+                  <span class="faq__q faq__q--{{ q_size }}">{{ block.settings.question | default: 'Question' | escape }}</span>
+                  <svg class="faq__caret" viewBox="0 0 24 15" fill="none" aria-hidden="true">
+                    <path d="M11.3626 14.7227L0.264334 3.1727C-0.0881112 2.80291 -0.0881112 2.20496 0.264334 1.83517L1.7491 0.277341C2.10155 -0.0924469 2.67146 -0.0924469 3.0239 0.277341L12 9.60071L20.9761 0.277341C21.3285 -0.0924469 21.8985 -0.0924469 22.2509 0.277341L23.7357 1.83517C24.0881 2.20496 24.0881 2.80291 23.7357 3.1727L12.6374 14.7227C12.285 15.0924 11.715 15.0924 11.3626 14.7227Z" fill="currentColor"/>
+                  </svg>
+                </button>
+
+                <div class="faq__panel" id="faq-{{ section.id }}-p{{ forloop.index }}" role="region" aria-labelledby="faq-{{ section.id }}-h{{ forloop.index }}">
+                  <div class="faq__panel-inner">
+                    {%- if block.settings.answer != blank -%}
+                      <div class="faq__answer rte {{ a_size }}">{{ block.settings.answer }}</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if list_open -%}
+            </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-faq.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Section background",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "card_color_scheme",
+      "label": "Question background",
+      "default": "scheme-2"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Categories"
+    },
+    {
+      "type": "select",
+      "id": "category_size",
+      "label": "Category heading size",
+      "options": [
+        { "value": "h2", "label": "Large" },
+        { "value": "h3", "label": "Medium" },
+        { "value": "h4", "label": "Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "range",
+      "id": "group_gap",
+      "label": "Space between categories",
+      "min": 24,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Text size"
+    },
+    {
+      "type": "select",
+      "id": "question_size",
+      "label": "Question size",
+      "options": [
+        { "value": "xs", "label": "Extra small" },
+        { "value": "s", "label": "Small" },
+        { "value": "m", "label": "Medium" },
+        { "value": "l", "label": "Large" }
+      ],
+      "default": "m"
+    },
+    {
+      "type": "select",
+      "id": "answer_size",
+      "label": "Answer size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset0"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "single_open",
+      "label": "Open one at a time",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 480,
+      "max": 960,
+      "step": 20,
+      "unit": "px",
+      "default": 720
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap between questions",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Orders"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I know my size?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Use our size guide before placing your order. If you are between sizes, we recommend sizing based on your preferred fit.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Orders" } },
+        {
+          "type": "question",
+          "settings": {
+            "question": "When Will My Order Be Processed?",
+            "answer": "<p>All orders are processed within 1–3 business days (Monday to Friday, excluding public holidays). Orders placed on weekends or holidays are processed the next business day. During new drops and sale periods, processing may take slightly longer.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How Can I Track My Order?",
+            "answer": "<p>As soon as your order ships, we email you a tracking number so you can follow your package every step of the way. Please allow 24–48 hours for tracking information to update after dispatch.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Can I Change Or Cancel My Order After Checkout?",
+            "answer": "<p>Contact us as soon as possible after placing your order. We can update or cancel an order only if it has not yet been dispatched. Once your order has shipped, we are unable to make changes.</p>"
+          }
+        },
+        { "type": "category", "settings": { "title": "Shipping" } },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does Delivery Take?",
+            "answer": "<p>Once your order has been dispatched: 1–3 business days within Lagos, 3–7 business days across the rest of Nigeria, and 7–14 business days for international orders, depending on your location.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do You Deliver Across Pakistan?",
+            "answer": "<p>Yes. We deliver to all major cities and towns across Pakistan through our courier partners, with cash on delivery available nationwide.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How Much Does Shipping Cost?",
+            "answer": "<p>Shipping rates are calculated at checkout based on your delivery location. Enjoy free shipping on all orders of $150 or more.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Will I Pay Customs Duties On International Orders?",
+            "answer": "<p>International orders may be subject to import duties, taxes, or customs fees charged by your country. These charges are determined by your local customs office and are the responsibility of the customer.</p>"
+          }
+        },
+        { "type": "category", "settings": { "title": "Returns & Exchanges" } },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do You Accept Returns?",
+            "answer": "<p>Yes. Items can be returned within 7 days of delivery, provided they are unworn, unwashed, and in their original condition with tags attached. Reach out through our Contact Us page to start a return.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Can I Exchange My Item For Another Size?",
+            "answer": "<p>Yes, exchanges are available subject to stock. Contact us with your order number and the size you need, and we will confirm availability.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does The Return Process Take?",
+            "answer": "<p>Once we receive your item, refunds or exchanges are processed within 5–7 business days. Refunds are issued to your original payment method.</p>"
+          }
+        },
+        { "type": "category", "settings": { "title": "Sizing & Fit" } },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How Do I Know My Size?",
+            "answer": "<p>Use our size guide before placing your order. If you are between sizes, we recommend sizing based on your preferred fit.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Are Body Politix Pieces True To Size?",
+            "answer": "<p>Our pieces are designed to fit true to size across all body types. If a particular style fits differently, we note it on the product page.</p>"
+          }
+        },
+        { "type": "category", "settings": { "title": "Payments" } },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What Payment Methods Do You Accept?",
+            "answer": "<p>We accept all major debit and credit cards along with the secure payment options shown at checkout. You can shop in NGN, USD, GBP, or EUR using the currency selector.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Is My Payment Information Secure?",
+            "answer": "<p>Yes. All payments are processed through a secure, encrypted checkout. We never store your card details.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

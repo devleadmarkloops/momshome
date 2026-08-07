@@ -1,0 +1,364 @@
+.sb__stage {
+  position: relative;
+}
+
+/* Full-bleed slider — edge to edge */
+.sb__swiper.swiper {
+  overflow: hidden;
+  border-radius: var(--sb-radius, 0);
+  width: 100%;
+}
+
+.sb__swiper .swiper-wrapper {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.sb__swiper .swiper-slide {
+  flex-shrink: 0;
+  height: auto;
+}
+
+.sb__slide {
+  position: relative;
+}
+
+.sb__media {
+  height: var(--sb-h-m, 400px);
+}
+
+.sb__media img,
+.sb__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sb__dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------- Dot (ring style — matches reference) ---------- */
+.sb__dot {
+  position: absolute;
+  left: var(--xm, 50%);
+  top: var(--ym, 50%);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.sb__dot-btn {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.sb__dot-core {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--sb-dot, 16px) * 2.4);
+  height: calc(var(--sb-dot, 16px) * 2.4);
+  border-radius: 50%;
+  border: 0.2rem solid rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.sb__dot-core::before {
+  content: "";
+  width: var(--sb-dot, 16px);
+  height: var(--sb-dot, 16px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.25);
+}
+
+.sb__dot:hover .sb__dot-core {
+  transform: scale(1.08);
+}
+
+/* ---------- Tooltip ---------- */
+.sb__tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 1rem);
+  transform: translateX(-50%) translateY(0.6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  max-width: 30rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 6;
+}
+
+.sb__dot:hover .sb__tip,
+.sb__dot:focus-within .sb__tip,
+.sb__dot.is-open .sb__tip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sb__tip-card {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.2rem;
+  background: #fff;
+  color: #141414;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.28);
+}
+
+.sb__tip-img {
+  flex: 0 0 auto;
+  width: 7rem;
+  height: 9rem;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  background: #f2f0eb;
+}
+
+.sb__tip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-right: 0.6rem;
+}
+
+.sb__tip-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.sb__tip-price {
+  font-size: 1.4rem;
+  color: #555;
+  letter-spacing: 0;
+}
+
+.sb__tip-cta {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #141414;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.sb__tip:hover .sb__tip-cta {
+  opacity: 0.7;
+}
+
+.sb__tip-caret {
+  color: #fff;
+  line-height: 0;
+  margin-top: -0.1rem;
+}
+
+.sb__caret-svg {
+  display: block;
+  width: 1.7rem;
+  height: 1.6rem;
+}
+
+/* ---------- Footer (outside image, black controls) ---------- */
+.sb__footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.6rem;
+  position: absolute;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sb__controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  color: #111;
+}
+
+.sb__nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #111;
+  cursor: pointer;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  transition: opacity 0.2s ease;
+}
+
+.sb__nav:hover {
+  opacity: 0.6;
+}
+
+.sb__arrow {
+  width: 5rem;
+  height: 1.8rem;
+}
+
+.sb__nav--prev .sb__arrow {
+  transform: scaleX(-1);
+}
+
+.sb__nav[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.sb__count {
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  min-width: 5.5rem;
+  text-align: center;
+  color: #111;
+}
+
+/* ---------- Scroll indicator ---------- */
+.sb__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 45%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12.5rem;
+  height: 12.5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-button-family);
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.sb__scroll-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: sbSpin 16s linear infinite;
+}
+
+.sb__scroll-ring text {
+  font-family: var(--font-body-family);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0;
+  fill: currentColor;
+  text-transform: uppercase;
+}
+
+.sb__scroll-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sb__scroll-arrow {
+  width: 1.5rem;
+  height: 2.8rem;
+}
+
+.sb__scroll-label {
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+}
+
+@keyframes sbSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Desktop ---------- */
+@media screen and (min-width: 990px) {
+  .sb__media {
+    height: var(--sb-h-d, 500px);
+  }
+
+  .sb__dot {
+    left: var(--x, 50%);
+    top: var(--y, 50%);
+  }
+
+  .sb__footer {
+    margin-top: 3.5rem;
+  }
+
+  .sb__scroll {
+    left: 8%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    width: 15rem;
+    height: 15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb__scroll-ring {
+    animation: none;
+  }
+  .sb__dot-core,
+  .sb__nav {
+    transition: none;
+  }
+}
+
+/* Mobile tooltip refinements */
+@media screen and (max-width: 749px) {
+  .sb__tip {
+    max-width: 26rem;
+  }
+  .sb__tip-card {
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .sb__tip-img {
+    width: 5.6rem;
+    height: 7.2rem;
+  }
+  .sb__tip-title {
+    font-size: 1.45rem;
+  }
+  .sb__tip-price,
+  .sb__tip-cta {
+    font-size: 1.25rem;
+  }
+  .sb__controls {
+    gap: 1.4rem;
+  }
+  .sb__arrow {
+    width: 4rem;
+  }
+}

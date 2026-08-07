@@ -1,0 +1,450 @@
+{{ 'section-featured-collection-v2.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign alignment = section.settings.header_alignment
+
+  assign show_tabs = false
+  if section.settings.enable_tabs and section.blocks.size > 1
+    assign show_tabs = true
+  endif
+
+  assign cols_d = section.settings.columns_desktop
+  assign cols_m = section.settings.columns_mobile
+  assign cols_d_int = section.settings.columns_desktop | plus: 0
+  assign cols_m_int = section.settings.columns_mobile | plus: 0
+  assign max_cols = cols_m_int
+  if cols_d_int > cols_m_int
+    assign max_cols = cols_d_int
+  endif
+
+  assign swipe = section.settings.swipe_on_mobile
+
+  assign m_peek = 2.15
+  if cols_m == '1'
+    assign m_peek = 1.15
+  endif
+
+  assign skip_card_styles = false
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #ftc-{{ section.id }} {
+    --ftc-mcols: {{ m_peek }};
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} isolate gradient">
+  <div
+    id="ftc-{{ section.id }}"
+    class="ftc section-{{ section.id }}-padding{% if section.settings.full_width %} ftc--full-width{% endif %}"
+    data-section-id="{{ section.id }}"
+  >
+    {%- if section.settings.title != blank or section.settings.description != blank or show_tabs -%}
+      <div class="page-width">
+        <div class="ftc__header ftc__header--{{ alignment }}{% if show_tabs %} ftc__header--has-tabs{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <div class="ftc__intro">
+            {%- if section.settings.title != blank -%}
+              <h2 class="ftc__title title inline-richtext {{ section.settings.heading_size }}">
+                {{ section.settings.title }}
+              </h2>
+            {%- endif -%}
+            {%- if section.settings.description != blank -%}
+              <div class="ftc__description rte {{ section.settings.text_size }}">
+                {{ section.settings.description }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if show_tabs -%}
+            <div class="ftc__tabs" role="tablist" aria-label="{{ section.settings.title | default: 'Collections' | strip_html | escape }}">
+              {%- for block in section.blocks -%}
+                <button
+                  type="button"
+                  class="ftc__tab{% if forloop.first %} is-active{% endif %}"
+                  role="tab"
+                  id="ftc-tab-{{ section.id }}-{{ forloop.index0 }}"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-controls="ftc-panel-{{ section.id }}-{{ forloop.index0 }}"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                  data-index="{{ forloop.index0 }}"
+                  data-block-id="{{ block.id }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.tab_label | escape | default: block.settings.collection.title | default: 'Tab' }}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="ftc__panels">
+      {%- for block in section.blocks -%}
+        {%- if show_tabs or forloop.first -%}
+          {%- liquid
+            assign panel_active = forloop.first
+            assign coll = block.settings.collection
+            assign more_in_collection = false
+            if coll.all_products_count > section.settings.products_to_show
+              assign more_in_collection = true
+            endif
+          -%}
+          <div
+            class="ftc__panel{% if panel_active %} is-active{% endif %}"
+            id="ftc-panel-{{ section.id }}-{{ forloop.index0 }}"
+            {% if show_tabs %}
+              role="tabpanel"
+              aria-labelledby="ftc-tab-{{ section.id }}-{{ forloop.index0 }}"
+            {% endif %}
+            {%- unless panel_active %} hidden{% endunless -%}
+            {{ block.shopify_attributes }}
+          >
+            <div class="ftc__panel-inner{% unless section.settings.full_width %} page-width{% else %} ftc__panel-inner--full{% endunless %}">
+              <ul
+                class="ftc__grid grid product-grid grid--{{ cols_d }}-col-desktop grid--{{ cols_m }}-col-tablet-down{% if swipe %} ftc__grid--swipe{% endif %}"
+                role="list"
+              >
+                {%- if coll.products.size > 0 -%}
+                  {%- for product in coll.products limit: section.settings.products_to_show -%}
+                    {%- liquid
+                      assign lazy = true
+                      if panel_active and forloop.index <= max_cols
+                        assign lazy = false
+                      endif
+                    -%}
+                    <li class="grid__item{% if swipe %} ftc__slide{% endif %}">
+                      {% render 'card-product-v2',
+                        card_product: product,
+                        section_id: section.id,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_fit: section.settings.image_fit,
+                        enable_quick_add: section.settings.enable_quick_add,
+                        lazy_load: lazy,
+                        skip_styles: skip_card_styles
+                      %}
+                    </li>
+                    {%- assign skip_card_styles = true -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  {%- for i in (1..cols_d_int) -%}
+                    {%- liquid
+                      assign ph_idx = forloop.rindex
+                      case ph_idx
+                        when 5
+                          assign ph_idx = 1
+                        when 6
+                          assign ph_idx = 2
+                      endcase
+                      assign placeholder_image = 'product-apparel-' | append: ph_idx
+                    -%}
+                    <li class="grid__item{% if swipe %} ftc__slide{% endif %}">
+                      {% render 'card-product-v2',
+                        section_id: section.id,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        image_fit: section.settings.image_fit,
+                        enable_quick_add: false,
+                        lazy_load: false,
+                        placeholder_image: placeholder_image,
+                        skip_styles: skip_card_styles
+                      %}
+                    </li>
+                    {%- assign skip_card_styles = true -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              </ul>
+
+              {%- if section.settings.show_view_all and more_in_collection and coll != blank -%}
+                <div class="ftc__view-all center">
+                  <a
+                    href="{{ coll.url }}"
+                    class="{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}"
+                    aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: coll.title | escape }}"
+                  >
+                    {{ 'sections.featured_collection.view_all' | t }}
+                  </a>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-featured-collection-v2.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Featured collection v2",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop best sellers"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Description text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "info": "Left places tabs on the right of the heading; Center stacks tabs below.",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_tabs",
+      "label": "Enable collection tabs",
+      "info": "Add a Collection tab block per tab. When off, only the first block shows.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 25,
+      "step": 1,
+      "default": 8,
+      "label": "t:sections.featured-collection.settings.products_to_show.label"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.featured-collection.settings.columns_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:sections.featured-collection.settings.full_width.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.featured-collection.settings.image_ratio.label",
+      "options": [
+        { "value": "adapt", "label": "t:sections.featured-collection.settings.image_ratio.options__1.label" },
+        { "value": "portrait", "label": "t:sections.featured-collection.settings.image_ratio.options__2.label" },
+        { "value": "square", "label": "t:sections.featured-collection.settings.image_ratio.options__3.label" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "info": "Contain shows the full product on the card background (no crop). Cover fills the frame and crops the edges.",
+      "options": [
+        { "value": "contain", "label": "Contain (full image)" },
+        { "value": "cover", "label": "Cover (fill & crop)" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add",
+      "info": "Shows the size + add-to-cart box on hover.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Badges"
+    },
+    {
+      "type": "paragraph",
+      "content": "Badge text is set per product via the custom.badge metafield (e.g. Best Seller). Position and colours are controlled in Theme settings > Badges."
+    },
+    {
+      "type": "header",
+      "content": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "t:sections.featured-collection.settings.show_view_all.label",
+      "info": "t:sections.featured-collection.settings.show_view_all.info",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "t:sections.featured-collection.settings.view_all_style.label",
+      "options": [
+        { "value": "link", "label": "t:sections.featured-collection.settings.view_all_style.options__1.label" },
+        { "value": "outline", "label": "t:sections.featured-collection.settings.view_all_style.options__2.label" },
+        { "value": "solid", "label": "t:sections.featured-collection.settings.view_all_style.options__3.label" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "t:sections.featured-collection.settings.columns_mobile.label",
+      "default": "2",
+      "options": [
+        { "value": "1", "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label" },
+        { "value": "2", "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection tab",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "info": "Defaults to the collection name."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection v2",
+      "blocks": [
+        { "type": "tab", "settings": { "tab_label": "New" } },
+        { "type": "tab", "settings": { "tab_label": "Dresses" } },
+        { "type": "tab", "settings": { "tab_label": "Bottoms" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

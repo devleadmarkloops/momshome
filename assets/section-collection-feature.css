@@ -1,0 +1,269 @@
+.cf__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.cf__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 0;
+}
+
+.cf__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.cf__heading {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.cf__desc {
+  margin: 0;
+  max-width: 46rem;
+}
+
+.cf__desc > :first-child {
+  margin-top: 0;
+}
+
+.cf__desc > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Slider (Swiper) ---------- */
+.cf__slider {
+  position: relative;
+}
+
+.cf__cards.swiper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.cf__cards .swiper-wrapper {
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.cf__cards .swiper-slide {
+  flex-shrink: 0;
+  height: auto;
+}
+
+/* Fallback if Swiper fails to load */
+.cf__cards--fallback .swiper-wrapper {
+  gap: 1.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cf__cards--fallback .swiper-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.cf__cards--fallback .cf__card {
+  flex: 0 0 70%;
+}
+
+.cf__card {
+  position: relative;
+  display: block;
+  aspect-ratio: var(--cf-card-ratio, 3 / 4);
+  border-radius: var(--cf-card-radius, 0.4rem);
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  background: rgb(var(--color-foreground) / 0.06);
+}
+
+.cf__card-media {
+  position: absolute;
+  inset: 0;
+}
+
+.cf__card-media img,
+.cf__card-media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cf__card-grad {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, var(--cf-grad, 0.7)) 0%,
+    rgba(0, 0, 0, 0) 55%
+  );
+}
+
+.cf__card-content {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem;
+}
+
+.cf__card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.cf__card-eyebrow {
+  font-size: 1.2rem;
+  line-height: 1.2;
+  opacity: 0.85;
+}
+
+.cf__card-title {
+  font-size: 1.6rem;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.cf__card-arrow {
+  flex: 0 0 auto;
+  line-height: 0;
+  transition: transform 0.2s ease;
+}
+
+.cf__card-arrow svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+@media (hover: hover) {
+  .cf__card:hover .cf__card-arrow {
+    transform: translateX(0.3rem);
+  }
+}
+
+/* ---------- Nav arrows ---------- */
+.cf__nav {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  margin-bottom: 1.2rem;
+}
+
+.cf__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  border: 0.1rem solid rgb(var(--color-foreground) / 0.2);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.cf__nav-btn svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.cf__nav-btn:hover {
+  border-color: rgb(var(--color-foreground) / 0.5);
+}
+
+.cf__nav-btn[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ---------- Media column ---------- */
+.cf__media {
+  position: relative;
+}
+
+.cf__media img,
+.cf__media .placeholder-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--cf-media-radius, 0);
+}
+
+.cf__media-placeholder {
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: rgb(var(--color-foreground) / 0.04);
+}
+
+/* ---------- Mobile image order ---------- */
+@media screen and (max-width: 989px) {
+  .cf--m-top .cf__media {
+    order: -1;
+  }
+
+  .cf--m-bottom .cf__media {
+    order: 1;
+  }
+
+  .cf--m-hidden .cf__media {
+    display: none;
+  }
+}
+
+/* ---------- Desktop split ---------- */
+@media screen and (min-width: 990px) {
+  .cf__inner {
+    flex-direction: row;
+    align-items: center;
+    gap: 4.8rem;
+  }
+
+  .cf__content {
+    flex: 1 1 auto;
+    gap: 3rem;
+  }
+
+  .cf__media {
+    flex: 0 0 var(--cf-media-w, 46%);
+  }
+
+  .cf--image-first .cf__media {
+    order: -1;
+  }
+
+  .cf--content-first .cf__media {
+    order: 1;
+  }
+
+  .cf__card-content {
+    padding: 1.2rem;
+  }
+
+  .cf__card-title {
+    font-size: 1.8rem;
+  }
+
+  .cf__card-arrow svg {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .cf__intro {
+    gap: 1rem;
+  }
+}

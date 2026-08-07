@@ -1,0 +1,208 @@
+.ba__head {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 0 2.8rem;
+  max-width: 60rem;
+}
+
+.ba__heading {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.ba__text {
+  margin: 0;
+}
+
+.ba__text > :first-child {
+  margin-top: 0;
+}
+
+.ba__text > :last-child {
+  margin-bottom: 0;
+}
+
+.ba--center .ba__head {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  align-items: center;
+}
+
+/* ---------- Frame ---------- */
+.ba__frame {
+  position: relative;
+  width: 100%;
+  height: var(--ba-h-m, auto);
+  aspect-ratio: var(--ba-ratio, 1.6);
+  overflow: hidden;
+  border-radius: var(--ba-radius, 0);
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.ba__image {
+  position: absolute;
+  inset: 0;
+}
+
+.ba__image img,
+.ba__image .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.ba__image--reveal {
+  clip-path: inset(0 calc(100% - var(--ba-pos, 50%)) 0 0);
+}
+
+/* ---------- Divider + handle ---------- */
+.ba__divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--ba-pos, 50%);
+    width: 4px;
+    background: var(--ba-divider, #fff);
+    transform: translate(-50%);
+    pointer-events: none;
+    z-index: 2;
+    display: block !important;
+}
+
+.ba__handle {
+  position: absolute;
+  top: 50%;
+  left: var(--ba-pos, 50%);
+  transform: translate(-50%, -50%);
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: var(--ba-divider, #fff);
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: ew-resize;
+  touch-action: none;
+  z-index: 2;
+}
+
+.ba__handle:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+}
+
+.ba__handle-arrows {
+  width: 2rem;
+  height: 2rem;
+  color: rgb(var(--color-foreground) / 0.55);
+  pointer-events: none;
+}
+
+/* ---------- Shop look ---------- */
+.ba__look {
+  position: absolute;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  z-index: 2;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Only the dominant side (51%+ of the frame) keeps its button + label */
+.ba__frame.ba--hide-left-btn .ba__look--left,
+.ba__frame.ba--hide-right-btn .ba__look--right {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ba__look--left {
+  left: 2rem;
+}
+
+.ba__look--right {
+  right: 2rem;
+}
+
+.ba__look-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.9rem 1.4rem;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.ba__look-btn:hover {
+  opacity: 0.85;
+}
+
+.ba__look-label {
+  color: rgb(var(--color-foreground));
+  font-weight: 600;
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 990px) {
+  .ba__frame {
+    height: var(--ba-h-d, auto);
+  }
+
+  .ba__handle {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .ba__look {
+    bottom: 2.8rem;
+  }
+
+  .ba__look--left {
+    left: 2.8rem;
+  }
+
+  .ba__look--right {
+    right: 2.8rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .ba__look {
+    bottom: 1.2rem;
+    gap: 0.8rem;
+  }
+
+  .ba__look--left {
+    left: 0;
+    padding: 0 0 0 10px;
+    width: 50%;
+    flex-wrap: wrap-reverse;
+  }
+
+  .ba__look--right {
+    right: 0;
+    padding: 0 10px 0 0px;
+    width: 50%;
+    flex-wrap: wrap-reverse;
+  }
+
+  .ba__look-label {
+    font-size: 1.3rem;
+  }
+}

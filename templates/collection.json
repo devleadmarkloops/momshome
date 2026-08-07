@@ -1,0 +1,427 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "image_banner_kCXWzA": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_jdCnHB": {
+          "type": "heading",
+          "settings": {
+            "heading": "Shop All",
+            "heading_size": "h0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_jdCnHB"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/jason-briscoe-GliaHAJ3_5A-unsplash_1.webp",
+        "image_overlay_opacity": 30,
+        "image_height": "xs",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
+        "show_text_below": false
+      }
+    },
+    "collection_hero_WkMnfm": {
+      "type": "collection-hero",
+      "blocks": {
+        "heading_AMQwwy": {
+          "type": "heading",
+          "settings": {
+            "heading": "The Dress Edit",
+            "heading_size": "h0"
+          }
+        },
+        "text_8hQ7x3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Occasion-ready silhouettes cut for real curves. 48 styles in sizes XS-4X, restocked weekly.</p>"
+          }
+        },
+        "button_tyVm3U": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Best Sellers",
+            "button_link": "shopify://collections/best-seller",
+            "button_style_secondary": true,
+            "checkmark_1_text": "Free shipping $150+",
+            "checkmark_2_text": "XS-4X sizing",
+            "checkmark_3_text": "Free 30-day returns"
+          }
+        }
+      },
+      "block_order": [
+        "heading_AMQwwy",
+        "text_8hQ7x3",
+        "button_tyVm3U"
+      ],
+      "disabled": true,
+      "name": "Collection hero",
+      "settings": {
+        "full_width": true,
+        "image_position": "right",
+        "color_scheme": "scheme-196b37b6-9293-4d69-80c8-18070f863a58",
+        "show_breadcrumbs": true,
+        "image_height": 600,
+        "image_height_mobile": 0,
+        "show_rating_badge": true,
+        "badge_color_scheme": "",
+        "badge_number": "2,400+",
+        "show_stars": false,
+        "badge_label": "5-Star Reviews",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "blocks": {
+        "text_card_VLFahU": {
+          "type": "text_card",
+          "disabled": true,
+          "settings": {
+            "insert_after": 4,
+            "eyebrow": "STYLED BY US",
+            "heading": "Three ways to wear the Nia desk, dinner, dance floor.",
+            "subtext": "<p>One dress. Every occasion. Our stylists show you exactly how to make it work.</p>",
+            "link_label": "Read the edit",
+            "link_url": "shopify://collections/all",
+            "text_alignment": "left",
+            "color_scheme": "scheme-4"
+          }
+        }
+      },
+      "block_order": [
+        "text_card_VLFahU"
+      ],
+      "settings": {
+        "products_per_page": 12,
+        "columns_desktop": 4,
+        "grid_heading": "",
+        "heading_alignment": "center",
+        "heading_size": "h1",
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "enable_load_more": true,
+        "load_more_button_label": "Load more",
+        "enable_filtering": true,
+        "filter_menu": "",
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mob": 28,
+        "padding_bottom_mob": 36
+      }
+    },
+    "before_after_v1_xXWYtY": {
+      "type": "before-after-v1",
+      "disabled": true,
+      "name": "Before after v1",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Same You, Different Fits",
+        "heading_size": "h1",
+        "text": "<p>Your current favorites in the world of Body Politix dresses</p>",
+        "text_size": "typeset0",
+        "alignment": "center",
+        "left_label": "",
+        "left_button_label": "",
+        "left_link": "shopify://collections/all",
+        "right_label": "",
+        "right_button_label": "",
+        "right_link": "shopify://collections/all",
+        "start_position": 50,
+        "divider_color": "#ffffff",
+        "image_height_desktop": "580",
+        "image_height_mobile": "320",
+        "caption_text_left": "Weekend / Chill — styled with Body Politix dresses",
+        "caption_text_right": "Night-Out — styled with Body Politix dresses",
+        "caption_button_label": "SHOP LOOK",
+        "caption_button_link": "shopify://collections/all",
+        "caption_bg_color": "#f7f4f0",
+        "padding_top": 0,
+        "padding_bottom": 40,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 28
+      }
+    },
+    "product_feature_v1_BrGjBN": {
+      "type": "product-feature-v1",
+      "blocks": {
+        "product_TxzCBx": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-dress-red"
+          }
+        },
+        "product_rbXcWD": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-dress-black"
+          }
+        },
+        "product_7g7QAL": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-dress-navy"
+          }
+        }
+      },
+      "block_order": [
+        "product_TxzCBx",
+        "product_rbXcWD",
+        "product_7g7QAL"
+      ],
+      "disabled": true,
+      "name": "Product feature v1",
+      "settings": {
+        "color_scheme": "",
+        "subheading": "Styled by us",
+        "heading": "Complete the Look",
+        "heading_size": "h1",
+        "description": "",
+        "text_size": "typeset",
+        "show_view_all": true,
+        "view_all_label": "View all looks",
+        "view_all_link": "shopify://collections/all",
+        "image_width": 33,
+        "equal_card_size": true,
+        "mobile_image": "top",
+        "badge_text": "Date Night",
+        "look_label": "The Look",
+        "look_heading": "Dinner-to-Dance Floor",
+        "look_button_label": "Shop Look",
+        "look_button_link": "shopify://collections/all",
+        "image_height_desktop": "adapt",
+        "image_height_mobile": "400",
+        "image_ratio": "portrait",
+        "image_fit": "contain",
+        "enable_quick_add": true,
+        "slides_per_view_desktop": "3",
+        "slides_per_view_mobile": "1.5",
+        "show_arrows": false,
+        "padding_top": 48,
+        "padding_bottom": 60,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 44
+      }
+    },
+    "bundle_save_XGRUQ6": {
+      "type": "bundle-save",
+      "blocks": {
+        "eyebrow_Tz4aEc": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Bundle & Save"
+          }
+        },
+        "heading_kbdiyM": {
+          "type": "heading",
+          "settings": {
+            "heading": "Buy any 2 dresses, save 15%.",
+            "heading_size": "h1"
+          }
+        },
+        "text_ai4MHX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Mix and match across the entire collection. Discount applied automatically at checkout — no code needed.</p>"
+          }
+        },
+        "price_TpUW43": {
+          "type": "price",
+          "settings": {
+            "product": "",
+            "manual_price": 200,
+            "manual_compare_price": 236
+          }
+        },
+        "button_R34MPx": {
+          "type": "button",
+          "settings": {
+            "button_label": "Build Your Bundle",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_Tz4aEc",
+        "heading_kbdiyM",
+        "text_ai4MHX",
+        "price_TpUW43",
+        "button_R34MPx"
+      ],
+      "disabled": true,
+      "name": "Bundle & save",
+      "settings": {
+        "full_width": false,
+        "content_position": "left",
+        "color_scheme": "scheme-196b37b6-9293-4d69-80c8-18070f863a58",
+        "product_1": "kiekie-dress-black",
+        "product_2": "kiekie-dress-navy",
+        "show_plus_icon": true,
+        "plus_icon_color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "stats_bar_CBWdEq": {
+      "type": "stats-bar",
+      "blocks": {
+        "stat_FdTxRR": {
+          "type": "stat",
+          "settings": {
+            "heading": "XS-4X",
+            "heading_size": "h2",
+            "text": "All silhouettes, every size"
+          }
+        },
+        "stat_yk8dkq": {
+          "type": "stat",
+          "settings": {
+            "heading": "2,400+",
+            "heading_size": "h2",
+            "text": "Verified 5-star reviews"
+          }
+        },
+        "stat_bWAbrw": {
+          "type": "stat",
+          "settings": {
+            "heading": "Free",
+            "heading_size": "h2",
+            "text": "Returns within 30 days"
+          }
+        }
+      },
+      "block_order": [
+        "stat_FdTxRR",
+        "stat_yk8dkq",
+        "stat_bWAbrw"
+      ],
+      "disabled": true,
+      "name": "Stats bar",
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24
+      }
+    },
+    "community_reviews_7hRk49": {
+      "type": "community-reviews",
+      "blocks": {
+        "review_p9RekM": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "The cut-out dress is EVERYTHING. Felt like a goddess at my sister's birthday. Already ordered 2 more colors. True to size, ships fast.",
+            "name": "Aaliyah M.",
+            "detail": "Wearing size 3X"
+          }
+        },
+        "review_h4Hg9H": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"I love how luxurious everything feels. The fit is comfortable, and their team goes above and beyond to help. My favorite place to shop for events.\"",
+            "name": "Destiny R.",
+            "detail": "Wearing size 2X"
+          }
+        },
+        "review_mkWqfy": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "\"Amazing fabric, generous sizing, and the customer care team is so kind. BP Luxe is my go-to for date nights and special occasions. Obsessed.\"",
+            "name": "Keisha T.",
+            "detail": "Wearing size 4X"
+          }
+        }
+      },
+      "block_order": [
+        "review_p9RekM",
+        "review_h4Hg9H",
+        "review_mkWqfy"
+      ],
+      "disabled": true,
+      "name": "Community reviews",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "subheading": "Real women, real results",
+        "heading": "What the Community Says",
+        "heading_size": "h1",
+        "show_rating_summary": true,
+        "rating_score": "4.9",
+        "review_count_text": "2,847 verified reviews",
+        "slides_per_view_desktop": 3,
+        "slides_per_view_mobile": 1,
+        "enable_navigation_desktop": true,
+        "enable_navigation_mobile": true,
+        "hide_nav_desktop": false,
+        "hide_nav_mobile": true,
+        "enable_pagination_desktop": false,
+        "enable_pagination_mobile": true,
+        "hide_pagination_desktop": true,
+        "hide_pagination_mobile": false,
+        "enable_autoplay": false,
+        "autoplay_speed": 5,
+        "show_button": true,
+        "button_label": "Read all 2,847 reviews",
+        "button_link": "shopify://pages/reviews",
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 44,
+        "padding_bottom_mobile": 44
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "image_banner_kCXWzA",
+    "collection_hero_WkMnfm",
+    "product-grid",
+    "before_after_v1_xXWYtY",
+    "product_feature_v1_BrGjBN",
+    "bundle_save_XGRUQ6",
+    "stats_bar_CBWdEq",
+    "community_reviews_7hRk49"
+  ]
+}

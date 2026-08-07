@@ -1,0 +1,255 @@
+{% comment %}
+  Renders a megamenu for the header.
+
+  Usage:
+  {% render 'header-mega-menu' %}
+
+  Custom: image tiles mode.
+  If a top-level menu item's handle matches the "Image tiles menu item" setting
+  (section.settings.mega_menu_image_item), its mega menu renders collection
+  image tiles instead of text links. Images pull from each linked collection's
+  featured image automatically (no hardcoded images). Links that don't point
+  to a collection fall back to a placeholder tile. All other menu items keep
+  the default Dawn text-link mega menu. Mobile drawer is unaffected (separate
+  snippet). Matching is done via handleize on both sides so "Collections",
+  "collections", "COLLECTIONS" all match.
+
+  Custom: click-to-open parent (desktop inline menu).
+  - Clicking anywhere on the parent (label or caret) opens/closes the mega
+    menu. The parent never navigates, so the panel cannot be skipped past.
+  - The panel renders ONLY the menu items defined in the Shopify menu. Nothing
+    is injected. If a parent's own link needs to be reachable, add it as a
+    child item in Online Store > Navigation rather than adding it here.
+  - Behaviour is click-based, not hover, for touch devices.
+  - Toggling, Enter/Space, Escape, aria-expanded and aria-controls all come
+    from native <details>/<summary> plus Dawn's global.js summary setup
+    (see global.js "[id^='Details-'] summary"). No custom JS is needed here.
+
+  Custom: automatic "Sale" highlight.
+  Any menu item at level 1, 2 or 3 (and image-tile titles) whose title
+  handleizes to exactly "sale" ("Sale", "SALE", "sale!") is colored red
+  automatically. "Wholesale" / "On Sale" will NOT match. Change the color
+  via --menu-sale-color in the style block below.
+{% endcomment %}
+
+{%- liquid
+  assign image_item_handle = section.settings.mega_menu_image_item | handleize
+-%}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      {%- liquid
+        assign is_image_menu = false
+        assign link_handle_check = link.title | handleize
+        if image_item_handle != blank and link_handle_check == image_item_handle and link.links != blank
+          assign is_image_menu = true
+        endif
+
+        assign parent_is_sale = false
+        if link_handle_check == 'sale'
+          assign parent_is_sale = true
+        endif
+      -%}
+      <li>
+        {%- if link.links != blank -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+              <summary
+                id="HeaderMenu-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset header__menu-item--split"
+              >
+                <span class="header__menu-text-link header__menu-text-link--static{% if parent_is_sale %} menu-link--sale{% endif %}">
+                  <span
+                    {%- if link.child_active %}
+                      class="header__active-menu-item"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </span>
+                </span>
+                <span class="header__menu-caret" data-menu-caret aria-hidden="true">
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </span>
+              </summary>
+              <div
+                id="MegaMenu-Content-{{ forloop.index }}"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                tabindex="-1"
+              >
+                {%- if is_image_menu -%}
+                  <ul
+                    class="mega-menu__list mega-menu__list--images page-width"
+                    role="list"
+                    style="--mega-image-columns: {{ section.settings.mega_menu_image_columns }}; --mega-image-radius: {{ section.settings.mega_menu_image_radius }}px;"
+                  >
+                    {%- for childlink in link.links -%}
+                      {%- liquid
+                        assign child_is_sale = false
+                        assign child_handle_check = childlink.title | handleize
+                        if child_handle_check == 'sale'
+                          assign child_is_sale = true
+                        endif
+                      -%}
+                      <li class="mega-menu__image-item">
+                        <a
+                          id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                          href="{{ childlink.url }}"
+                          class="mega-menu__image-link link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                          {% if childlink.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          <div class="mega-menu__image-wrapper">
+                            {%- if childlink.type == 'collection_link' and childlink.object.featured_image != blank -%}
+                              {{
+                                childlink.object.featured_image
+                                | image_url: width: 600
+                                | image_tag:
+                                  loading: 'lazy',
+                                  widths: '300, 450, 600',
+                                  sizes: '(min-width: 990px) 220px, 40vw',
+                                  class: 'mega-menu__image',
+                                  alt: childlink.title
+                              }}
+                            {%- else -%}
+                              <div class="mega-menu__image mega-menu__image--placeholder">
+                                {{ 'collection-1' | placeholder_svg_tag: 'mega-menu__placeholder-svg' }}
+                              </div>
+                            {%- endif -%}
+                          </div>
+                          <span class="mega-menu__image-title{% if child_is_sale %} menu-link--sale{% endif %}">{{ childlink.title | escape }}</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <ul
+                    class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                    role="list"
+                  >
+                    {%- for childlink in link.links -%}
+                      {%- liquid
+                        assign child_is_sale = false
+                        assign child_handle_check = childlink.title | handleize
+                        if child_handle_check == 'sale'
+                          assign child_is_sale = true
+                        endif
+                      -%}
+                      <li>
+                        <a
+                          id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                          href="{{ childlink.url }}"
+                          class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}{% if child_is_sale %} menu-link--sale{% endif %}"
+                          {% if childlink.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {{ childlink.title | escape }}
+                        </a>
+                        {%- if childlink.links != blank -%}
+                          <ul class="list-unstyled" role="list">
+                            {%- for grandchildlink in childlink.links -%}
+                              {%- liquid
+                                assign grandchild_is_sale = false
+                                assign grandchild_handle_check = grandchildlink.title | handleize
+                                if grandchild_handle_check == 'sale'
+                                  assign grandchild_is_sale = true
+                                endif
+                              -%}
+                              <li>
+                                <a
+                                  id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                  href="{{ grandchildlink.url }}"
+                                  class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}{% if grandchild_is_sale %} menu-link--sale{% endif %}"
+                                  {% if grandchildlink.current %}
+                                    aria-current="page"
+                                  {% endif %}
+                                >
+                                  {{ grandchildlink.title | escape }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </details>
+          </header-menu>
+        {%- else -%}
+          <a
+            id="HeaderMenu-{{ link.handle }}"
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset{% if parent_is_sale %} menu-link--sale{% endif %}"
+            {% if link.current %}
+              aria-current="page"
+            {% endif %}
+          >
+            <span
+              {%- if link.current %}
+                class="header__active-menu-item"
+              {% endif %}
+            >
+              {{- link.title | escape -}}
+            </span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+{% style %}
+  .header__inline-menu {
+    --menu-sale-color: #e02b27;
+  }
+
+  /* Whole summary is the toggle: label + caret, no dead zones, nothing navigates */
+  .header__inline-menu summary.header__menu-item--split {
+    position: relative;
+    display: inline-flex;
+    align-items: stretch;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .header__inline-menu .header__menu-text-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 1.2rem 0.2rem 1.2rem 1.2rem;
+    color: rgba(var(--color-foreground), 0.75);
+    text-decoration: none;
+  }
+
+  .header__inline-menu .header__menu-item--split:hover .header__menu-text-link {
+    color: rgb(var(--color-foreground));
+  }
+
+  .header__inline-menu .header__menu-caret {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.2rem 0 0.6rem;
+  }
+
+  /* Dawn positions summary carets absolutely by default; keep ours in flow */
+  .header__inline-menu .header__menu-caret .icon-caret {
+    position: static;
+    height: 0.6rem;
+  }
+
+  details[open] > .header__menu-item--split .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  /* Auto red for "Sale" at any level (top level, level 2, level 3, image tiles) */
+  .header__inline-menu .menu-link--sale,
+  .header__inline-menu .menu-link--sale span,
+  .header__inline-menu .menu-link--sale:hover,
+  .header__inline-menu .menu-link--sale:hover span {
+    color: var(--menu-sale-color) !important;
+  }
+{% endstyle %}

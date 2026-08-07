@@ -1,0 +1,250 @@
+.rev__head {
+  margin: 0 0 3.2rem;
+  max-width: 60rem;
+}
+
+.rev__heading {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.rev--center .rev__head {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* ---------- Card ---------- */
+.rev__card {
+  position: relative;
+}
+
+.rev__viewport.swiper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.rev__viewport .swiper-wrapper {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.rev__viewport .swiper-slide {
+  flex-shrink: 0;
+  height: auto;
+}
+
+/* Fallback if Swiper fails to load: show first review only */
+.rev__viewport--fallback .swiper-slide + .swiper-slide {
+  display: none;
+}
+
+.rev__inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rev__media {
+  position: relative;
+  height: var(--rev-h-m, 300px);
+  flex: 0 0 auto;
+}
+
+.rev__media img,
+.rev__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.rev__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.4rem;
+  padding: 2.4rem;
+  flex: 1 1 auto;
+}
+
+/* ---------- Stars ---------- */
+.rev__stars {
+  display: flex;
+  gap: 0.1rem;
+  color: var(--rev-star, #e8623a);
+}
+
+.rev__star {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.rev__star--empty {
+  opacity: 0.22;
+}
+
+/* ---------- Text ---------- */
+.rev__quote {
+  margin: 0;
+}
+
+.rev__text {
+  margin: 0;
+}
+
+.rev__text > :first-child {
+  margin-top: 0;
+}
+
+.rev__text > :last-child {
+  margin-bottom: 0;
+}
+
+.rev__author {
+  margin: 0;
+  font-weight: 500;
+}
+
+.rev__link {
+  width: fit-content;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  color: rgb(var(--color-foreground));
+}
+
+.rev__link:hover {
+  opacity: 0.8;
+}
+
+.rev__line {
+  display: block !important;
+  flex: 0 0 auto;
+  position: relative;
+}
+
+/* .rev__line::after {
+  content: '';
+  width: 8rem;
+  height: 0.2rem;
+  background: rgb(var(--color-foreground));
+  position: absolute;
+  bottom: -3rem;
+  left: 0;
+} */
+
+/* ---------- Arrows ---------- */
+.rev__nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  border: 0.1rem solid rgb(var(--color-foreground) / 0.12);
+  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  z-index: 2;
+  transition: opacity 0.15s ease;
+}
+
+.rev__nav-btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.rev__nav-btn:hover {
+  opacity: 0.85;
+}
+
+.rev__nav--prev {
+  left: 0.8rem;
+}
+
+.rev__nav--next {
+  right: 0.8rem;
+}
+
+/* ---------- Hide image on mobile ---------- */
+@media screen and (max-width: 989px) {
+  .rev--m-hide-image .rev__media {
+    display: none;
+  }
+}
+
+/* ---------- Desktop ---------- */
+@media screen and (min-width: 990px) {
+  .rev__inner {
+    flex-direction: row;
+    height: var(--rev-h-d, 380px);
+  }
+
+  .rev--img-right .rev__media {
+    order: 2;
+  }
+
+  .rev__media {
+    flex: 0 0 var(--rev-img-w, 50%);
+    height: auto;
+  }
+
+  .rev__body {
+    flex: 1 1 auto;
+    gap: 1.8rem;
+    padding: 4rem 5rem;
+  }
+
+  .rev__star {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  /* arrows hang slightly outside the card edges */
+  .rev__nav-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .rev__nav--prev {
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .rev__nav--next {
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .rev__head {
+    margin-bottom: 2.4rem;
+  }
+  .rev__body {
+    padding: 2rem;
+    gap: 1.2rem;
+  }
+  .rev__quote {
+    font-size: 1.8rem;
+  }
+  .rev__star {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .rev__nav-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+  .rev__nav--prev {
+    left: -1.2rem;
+  }
+  .rev__nav--next {
+    right: -1.2rem;
+  }
+}

@@ -1,0 +1,372 @@
+{{ 'section-video-tabs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign heading_size = section.settings.heading_size
+  assign text_size = section.settings.text_size
+  assign tab_size = section.settings.tab_heading_size
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #vt-{{ section.id }} {
+    --vt-stage-w: {{ section.settings.stage_width }}%;
+    --vt-stage-h: {{ section.settings.stage_height }}px;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div id="vt-{{ section.id }}" class="vt section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div class="vt__inner">
+        <div class="vt__main">
+          {%- if section.settings.heading != blank or section.settings.description != blank -%}
+            <div class="vt__head-area">
+              {%- if section.settings.heading != blank -%}
+                <h2 class="vt__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+              {%- endif -%}
+              {%- if section.settings.description != blank -%}
+                <div class="vt__desc rte {{ text_size }}">{{ section.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.blocks.size > 0 -%}
+            <div class="vt__list">
+              {%- for block in section.blocks -%}
+                <div class="vt__item" {{ block.shopify_attributes }}>
+                  <button
+                    type="button"
+                    class="vt__item-head"
+                    id="vt-{{ section.id }}-h{{ forloop.index }}"
+                    aria-expanded="false"
+                    aria-controls="vt-{{ section.id }}-p{{ forloop.index }}"
+                  >
+                    <span class="vt__item-title {{ tab_size }}">{{ block.settings.heading | default: 'Tab heading' }}</span>
+                    <svg class="vt__item-caret" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+
+                  <div class="vt__item-panel" id="vt-{{ section.id }}-p{{ forloop.index }}" role="region" aria-labelledby="vt-{{ section.id }}-h{{ forloop.index }}">
+                    <div class="vt__item-panel-inner">
+                      {%- if block.settings.text != blank -%}
+                        <div class="vt__item-text rte {{ text_size }}">{{ block.settings.text }}</div>
+                      {%- endif -%}
+
+                      <div class="vt__videos">
+                        {%- for n in (1..2) -%}
+                          {%- liquid
+                            if n == 1
+                              assign vid = block.settings.video_1
+                              assign autoplay = block.settings.video_1_autoplay
+                              assign shop_label = block.settings.video_1_shop_label
+                              assign shop_link = block.settings.video_1_shop_link
+                            else
+                              assign vid = block.settings.video_2
+                              assign autoplay = block.settings.video_2_autoplay
+                              assign shop_label = block.settings.video_2_shop_label
+                              assign shop_link = block.settings.video_2_shop_link
+                            endif
+                          -%}
+                          <div class="vt__video is-muted" data-autoplay="{% if autoplay %}true{% else %}false{% endif %}">
+                            {%- if vid != blank -%}
+                              <video
+                                class="vt__v"
+                                muted
+                                loop
+                                playsinline
+                                preload="none"
+                                {% if vid.preview_image %}poster="{{ vid.preview_image | image_url: width: 800 }}"{% endif %}
+                              >
+                                {%- for source in vid.sources -%}
+                                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                                {%- endfor -%}
+                              </video>
+                            {%- else -%}
+                              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg vt__v-ph' }}
+                            {%- endif -%}
+
+                            <button type="button" class="vt__vplay" data-play aria-label="Play video">
+                              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+
+                            <div class="vt__vctrl">
+                              <button type="button" class="vt__vbtn" data-mute aria-label="Toggle sound">
+                                <svg class="vt__ic vt__ic--sound" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9a3 3 0 010 6M18.5 7a6 6 0 010 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                                <svg class="vt__ic vt__ic--muted" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                              </button>
+                              <button type="button" class="vt__vbtn" data-playpause aria-label="Play or pause">
+                                <svg class="vt__ic vt__ic--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                <svg class="vt__ic vt__ic--pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                              </button>
+                            </div>
+
+                            {%- if shop_label != blank -%}
+                              <a class="vt__shop button" href="{{ shop_link | default: '#' }}">
+                                <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3.7993 3.35549H2.91288C1.97066 3.35549 1.49994 3.35549 1.16482 3.54758C0.870734 3.71614 0.644675 3.98242 0.52663 4.30002C0.392198 4.6617 0.469579 5.12566 0.624285 6.05325L0.624608 6.055L1.30127 10.1121C1.41606 10.8004 1.47383 11.1447 1.64568 11.4029C1.79716 11.6306 2.0098 11.8105 2.25939 11.9224C2.54254 12.0493 2.89151 12.0494 3.58973 12.0494H9.80904C10.5072 12.0494 10.856 12.0493 11.1392 11.9224C11.3887 11.8105 11.6015 11.6306 11.753 11.4029C11.9248 11.1447 11.9823 10.8004 12.0971 10.1121L12.7738 6.055L12.7744 6.05216C12.929 5.1253 13.0063 4.66156 12.872 4.30002C12.7539 3.98242 12.5284 3.71614 12.2343 3.54758C11.8992 3.35549 11.4277 3.35549 10.4855 3.35549H9.59931M3.7993 3.35549H9.59931M3.7993 3.35549C3.7993 1.75498 5.09766 0.45752 6.69929 0.45752C8.3009 0.45752 9.59931 1.75498 9.59931 3.35549" stroke="inherit" stroke-width="0.914557" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>{{ shop_label | escape }}</span>
+                              </a>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.blocks.size > 1 -%}
+          <button type="button" class="vt__nav vt__nav--prev" aria-label="{{ 'general.slider.previous_slide' | t | default: 'Previous' }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="21" viewBox="0 0 12 21" fill="none">
+            <path d="M10.3124 20.625C10.5522 20.625 10.7922 20.5333 10.9753 20.3503C11.3416 19.984 11.3416 19.3908 10.9753 19.0247L2.26307 10.3125L10.9753 1.60028C11.3416 1.23395 11.3416 0.640752 10.9753 0.274658C10.6089 -0.0914356 10.0157 -0.0916699 9.64963 0.274658L0.274629 9.64966C-0.0916996 10.016 -0.0916996 10.6092 0.274629 10.9753L9.64963 20.3503C9.83268 20.5333 10.0727 20.625 10.3124 20.625Z" fill="black"/>
+            </svg>        
+          </button>
+          <button type="button" class="vt__nav vt__nav--next" aria-label="{{ 'general.slider.next_slide' | t | default: 'Next' }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="21" viewBox="0 0 12 21" fill="none">
+            <path d="M0.937558 20.625C0.697793 20.625 0.457793 20.5333 0.274746 20.3503C-0.091582 19.984 -0.091582 19.3908 0.274746 19.0247L8.98693 10.3125L0.274746 1.60028C-0.091582 1.23395 -0.091582 0.640752 0.274746 0.274658C0.641074 -0.0914356 1.23428 -0.0916699 1.60037 0.274658L10.9754 9.64966C11.3417 10.016 11.3417 10.6092 10.9754 10.9753L1.60037 20.3503C1.41732 20.5333 1.17732 20.625 0.937558 20.625Z" fill="black"/>
+            </svg>         
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-video-tabs.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Video tabs",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Women Choose Body Politix"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Body text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset0"
+    },
+    {
+      "type": "select",
+      "id": "tab_heading_size",
+      "label": "Tab heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Video stage (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "stage_width",
+      "label": "Stage width",
+      "min": 40,
+      "max": 60,
+      "step": 1,
+      "unit": "%",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "stage_height",
+      "label": "Stage height",
+      "min": 360,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab heading",
+          "default": "The Fit Is Everything."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Tab text",
+          "default": "<p>Designed to flatter your shape without sacrificing comfort.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Video 1"
+        },
+        {
+          "type": "video",
+          "id": "video_1",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "video_1_autoplay",
+          "label": "Autoplay (muted)",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "video_1_shop_label",
+          "label": "Shop button label",
+          "default": "SHOP THE LOOK"
+        },
+        {
+          "type": "url",
+          "id": "video_1_shop_link",
+          "label": "Shop button link"
+        },
+        {
+          "type": "header",
+          "content": "Video 2"
+        },
+        {
+          "type": "video",
+          "id": "video_2",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "video_2_autoplay",
+          "label": "Autoplay (muted)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "video_2_shop_label",
+          "label": "Shop button label",
+          "default": "SHOP THE LOOK"
+        },
+        {
+          "type": "url",
+          "id": "video_2_shop_link",
+          "label": "Shop button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "heading": "The Fit Is Everything." } },
+        { "type": "tab", "settings": { "heading": "Confidence Comes First." } },
+        { "type": "tab", "settings": { "heading": "Made For Real Moments." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

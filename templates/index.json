@@ -1,0 +1,741 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_Hn4tKm": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_kR8vQd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Everything In Its Place",
+            "heading_size": "h0"
+          }
+        },
+        "text_mB3wLp": {
+          "type": "text",
+          "settings": {
+            "text": "Drawer dividers and turntables that make a small kitchen work harder.",
+            "text_style": "body"
+          }
+        },
+        "buttons_tY6nJc": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop Organisers",
+            "button_link_1": "shopify://collections/kitchen",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_kR8vQd",
+        "text_mB3wLp",
+        "buttons_tY6nJc"
+      ],
+      "name": "t:sections.image-banner.name",
+      "settings": {
+        "image": "shopify://shop_images/a-wide-shot-of-an-organised-kitchen-counter-or-a-dish-rack-over-a-sink-in-a-bright-real-looking-pakistani-kitchen-nano-banana-or-seedance-same-anchor-plus-scene-approach-you-use-for-c.png",
+        "image_overlay_opacity": 40,
+        "image_height": "medium",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-left",
+        "desktop_content_alignment": "left",
+        "show_text_box": false,
+        "color_scheme": "scheme-3",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "left",
+        "show_text_below": false
+      }
+    },
+    "featured_collection_v2_QJWifR": {
+      "type": "featured-collection-v2",
+      "blocks": {
+        "tab_e9KRCG": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen",
+            "tab_label": "Best Sellers"
+          }
+        },
+        "tab_8Q4Pai": {
+          "type": "tab",
+          "settings": {
+            "collection": "kitchen",
+            "tab_label": "New In"
+          }
+        }
+      },
+      "block_order": [
+        "tab_e9KRCG",
+        "tab_8Q4Pai"
+      ],
+      "name": "Featured collection v2",
+      "settings": {
+        "color_scheme": "",
+        "title": "Shop best sellers",
+        "heading_size": "h1",
+        "description": "<p>The pieces our customers reorder most.</p>",
+        "text_size": "typeset",
+        "header_alignment": "left",
+        "enable_tabs": true,
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "image_ratio": "square",
+        "image_fit": "cover",
+        "enable_quick_add": true,
+        "show_view_all": false,
+        "view_all_style": "outline",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "collection_feature_pnLPr9": {
+      "type": "collection-feature",
+      "blocks": {
+        "card_QDVihc": {
+          "type": "card",
+          "settings": {
+            "collection": "kitchen",
+            "eyebrow": "Shop",
+            "heading": "",
+            "link": ""
+          }
+        },
+        "card_M9JxRm": {
+          "type": "card",
+          "settings": {
+            "collection": "kitchen",
+            "eyebrow": "Shop",
+            "heading": "",
+            "link": ""
+          }
+        },
+        "card_W3Lm8e": {
+          "type": "card",
+          "settings": {
+            "collection": "kitchen",
+            "eyebrow": "Shop",
+            "heading": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_QDVihc",
+        "card_M9JxRm",
+        "card_W3Lm8e"
+      ],
+      "disabled": true,
+      "name": "Collection feature",
+      "settings": {
+        "color_scheme": "scheme-196b37b6-9293-4d69-80c8-18070f863a58",
+        "heading": "Organised living, made simple.",
+        "heading_size": "h1",
+        "description": "<p>From counter to cabinet — storage that earns its space.</p>",
+        "text_size": "typeset",
+        "desktop_layout": "content-first",
+        "image_width": 46,
+        "mobile_image": "hidden",
+        "card_ratio": "portrait",
+        "card_gradient_opacity": 75,
+        "slides_per_view_desktop": "3",
+        "slides_per_view_mobile": "1.5",
+        "show_arrows": false,
+        "padding_top": 40,
+        "padding_bottom": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "icon_row_WikQej": {
+      "type": "icon-row",
+      "blocks": {
+        "icon_amKFy8": {
+          "type": "icon",
+          "settings": {
+            "icon_svg": "",
+            "image": "shopify://shop_images/banknote.svg",
+            "label": "Cash on Delivery",
+            "link": ""
+          }
+        },
+        "icon_nkfKzW": {
+          "type": "icon",
+          "settings": {
+            "icon_svg": "",
+            "image": "shopify://shop_images/truck.svg",
+            "label": "Delivery Across Pakistan",
+            "link": ""
+          }
+        },
+        "icon_BDCBqT": {
+          "type": "icon",
+          "settings": {
+            "icon_svg": "",
+            "image": "shopify://shop_images/rotate-ccw.svg",
+            "label": "7-Day Easy Returns",
+            "link": ""
+          }
+        },
+        "icon_E8Ljen": {
+          "type": "icon",
+          "settings": {
+            "icon_svg": "",
+            "image": "shopify://shop_images/shield-check.svg",
+            "label": "Rust-Free Materials",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "icon_amKFy8",
+        "icon_nkfKzW",
+        "icon_BDCBqT",
+        "icon_E8Ljen"
+      ],
+      "name": "Icon row",
+      "settings": {
+        "color_scheme": "",
+        "alignment": "center",
+        "heading": "",
+        "heading_size": "h2",
+        "text": "",
+        "text_size": "typeset",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "icon_size_desktop": 50,
+        "icon_size_mobile": 44,
+        "label_size": "typeset",
+        "icon_text_gap": 14,
+        "column_gap_desktop": 40,
+        "column_gap_mobile": 16,
+        "row_gap_desktop": 32,
+        "row_gap_mobile": 28,
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 20
+      }
+    },
+    "product_feature_PTrCAt": {
+      "type": "product-feature",
+      "blocks": {
+        "product_FRjTVc": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-pleated-wide-leg-trousers"
+          }
+        },
+        "product_pPcf3R": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-wide-leg-jeans"
+          }
+        },
+        "product_KXPk7B": {
+          "type": "product",
+          "settings": {
+            "product": "kiekie-wide-leg-trousers"
+          }
+        }
+      },
+      "block_order": [
+        "product_FRjTVc",
+        "product_pPcf3R",
+        "product_KXPk7B"
+      ],
+      "disabled": true,
+      "name": "Product feature",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "heading": "Kitchen essentials people keep reordering",
+        "heading_size": "h1",
+        "description": "<p>Three pieces that do the most work in a Pakistani kitchen.</p>",
+        "text_size": "typeset",
+        "image_width": 35,
+        "mobile_image": "hidden",
+        "image": "shopify://shop_images/naomi-hebert-MP0bgaS_d1c-unsplash_1.webp",
+        "image_height_desktop": "adapt",
+        "image_height_mobile": "350",
+        "image_ratio": "square",
+        "image_fit": "cover",
+        "enable_quick_add": true,
+        "slides_per_view_desktop": "3",
+        "slides_per_view_mobile": "1.5",
+        "show_arrows": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "before_after_jjQ9Hz": {
+      "type": "before-after",
+      "disabled": true,
+      "name": "Before after",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Same You, Different Fits",
+        "heading_size": "h1",
+        "text": "<p>Your current favorites in the world of Body Politix dresses</p>",
+        "text_size": "typeset0",
+        "alignment": "center",
+        "left_label": "Athletic",
+        "left_button_label": "SHOP LOOK",
+        "left_link": "shopify://collections/all",
+        "right_label": "Night-Out",
+        "right_button_label": "SHOP LOOK",
+        "right_link": "shopify://collections/all",
+        "start_position": 50,
+        "divider_color": "#ffffff",
+        "image_height_desktop": "580",
+        "image_height_mobile": "320",
+        "padding_top": 60,
+        "padding_bottom": 32,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 24
+      }
+    },
+    "featured_collection_v2_4mD36x": {
+      "type": "featured-collection-v2",
+      "blocks": {
+        "tab_UG8QEQ": {
+          "type": "tab",
+          "settings": {
+            "collection": "wardrobe-organization",
+            "tab_label": "Shop All"
+          }
+        }
+      },
+      "block_order": [
+        "tab_UG8QEQ"
+      ],
+      "name": "Featured collection v2",
+      "settings": {
+        "color_scheme": "",
+        "title": "Wardrobe Organization",
+        "heading_size": "h1",
+        "description": "",
+        "text_size": "typeset",
+        "header_alignment": "center",
+        "enable_tabs": true,
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "image_ratio": "square",
+        "image_fit": "contain",
+        "enable_quick_add": true,
+        "show_view_all": false,
+        "view_all_style": "outline",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 60,
+        "padding_bottom": 40,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 24
+      }
+    },
+    "video_tabs_UPB4ND": {
+      "type": "video-tabs",
+      "blocks": {
+        "tab_bYEHJ9": {
+          "type": "tab",
+          "settings": {
+            "heading": "Built To Last.",
+            "text": "<p>Stainless steel and rust-resistant coatings, chosen for humid kitchens.</p>",
+            "video_1_autoplay": false,
+            "video_1_shop_label": "SHOP NOW",
+            "video_1_shop_link": "shopify://collections/kitchen",
+            "video_2_autoplay": false,
+            "video_2_shop_label": "SHOP NOW",
+            "video_2_shop_link": "shopify://collections/kitchen"
+          }
+        },
+        "tab_4pRnRd": {
+          "type": "tab",
+          "settings": {
+            "heading": "Made For Small Kitchens.",
+            "text": "<p>Every piece adds storage without adding footprint.</p>",
+            "video_1_autoplay": true,
+            "video_1_shop_label": "SHOP NOW",
+            "video_1_shop_link": "shopify://collections/kitchen",
+            "video_2_autoplay": false,
+            "video_2_shop_label": "SHOP NOW",
+            "video_2_shop_link": "shopify://collections/kitchen"
+          }
+        },
+        "tab_bHQrmF": {
+          "type": "tab",
+          "settings": {
+            "heading": "Easy To Clean.",
+            "text": "<p>Removable trays and wipe-clean surfaces. No scrubbing, no rust rings.</p>",
+            "video_1_autoplay": true,
+            "video_1_shop_label": "SHOP NOW",
+            "video_1_shop_link": "shopify://collections/kitchen",
+            "video_2_autoplay": false,
+            "video_2_shop_label": "SHOP NOW",
+            "video_2_shop_link": "shopify://collections/kitchen"
+          }
+        }
+      },
+      "block_order": [
+        "tab_bYEHJ9",
+        "tab_4pRnRd",
+        "tab_bHQrmF"
+      ],
+      "disabled": true,
+      "name": "Video tabs",
+      "settings": {
+        "color_scheme": "",
+        "heading": "Why Customers Choose Simply Living",
+        "heading_size": "h1",
+        "description": "",
+        "text_size": "typeset",
+        "tab_heading_size": "h2",
+        "stage_width": 55,
+        "stage_height": 500,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "shop_banner_ECA3Cm": {
+      "type": "shop-banner",
+      "blocks": {
+        "slide_WjzygN": {
+          "type": "slide",
+          "settings": {
+            "dot1_product": "kairo-set-top",
+            "dot1_x": 30,
+            "dot1_y": 60,
+            "dot1_x_mobile": 36,
+            "dot1_y_mobile": 78,
+            "dot2_product": "kiekie-dress-burnt-orange",
+            "dot2_x": 54,
+            "dot2_y": 40,
+            "dot2_x_mobile": 54,
+            "dot2_y_mobile": 40,
+            "dot3_product": "kiekie-dress-navy",
+            "dot3_x": 70,
+            "dot3_y": 60,
+            "dot3_x_mobile": 70,
+            "dot3_y_mobile": 60
+          }
+        },
+        "slide_LcQC9b": {
+          "type": "slide",
+          "settings": {
+            "dot1_product": "baggy-blazer-cream",
+            "dot1_x": 43,
+            "dot1_y": 62,
+            "dot1_x_mobile": 30,
+            "dot1_y_mobile": 72,
+            "dot2_product": "kiekie-dress-burnt-orange",
+            "dot2_x": 54,
+            "dot2_y": 40,
+            "dot2_x_mobile": 54,
+            "dot2_y_mobile": 40,
+            "dot3_product": "kiekie-dress-navy",
+            "dot3_x": 70,
+            "dot3_y": 60,
+            "dot3_x_mobile": 70,
+            "dot3_y_mobile": 60
+          }
+        },
+        "slide_mpEK3F": {
+          "type": "slide",
+          "settings": {
+            "dot1_product": "bp-basic-button-mesh-top-black",
+            "dot1_x": 41,
+            "dot1_y": 49,
+            "dot1_x_mobile": 30,
+            "dot1_y_mobile": 72,
+            "dot2_product": "kiekie-dress-burnt-orange",
+            "dot2_x": 54,
+            "dot2_y": 40,
+            "dot2_x_mobile": 54,
+            "dot2_y_mobile": 40,
+            "dot3_product": "kiekie-dress-navy",
+            "dot3_x": 70,
+            "dot3_y": 60,
+            "dot3_x_mobile": 70,
+            "dot3_y_mobile": 60
+          }
+        }
+      },
+      "block_order": [
+        "slide_WjzygN",
+        "slide_LcQC9b",
+        "slide_mpEK3F"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "name": "Shop banner",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "height_desktop": 560,
+        "height_mobile": 400,
+        "corner_radius": 0,
+        "dot_size": 16,
+        "loop": true,
+        "shop_now_label": "Shop Now",
+        "prev_label": "PREV",
+        "next_label": "NEXT",
+        "show_scroll": false,
+        "scroll_text": "DISCOVER MORE",
+        "scroll_label": "SCROLL",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0
+      }
+    },
+    "image_with_text_apkTL3": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_TzB8rM": {
+          "type": "heading",
+          "settings": {
+            "heading": "The Story Behind Simply Living",
+            "heading_size": "h1"
+          }
+        },
+        "text_m8tPrg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Simply Living began with a simple idea: a home works better when everything has its place. We source kitchen and storage pieces built to last in real Pakistani homes — humid kitchens, busy counters, small drawers.<br/><br/>Every product is checked for material and finish before it reaches you, and delivered to your door with cash on delivery across Pakistan.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_j8WB8a": {
+          "type": "button",
+          "settings": {
+            "button_label": "Our Story",
+            "button_link": "shopify://pages/about-us",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_TzB8rM",
+        "text_m8tPrg",
+        "button_j8WB8a"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/warmer-and-closer-in-hands-putting-things-away-in-a-drawer-organiser-or-a-tidy-spice-cabinet-squarer-crop-roughly-1200-1200-this-one-carries-the-brand-feeling-so-keep-the-lighting-and.png",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 40,
+        "padding_top_mob": 32,
+        "padding_bottom_mob": 24
+      }
+    },
+    "faq_hbtif7": {
+      "type": "faq",
+      "blocks": {
+        "question_J7mNKq": {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does Delivery Take?",
+            "answer": "<p>Orders are dispatched within 24 hours. Delivery takes 2-3 working days in Karachi, Lahore and Islamabad, and 3-5 working days elsewhere in Pakistan.</p>",
+            "open": false
+          }
+        },
+        "question_4BJaMP": {
+          "type": "question",
+          "settings": {
+            "question": "Do You Deliver To My City?",
+            "answer": "<p>Yes. We deliver to all major cities and towns across Pakistan through our courier partners. If your area is remote, our team will confirm delivery timing with you before dispatch.</p>",
+            "open": false
+          }
+        },
+        "question_kTaeNq": {
+          "type": "question",
+          "settings": {
+            "question": "Do You Offer Cash On Delivery?",
+            "answer": "<p>Yes. Cash on delivery is available across Pakistan. Pay the courier in cash when your parcel reaches your door, with no advance payment required.</p>",
+            "open": false
+          }
+        },
+        "question_eQKBre": {
+          "type": "question",
+          "settings": {
+            "question": "Do You Accept Returns?",
+            "answer": "<p>Yes. Items can be returned within XX days of delivery if they are unused and in their original packaging. Contact us to start a return.</p>",
+            "open": false
+          }
+        },
+        "question_m6ktih": {
+          "type": "question",
+          "settings": {
+            "question": "What If My Item Arrives Damaged?",
+            "answer": "<p>Send us a photo within 48 hours of delivery and we will arrange a free replacement. You do not pay return shipping on damaged items.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "question_J7mNKq",
+        "question_4BJaMP",
+        "question_kTaeNq",
+        "question_eQKBre",
+        "question_m6ktih"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "color_scheme": "",
+        "card_color_scheme": "",
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h1",
+        "alignment": "center",
+        "category_size": "h3",
+        "group_gap": 28,
+        "question_size": "s",
+        "answer_size": "typeset0",
+        "single_open": true,
+        "max_width": 780,
+        "card_gap": 10,
+        "card_radius": 4,
+        "padding_top": 32,
+        "padding_bottom": 60,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 32
+      }
+    },
+    "bp_instagram_feed_WBRMPX": {
+      "type": "bp-instagram-feed",
+      "blocks": {
+        "image_LdMikQ": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_WTjF9p": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_3ANWiB": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_Kaq9M4": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_dxpEz7": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_KgPrT7": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        },
+        "image_FccrJn": {
+          "type": "image",
+          "settings": {
+            "link": "",
+            "always_show_icon": false
+          }
+        }
+      },
+      "block_order": [
+        "image_LdMikQ",
+        "image_WTjF9p",
+        "image_3ANWiB",
+        "image_Kaq9M4",
+        "image_dxpEz7",
+        "image_KgPrT7",
+        "image_FccrJn"
+      ],
+      "disabled": true,
+      "name": "Instagram Feed",
+      "settings": {
+        "heading": "Follow Us On Instagram",
+        "heading_size": "h1",
+        "subheading": "#SimplyLiving",
+        "instagram_url": "",
+        "full_width": true,
+        "image_ratio": "1 / 1",
+        "show_icon": true,
+        "slides_desktop": 6,
+        "slides_tablet": 3,
+        "slides_mobile": 1.5,
+        "spacing_desktop": 16,
+        "spacing_mobile": 10,
+        "enable_loop": true,
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "show_arrows": true,
+        "show_dots": false,
+        "color_scheme": "scheme-2",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    },
+    "17846065967c5ef115": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_Hn4tKm",
+    "featured_collection_v2_QJWifR",
+    "collection_feature_pnLPr9",
+    "icon_row_WikQej",
+    "product_feature_PTrCAt",
+    "before_after_jjQ9Hz",
+    "featured_collection_v2_4mD36x",
+    "video_tabs_UPB4ND",
+    "shop_banner_ECA3Cm",
+    "image_with_text_apkTL3",
+    "faq_hbtif7",
+    "bp_instagram_feed_WBRMPX",
+    "17846065967c5ef115"
+  ]
+}

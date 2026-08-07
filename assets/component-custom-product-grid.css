@@ -1,0 +1,142 @@
+.custom-grid-section {
+  padding-top: var(--pt, 36px);
+  padding-bottom: var(--pb, 36px);
+}
+
+.custom-grid-header {
+  margin-bottom: 3rem;
+}
+
+.custom-grid-header--left {
+  text-align: left;
+}
+
+.custom-grid-header--center {
+  text-align: center;
+}
+
+.custom-grid-header--right {
+  text-align: right;
+}
+
+.custom-grid-heading {
+  margin: 0 0 0.75rem;
+}
+
+.custom-grid-subheading {
+  margin: 0;
+  max-width: 55rem;
+  opacity: 0.75;
+}
+
+.custom-grid-header--center .custom-grid-subheading {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols-mobile, 2), 1fr);
+  gap: 1.2rem 1rem;
+}
+
+@media screen and (min-width: 750px) {
+  .custom-grid {
+    grid-template-columns: repeat(var(--grid-cols-desktop, 4), 1fr);
+    gap: 2.4rem 1.6rem;
+  }
+}
+
+.custom-grid__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-grid__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 0;
+}
+
+/* Text card */
+.text-card {
+  height: 100%;
+  min-height: 32rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 2.4rem;
+  border-radius: var(--card-corner-radius, 0);
+}
+
+.text-card--center {
+  text-align: center;
+  align-items: center;
+}
+
+.text-card__eyebrow {
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.text-card__heading {
+  margin: 0;
+  font-size: 2.4rem;
+  line-height: 1.2;
+}
+
+.text-card__subtext {
+  opacity: 0.85;
+}
+
+.text-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.text-card__link:hover {
+  text-decoration: underline;
+}
+
+/* Load more */
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.load-more-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-width: 22rem;
+}
+
+.load-more-button__spinner {
+  display: none;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.load-more-button.loading .load-more-button__label {
+  visibility: hidden;
+  position: absolute;
+}
+
+.load-more-button.loading .load-more-button__spinner {
+  display: inline-flex;
+}
+
+.load-more-button.loading {
+  position: relative;
+}

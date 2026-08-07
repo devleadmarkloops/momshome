@@ -1,0 +1,379 @@
+{{ 'section-icon-row.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign align = section.settings.alignment
+  assign heading_size = section.settings.heading_size
+  assign text_size = section.settings.text_size
+  assign label_size = section.settings.label_size
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  #icon-row-{{ section.id }} .icon-row__grid {
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    column-gap: {{ section.settings.column_gap_mobile }}px;
+    row-gap: {{ section.settings.row_gap_mobile }}px;
+  }
+
+  #icon-row-{{ section.id }} .icon-row__icon {
+    width: {{ section.settings.icon_size_mobile }}px;
+    height: {{ section.settings.icon_size_mobile }}px;
+  }
+
+  #icon-row-{{ section.id }} .icon-row__item {
+    gap: {{ section.settings.icon_text_gap }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    #icon-row-{{ section.id }} .icon-row__grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+      column-gap: {{ section.settings.column_gap_desktop }}px;
+      row-gap: {{ section.settings.row_gap_desktop }}px;
+    }
+
+    #icon-row-{{ section.id }} .icon-row__icon {
+      width: {{ section.settings.icon_size_desktop }}px;
+      height: {{ section.settings.icon_size_desktop }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="icon-row-{{ section.id }}"
+    class="icon-row section-{{ section.id }}-padding icon-row--{{ align }}"
+  >
+    <div class="page-width">
+      {%- if section.settings.heading != blank or section.settings.text != blank -%}
+        <div class="icon-row__head{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="icon-row__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <div class="icon-row__text rte {{ text_size }}">{{ section.settings.text }}</div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="icon-row__grid">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign has_link = false
+              if block.settings.link != blank
+                assign has_link = true
+              endif
+            -%}
+            <div class="icon-row__item" {{ block.shopify_attributes }}>
+              {%- if has_link -%}<a class="icon-row__link" href="{{ block.settings.link }}">{%- endif -%}
+
+              <span class="icon-row__icon">
+                {%- if block.settings.icon_svg != blank -%}
+                  {{ block.settings.icon_svg }}
+                {%- elsif block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 240 }}"
+                    srcset="{{ block.settings.image | image_url: width: 120 }} 120w, {{ block.settings.image | image_url: width: 240 }} 240w"
+                    sizes="{{ section.settings.icon_size_desktop }}px"
+                    alt="{{ block.settings.image.alt | escape | default: block.settings.label | escape }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <span class="icon-row__icon-ph" aria-hidden="true"></span>
+                {%- endif -%}
+              </span>
+
+              {%- if block.settings.label != blank -%}
+                <p class="icon-row__label {{ label_size }}">{{ block.settings.label | escape }}</p>
+              {%- endif -%}
+
+              {%- if has_link -%}</a>{%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon row",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Heading (optional)"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset"
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Icon"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_desktop",
+      "label": "Icon size (desktop)",
+      "min": 24,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Icon size (mobile)",
+      "min": 20,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "label_size",
+      "label": "Label text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset0"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "label": "Gap between icon and label",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "column_gap_desktop",
+      "label": "Column gap (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "label": "Column gap (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_gap_desktop",
+      "label": "Row gap (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon",
+      "name": "Icon",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG code",
+          "info": "Paste SVG markup (e.g. from Figma). Takes priority over the image."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image",
+          "info": "Used if no SVG code is set."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Feature"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon row",
+      "blocks": [
+        { "type": "icon", "settings": { "label": "Premium Fabrics" } },
+        { "type": "icon", "settings": { "label": "Elevated Craftsmanship" } },
+        { "type": "icon", "settings": { "label": "Nationwide Delivery" } },
+        { "type": "icon", "settings": { "label": "Secure Packaging" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

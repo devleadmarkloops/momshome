@@ -1,0 +1,861 @@
+{% comment %}
+  ----------------------------------------------------------------------------
+  Newsletter Popup  ·  bp-newsletter-popup.liquid
+  ----------------------------------------------------------------------------
+  INSTALL
+  1. Save this file as:  sections/bp-newsletter-popup.liquid
+  2. Open  layout/theme.liquid  and paste this line just before  </body> :
+         {% section 'bp-newsletter-popup' %}
+  3. In the Theme Editor all settings appear under this section.
+     It loads on every page automatically — nothing to add or drag.
+  ----------------------------------------------------------------------------
+{% endcomment %}
+
+{%- liquid
+  assign placeholder = section.settings.placeholder | default: 'Email Address'
+  assign button_label = section.settings.button_label | default: 'Join'
+  assign btn_mod = 'outline'
+  if section.settings.button_style == 'primary'
+    assign btn_mod = 'primary'
+  endif
+-%}
+
+{%- if section.settings.enable_popup -%}
+  <bp-popup
+    class="bp-popup"
+    data-section-id="{{ section.id }}"
+    data-delay="{{ section.settings.show_delay }}"
+    data-frequency="{{ section.settings.frequency_days }}"
+    data-test-mode="{{ section.settings.test_mode }}"
+    data-require-consent="{{ section.settings.require_consent }}"
+    data-resubscribe-days="{{ section.settings.resubscribe_days }}"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    {% if section.settings.heading != blank %}aria-labelledby="BpPopupHeading-{{ section.id }}"{% endif %}
+  >
+    <div class="bp-popup__overlay" data-bp-close></div>
+
+    <div
+      class="bp-popup__dialog color-{{ section.settings.color_scheme }} gradient{% if section.settings.image == blank %} bp-popup__dialog--single{% endif %}"
+      style="--bp-popup-radius: {{ section.settings.corner_radius }}px;"
+      tabindex="-1"
+    >
+      <button type="button" class="bp-popup__close" data-bp-close aria-label="Close">
+        <svg class="icon icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+        </svg>
+      </button>
+
+      {%- if section.settings.image != blank -%}
+        <div class="bp-popup__media">
+          {{
+            section.settings.image
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              widths: '360, 480, 640, 800, 1000, 1200',
+              sizes: '(min-width: 750px) 41rem, 92vw',
+              class: 'bp-popup__image'
+          }}
+        </div>
+      {%- endif -%}
+
+      <div class="bp-popup__panel">
+        {%- if section.settings.logo != blank -%}
+          <div class="bp-popup__logo" style="--bp-logo-width: {{ section.settings.logo_width }}px;">
+            {{
+              section.settings.logo
+              | image_url: width: 320
+              | image_tag: loading: 'lazy', widths: '160, 240, 320', class: 'bp-popup__logo-image'
+            }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 id="BpPopupHeading-{{ section.id }}" class="bp-popup__heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.body_text != blank -%}
+          <div class="bp-popup__text">{{ section.settings.body_text }}</div>
+        {%- endif -%}
+
+        {%- form 'customer', id: 'BpNewsletterPopup', class: 'bp-popup__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          {%- if form.posted_successfully? -%}
+            <p class="bp-popup__message bp-popup__message--success" data-bp-posted data-bp-autofocus tabindex="-1">
+              {{ section.settings.success_text | default: 'Thanks for subscribing.' }}
+            </p>
+          {%- else -%}
+            {%- if form.errors -%}
+              <p class="bp-popup__message bp-popup__message--error" data-bp-autofocus tabindex="-1">
+                {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+              </p>
+            {%- endif -%}
+
+            <div class="bp-popup__field">
+              <label class="visually-hidden" for="BpPopupEmail-{{ section.id }}">{{ placeholder }}</label>
+              <input
+                id="BpPopupEmail-{{ section.id }}"
+                class="bp-popup__input"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                placeholder="{{ placeholder }}"
+                autocomplete="email"
+                autocapitalize="off"
+                autocorrect="off"
+                spellcheck="false"
+                required
+              >
+            </div>
+
+            {%- if section.settings.show_consent -%}
+              <label class="bp-popup__consent">
+                <input type="checkbox" class="bp-popup__checkbox" name="contact[accepts_marketing]" value="true">
+                <span class="bp-popup__consent-text">{{ section.settings.consent_text }}</span>
+              </label>
+            {%- endif -%}
+
+            <button type="submit" class="bp-popup__button bp-popup__button--{{ btn_mod }}">
+              {{ button_label }}
+            </button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </bp-popup>
+{%- endif -%}
+
+{% stylesheet %}
+/* ── Keyframes ── */
+@keyframes bpPopupOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes bpPopupOverlayOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes bpPopupSlideIn {
+  from { opacity: 0; transform: translateY(-8rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes bpPopupSlideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8rem); }
+}
+
+/* ── Base: hidden ── */
+.bp-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+h2#BpPopupHeading-bp-newsletter-popup {
+  text-transform: none;
+  font-style: italic;
+}
+
+/* ── Open state ── */
+.bp-popup.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.bp-popup.is-open .bp-popup__overlay {
+  animation: bpPopupOverlayIn 1s ease forwards;
+}
+
+.bp-popup.is-open .bp-popup__dialog {
+ animation: bpPopupSlideIn 0.6s ease-in-out forwards;
+}
+
+/* ── Closing state ── */
+.bp-popup.is-closing {
+  visibility: visible;
+  pointer-events: none;
+}
+
+.bp-popup.is-closing .bp-popup__overlay {
+  animation: bpPopupOverlayOut 0.9s ease forwards;
+}
+
+.bp-popup.is-closing .bp-popup__dialog {
+  animation: bpPopupSlideOut 0.6s ease-in-out forwards;
+}
+
+/* ── Overlay ── */
+.bp-popup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  cursor: pointer;
+  display: block !important;
+  opacity: 0;
+}
+
+/* ── Dialog ── */
+.bp-popup__dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  max-width: 82rem;
+  max-height: calc(100vh - 4rem);
+  max-height: calc(100dvh - 4rem);
+  overflow: auto;
+  border-radius: var(--bp-popup-radius, 0);
+  opacity: 0;
+  transform: translateY(-8rem);
+}
+
+.bp-popup__dialog--single {
+  max-width: 46rem;
+}
+
+@media screen and (min-width: 750px) {
+  .bp-popup__dialog {
+    grid-template-columns: 1fr 1fr;
+  }
+  .bp-popup__dialog--single {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Media ── */
+.bp-popup__media {
+  position: relative;
+  overflow: hidden;
+  min-height: 55rem;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.bp-popup__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 5 / 4;
+}
+
+@media screen and (min-width: 750px) {
+  .bp-popup__image {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+}
+
+/* ── Panel ── */
+.bp-popup__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.6rem;
+  padding: 2.2rem 1.5rem 2.5rem 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .bp-popup__panel {
+    padding: 4.8rem 2rem;
+  }
+}
+
+/* ── Close button ── */
+.bp-popup__close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  padding: 0;
+  color: rgb(var(--color-foreground));
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.bp-popup__close .icon {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 0 0.4rem rgba(0, 0, 0, 0.35));
+}
+
+/* ── Logo ── */
+.bp-popup__logo {
+  line-height: 0;
+}
+
+.bp-popup__logo-image {
+  display: block;
+  width: var(--bp-logo-width, 7rem);
+  height: auto;
+  margin: 0 auto;
+}
+
+/* ── Heading ── */
+.bp-popup__heading {
+  margin: 0;
+  font-style: italic;
+  color: rgb(var(--color-foreground));
+}
+
+/* ── Body text ── */
+.bp-popup__text {
+  margin: 0;
+  max-width: 36rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgb(var(--color-foreground));
+  font-weight: 300;
+  margin-bottom: 35px;
+}
+
+.bp-popup__text strong {
+  font-weight: 500;
+}
+
+/* ── Form ── */
+.bp-popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+.bp-popup__field {
+  width: 100%;
+}
+
+.bp-popup__input {
+  width: 100%;
+  padding: 1.1rem 1.4rem;
+  font-family: inherit;
+  font-size: 1.5rem;
+  color: #121212;
+  background: #fff;
+  border: .1rem solid transparent;
+  border-radius: var(--inputs-radius, 0);
+}
+
+.bp-popup__input::placeholder {
+  color: rgba(18, 18, 18, 0.5);
+}
+
+.bp-popup__input:focus,
+.bp-popup__input:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.7);
+  outline-offset: 0.2rem;
+}
+
+/* ── Consent + Checkbox ── */
+.bp-popup__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  width: 100%;
+  text-align: left;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.bp-popup__checkbox {
+  flex: 0 0 auto;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.8rem;
+  height: 1.8rem;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
+  margin: 0.1rem 0 0;
+  padding: 0;
+  display: inline-block;
+  background: transparent;
+  border: 0.15rem solid rgb(var(--color-foreground));
+  border-radius: 0.2rem;
+  cursor: pointer;
+  position: relative;
+  vertical-align: top;
+}
+
+.bp-popup__checkbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.12s ease;
+  background: rgb(var(--color-foreground));
+  border-radius: 0.1rem;
+}
+
+.bp-popup__checkbox:checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.bp-popup__consent-text a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.bp-popup--consent-error .bp-popup__checkbox {
+  outline: 0.2rem solid rgba(255, 120, 120, 0.9);
+  outline-offset: 0.1rem;
+}
+
+/* ── Button ── */
+.bp-popup__button {
+  width: 100%;
+  min-height: 4.8rem;
+  padding: 1.3rem 2rem;
+  font-family: inherit;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  border: 0.1rem solid rgb(var(--color-foreground));
+  border-radius: var(--inputs-radius, 0);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.bp-popup__button--outline {
+  color: rgb(var(--color-foreground));
+  background: transparent;
+}
+
+.bp-popup__button--outline:hover {
+  color: #fff;
+  background: #000;
+}
+
+.bp-popup__button--primary {
+  color: rgb(var(--color-background));
+  background: rgb(var(--color-foreground));
+}
+
+.bp-popup__button--primary:hover {
+  color: rgb(var(--color-foreground));
+  background: transparent;
+}
+
+/* ── Messages ── */
+.bp-popup__message {
+  width: 100%;
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  border-radius: var(--inputs-radius, 0);
+  color: rgb(var(--color-foreground));
+}
+
+.bp-popup__message--success {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.bp-popup__message--error {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* ── Mobile ── */
+@media screen and (max-width: 749px) {
+  .bp-popup__media {
+    min-height: 23rem;
+  }
+  .bp-popup__text {
+    margin: 0;
+  }
+  .bp-popup__consent {
+    margin-bottom: 5px;
+  }
+  .bp-popup__close {
+    top: 0;
+    right: 0;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .bp-popup.is-open .bp-popup__dialog,
+  .bp-popup.is-closing .bp-popup__dialog,
+  .bp-popup.is-open .bp-popup__overlay,
+  .bp-popup.is-closing .bp-popup__overlay {
+    animation-duration: 0.01s;
+  }
+  .bp-popup__button,
+  .bp-popup__checkbox::after {
+    transition: none;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+if (!customElements.get('bp-popup')) {
+  customElements.define(
+    'bp-popup',
+    class extends HTMLElement {
+      connectedCallback() {
+        var self = this;
+        this.dialog = this.querySelector('.bp-popup__dialog');
+        this.storageKey = 'bp-popup:' + (this.dataset.sectionId || 'default');
+        this._onKeydown = function (e) {
+          self._handleKey(e);
+        };
+
+        this.querySelectorAll('[data-bp-close]').forEach(function (el) {
+          el.addEventListener('click', function () {
+            self.close();
+          });
+        });
+
+        var form = this.querySelector('form');
+        var consent = this.querySelector('.bp-popup__checkbox');
+        if (form && consent && this.dataset.requireConsent === 'true') {
+          form.addEventListener('submit', function (e) {
+            if (!consent.checked) {
+              e.preventDefault();
+              self.classList.add('bp-popup--consent-error');
+              consent.focus();
+            }
+          });
+          consent.addEventListener('change', function () {
+            self.classList.remove('bp-popup--consent-error');
+          });
+        }
+
+        if (this.querySelector('[data-bp-posted]')) {
+          this._remember(true);
+          this.open();
+          setTimeout(function () {
+            self.close(false);
+          }, 3000);
+          return;
+        }
+
+        if (window.Shopify && window.Shopify.designMode) {
+          var id = this.dataset.sectionId;
+          document.addEventListener('shopify:section:select', function (e) {
+            if (e.detail.sectionId === id) self.open();
+          });
+          document.addEventListener('shopify:section:deselect', function (e) {
+            if (e.detail.sectionId === id) self.close(false);
+          });
+          return;
+        }
+
+        if (this.dataset.testMode !== 'true' && this._suppressed()) return;
+
+        var delay = (parseInt(this.dataset.delay, 10) || 0) * 1000;
+        this._timer = setTimeout(function () {
+          self.open();
+        }, delay);
+      }
+
+      open() {
+        if (this._timer) {
+          clearTimeout(this._timer);
+          this._timer = null;
+        }
+        this.classList.remove('is-closing');
+        this.classList.add('is-open');
+        this.setAttribute('aria-hidden', 'false');
+        this._prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', this._onKeydown);
+
+        var target =
+          this.querySelector('[data-bp-autofocus]') ||
+          this.querySelector('.bp-popup__input') ||
+          this.querySelector('.bp-popup__button');
+        window.requestAnimationFrame(function () {
+          if (target) target.focus();
+        });
+      }
+
+      close(remember) {
+        var self = this;
+        this.classList.remove('is-open');
+        this.classList.add('is-closing');
+        this.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = this._prevOverflow || '';
+        document.removeEventListener('keydown', this._onKeydown);
+        if (remember !== false) this._remember(false);
+
+        var dialog = this.querySelector('.bp-popup__dialog');
+        function onEnd() {
+          dialog.removeEventListener('animationend', onEnd);
+          self.classList.remove('is-closing');
+        }
+        if (dialog) {
+          dialog.addEventListener('animationend', onEnd);
+        }
+        setTimeout(function () {
+          self.classList.remove('is-closing');
+        }, 600);
+      }
+
+      _handleKey(e) {
+        if (e.key === 'Escape') {
+          this.close();
+          return;
+        }
+        if (e.key !== 'Tab') return;
+
+        var f = this.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!f.length) return;
+
+        var first = f[0];
+        var last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+
+      _suppressed() {
+        try {
+          var ts = parseInt(localStorage.getItem(this.storageKey), 10);
+          if (!ts) return false;
+          var wasSubscribed = localStorage.getItem(this.storageKey + ':subscribed') === 'true';
+          var days = wasSubscribed
+            ? parseInt(this.dataset.resubscribeDays, 10) || 0
+            : parseInt(this.dataset.frequency, 10) || 0;
+          if (days <= 0 && wasSubscribed) return true;
+          if (days <= 0) return false;
+          return Date.now() - ts < days * 86400000;
+        } catch (err) {
+          return false;
+        }
+      }
+
+      _remember(subscribed) {
+        try {
+          localStorage.setItem(this.storageKey, String(Date.now()));
+          if (subscribed) {
+            localStorage.setItem(this.storageKey + ':subscribed', 'true');
+          }
+        } catch (err) {}
+      }
+    }
+  );
+}
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Newsletter popup",
+  "tag": "section",
+  "class": "bp-popup-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_popup",
+      "label": "Enable popup",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Shown on the left (desktop) and top (mobile)."
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image",
+      "info": "Use a transparent PNG."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 30,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the BP Community"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h0", "label": "Extra large" },
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "Be the first to know about <strong>New arrivals</strong>, <strong>Exclusive launches</strong>, <strong>Styling inspiration</strong>, <strong>Special offers</strong>, and more."
+    },
+    {
+      "type": "header",
+      "content": "Sign-up form"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Join"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "outline", "label": "Outline" },
+        { "value": "primary", "label": "Solid" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consent",
+      "label": "Show consent checkbox",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "require_consent",
+      "label": "Require consent to submit",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
+      "id": "consent_text",
+      "label": "Consent text",
+      "default": "Yes, sign me up for email marketing. <a href='/policies/privacy-policy'>Privacy Policy</a>"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success message",
+      "default": "Thanks for subscribing."
+    },
+    {
+      "type": "header",
+      "content": "Display rules"
+    },
+    {
+      "type": "range",
+      "id": "show_delay",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "label": "Delay before showing",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "frequency_days",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "day",
+      "label": "Days before showing again",
+      "default": 14,
+      "info": "Set to 0 to show on every visit."
+    },
+    {
+    "type": "range",
+    "id": "resubscribe_days",
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "unit": "day",
+    "label": "Days before showing after subscription",
+    "default": 0,
+    "info": "0 = never show again after subscribing."
+    },
+    {
+      "type": "checkbox",
+      "id": "test_mode",
+      "label": "Test mode",
+      "default": false,
+      "info": "Always show and ignore the frequency rule. Turn off before going live."
+    }
+  ]
+}
+{% endschema %}

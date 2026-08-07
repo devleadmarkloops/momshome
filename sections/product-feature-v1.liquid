@@ -1,0 +1,528 @@
+{{ 'section-product-feature.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign m_image = section.settings.mobile_image
+  assign heading_size = section.settings.heading_size
+  assign text_size = section.settings.text_size
+  assign spv_d = section.settings.slides_per_view_desktop
+  assign spv_m = section.settings.slides_per_view_mobile
+  assign img_w = section.settings.image_width
+  assign ih_d = section.settings.image_height_desktop
+  assign ih_m = section.settings.image_height_mobile
+
+  assign img = section.settings.image
+  assign img_m = section.settings.image_mobile | default: section.settings.image
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+  {%- if section.settings.equal_card_size -%}
+    .section-{{ section.id }}-padding .pf__inner {
+      gap: 16px;
+    }
+    .section-{{ section.id }}-padding .pf__media picture {
+      display: block;
+      height: 100%;
+  }
+   .section-{{ section.id }}-padding .pf__inner {
+    padding-right: 0;
+  }
+    {%- endif -%}
+ .section-{{ section.id }}-padding .pf__badge {
+    background-color: #E7C99D;
+    letter-spacing: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    {%- if section.settings.equal_card_size -%}
+    .section-{{ section.id }}-padding .pf__inner {
+      align-items: flex-start;
+    }
+    {%- endif -%}
+  }
+
+  @media screen and (max-width:749px){
+    {%- if section.settings.equal_card_size -%}
+    .section-{{ section.id }}-padding .pf__content {
+      padding: 0;
+  }
+{%- endif -%}
+  }
+
+  #pf-{{ section.id }} {
+    --pf-image-w: {{ img_w }}%;
+    --pf-img-h-m: {% if ih_m == 'adapt' %}auto{% else %}{{ ih_m }}px{% endif %};
+    --pf-img-h-d: {% if ih_d == 'adapt' %}auto{% else %}{{ ih_d }}px{% endif %};
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="pf-{{ section.id }}"
+    class="pf section-{{ section.id }}-padding pf--m-{{ m_image }}{% if section.settings.equal_card_size %} pf--equal-size{% endif %}"
+  >
+    <div class="page-width">
+    {%- if section.settings.subheading != blank or section.settings.heading != blank or section.settings.show_view_all -%}
+      <div class="pf__top">
+        <div class="pf__top-text">
+          {%- if section.settings.subheading != blank -%}
+            <p class="pf__subheading caption-with-letter-spacing">{{ section.settings.subheading }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="pf__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.show_view_all and section.settings.view_all_label != blank -%}
+          <a
+            {% if section.settings.view_all_link != blank %}href="{{ section.settings.view_all_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+            class="pf__view-all link small-hide"
+          >
+            {{ section.settings.view_all_label }}
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="pf__view-all-icon"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pf__inner">
+      <div class="pf__media">
+        <div class="pf__media-image">
+          {%- if section.settings.badge_text != blank -%}
+            <span class="pf__badge caption-with-letter-spacing">{{ section.settings.badge_text }}</span>
+          {%- endif -%}
+          {%- if img != blank -%}
+            <picture>
+              {%- if section.settings.image_mobile != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1100 }} 1100w">
+              {%- endif -%}
+              <img
+                src="{{ img | image_url: width: 900 }}"
+                srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1600 }} 1600w"
+                sizes="(min-width: 990px) {{ img_w }}vw, 100vw"
+                alt="{{ img.alt | escape }}"
+                width="{{ img.width }}"
+                height="{{ img.height }}"
+                loading="lazy"
+              >
+            </picture>
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg pf__media-placeholder' }}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.look_label != blank or section.settings.look_heading != blank or section.settings.look_button_label != blank -%}
+          <div class="pf__look-info">
+            <div class="pf__look-text">
+              {%- if section.settings.look_label != blank -%}
+                <p class="pf__look-label caption-with-letter-spacing">{{ section.settings.look_label }}</p>
+              {%- endif -%}
+              {%- if section.settings.look_heading != blank -%}
+                <p class="pf__look-heading">{{ section.settings.look_heading }}</p>
+              {%- endif -%}
+            </div>
+            {%- if section.settings.look_button_label != blank -%}
+              <a
+                {% if section.settings.look_button_link != blank %}href="{{ section.settings.look_button_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                class="pf__look-button button button--primary"
+              >
+                {{ section.settings.look_button_label }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="pf__content">
+        {%- if section.settings.description != blank -%}
+          <div class="pf__intro{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            <div class="pf__desc rte {{ text_size }}">{{ section.settings.description }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="pf__slider">
+            {%- if section.settings.show_arrows -%}
+              <div class="pf__nav">
+                <button type="button" class="pf__nav-btn pf__nav--prev" aria-label="{{ 'general.slider.previous_slide' | t | default: 'Previous' }}">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.6"/></svg>
+                </button>
+                <button type="button" class="pf__nav-btn pf__nav--next" aria-label="{{ 'general.slider.next_slide' | t | default: 'Next' }}">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.6"/></svg>
+                </button>
+              </div>
+            {%- endif -%}
+
+            <div class="pf__cards swiper" data-spv-d="{{ spv_d }}" data-spv-m="{{ spv_m }}">
+              <div class="swiper-wrapper">
+                {%- assign card_skip = false -%}
+                {%- for block in section.blocks -%}
+                  <div class="pf__slide swiper-slide" {{ block.shopify_attributes }}>
+                    {% render 'card-product-v2',
+                      card_product: block.settings.product,
+                      section_id: section.id,
+                      media_aspect_ratio: section.settings.image_ratio,
+                      image_fit: section.settings.image_fit,
+                      enable_quick_add: section.settings.enable_quick_add,
+                      skip_styles: card_skip
+                    %}
+                  </div>
+                  {%- assign card_skip = true -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-product-feature.js' | asset_url }}" defer="defer"></script>
+
+
+{% schema %}
+{
+  "name": "Product feature v1",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Styled by us"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete the Look"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Leave blank to hide."
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Description text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show \"view all\" link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "\"View all\" label",
+      "default": "View all looks"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "\"View all\" link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image width (desktop)",
+      "info": "The image bleeds to the left edge of the screen.",
+      "min": 25,
+      "max": 55,
+      "step": 1,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "equal_card_size",
+      "label": "Match feature image size to product cards (desktop)",
+      "info": "On desktop, the feature image's height and width will match the first product card exactly.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_image",
+      "label": "Image on mobile",
+      "options": [
+        { "value": "top", "label": "Show first" },
+        { "value": "bottom", "label": "Show last" },
+        { "value": "hidden", "label": "Hide" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Falls back to the main image."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "info": "Shown as a small pill over the top-left of the image. Leave blank to hide.",
+      "default": "Date Night"
+    },
+    {
+      "type": "header",
+      "content": "Feature image caption"
+    },
+    {
+      "type": "text",
+      "id": "look_label",
+      "label": "Subheading",
+      "default": "The Look"
+    },
+    {
+      "type": "text",
+      "id": "look_heading",
+      "label": "Heading",
+      "default": "Dinner-to-Dance Floor"
+    },
+    {
+      "type": "text",
+      "id": "look_button_label",
+      "label": "Button label",
+      "default": "Shop Look"
+    },
+    {
+      "type": "url",
+      "id": "look_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Image height"
+    },
+    {
+      "type": "select",
+      "id": "image_height_desktop",
+      "label": "Image height (desktop)",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "400", "label": "400px" },
+        { "value": "450", "label": "450px" },
+        { "value": "500", "label": "500px" },
+        { "value": "550", "label": "550px" },
+        { "value": "600", "label": "600px" },
+        { "value": "650", "label": "650px" },
+        { "value": "700", "label": "700px" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "250", "label": "250px" },
+        { "value": "300", "label": "300px" },
+        { "value": "350", "label": "350px" },
+        { "value": "400", "label": "400px" },
+        { "value": "450", "label": "450px" },
+        { "value": "500", "label": "500px" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "contain", "label": "Contain" },
+        { "value": "cover", "label": "Cover" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_desktop",
+      "label": "Cards per view (desktop)",
+      "options": [
+        { "value": "1.5", "label": "1.5" },
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" },
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_mobile",
+      "label": "Cards per view (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "1.2", "label": "1.2" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "1.8", "label": "1.8" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show slider arrows",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product feature v1",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

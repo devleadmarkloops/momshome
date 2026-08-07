@@ -1,0 +1,279 @@
+{% comment %}
+  Frequently Bought Together — Body Politix (custom block)
+  Render from main-product.liquid:  {% render 'fbt-block', block: block %}
+
+  • Products are chosen in the customizer (product_list setting).
+  • Slider runs on Swiper (loaded once from CDN, deduped across blocks).
+  • "+ ADD" adds the product's first available variant straight to cart and
+    refreshes/opens Dawn's cart drawer or notification.
+{% endcomment %}
+
+{%- liquid
+  case block.settings.image_ratio
+    when 'square'
+      assign fbt_ratio = '1 / 1'
+    when 'adapt'
+      assign fbt_ratio = ''
+    else
+      assign fbt_ratio = '3 / 4'
+  endcase
+-%}
+
+{%- if block.settings.products.size > 0 -%}
+
+  <div id="FBT-{{ block.id }}" class="fbt" {{ block.shopify_attributes }}>
+    {%- if block.settings.heading != blank -%}
+      <h2 class="fbt__heading">{{ block.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="fbt-swiper-{{ block.id }} swiper fbt__swiper">
+      <div class="swiper-wrapper">
+        {%- for product in block.settings.products -%}
+          {%- assign v = product.selected_or_first_available_variant -%}
+          <div class="swiper-slide fbt-card">
+            <a
+              href="{{ product.url }}"
+              class="fbt-card__media{% if fbt_ratio == blank %} fbt-card__media--adapt{% endif %}"
+              {% if fbt_ratio != blank %}style="aspect-ratio: {{ fbt_ratio }};"{% endif %}
+            >
+              {%- if product.featured_media -%}
+                {{
+                  product.featured_media
+                  | image_url: width: 600
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '160, 240, 320, 480, 600',
+                    sizes: '16rem',
+                    alt: product.featured_media.alt | default: product.title
+                }}
+              {%- else -%}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'fbt-card__placeholder' }}
+              {%- endif -%}
+            </a>
+
+            <div class="fbt-card__info">
+              <a href="{{ product.url }}" class="fbt-card__title">{{ product.title }}</a>
+
+              <div class="fbt-card__price">
+                {%- if v.compare_at_price > v.price -%}
+                  <span class="fbt-card__price-current">{{ v.price | money }}</span>
+                  <s class="fbt-card__price-compare">{{ v.compare_at_price | money }}</s>
+                {%- else -%}
+                  <span class="fbt-card__price-current">{{ v.price | money }}</span>
+                {%- endif -%}
+              </div>
+
+              {%- if product.available and v != blank -%}
+                <button type="button" class="fbt-card__add" data-fbt-add data-variant-id="{{ v.id }}">
+                  <span class="fbt-card__add-text">+ ADD</span>
+                </button>
+              {%- else -%}
+                <button type="button" class="fbt-card__add fbt-card__add--soldout" disabled>
+                  <span class="fbt-card__add-text">Sold out</span>
+                </button>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var BLOCK_ID = {{ block.id | json }};
+      var SELECTOR = '.fbt-swiper-' + BLOCK_ID;
+      var root = document.getElementById('FBT-' + BLOCK_ID);
+      if (!root) return;
+
+      /* ---------- Swiper (loaded once, shared) ---------- */
+      function initSwiper() {
+        var el = document.querySelector(SELECTOR);
+        if (!el || el.classList.contains('swiper-initialized')) return;
+        new Swiper(SELECTOR, {
+          slidesPerView: 'auto',
+          spaceBetween: 12,
+          grabCursor: true,
+          freeMode: true,
+          a11y: { enabled: true }
+        });
+      }
+      function loadSwiper() {
+        if (window.Swiper) { initSwiper(); return; }
+        var existing = document.getElementById('swiper-cdn-js');
+        if (existing) {
+          var t = setInterval(function () { if (window.Swiper) { clearInterval(t); initSwiper(); } }, 50);
+          return;
+        }
+        var css = document.createElement('link');
+        css.id = 'swiper-cdn-css';
+        css.rel = 'stylesheet';
+        css.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+        document.head.appendChild(css);
+        var js = document.createElement('script');
+        js.id = 'swiper-cdn-js';
+        js.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+        js.onload = initSwiper;
+        document.head.appendChild(js);
+      }
+      if (document.readyState !== 'loading') loadSwiper();
+      else document.addEventListener('DOMContentLoaded', loadSwiper);
+
+      /* ---------- Add to cart ---------- */
+      var cartAddUrl = (window.routes && routes.cart_add_url) ? routes.cart_add_url : '/cart/add.js';
+      var cartUrl = (window.routes && routes.cart_url) ? routes.cart_url : '/cart';
+
+      function getCartUI() {
+        return document.querySelector('cart-notification') || document.querySelector('cart-drawer');
+      }
+
+      function flash(btn, text) {
+        var label = btn.querySelector('.fbt-card__add-text');
+        if (!label) return;
+        if (!label.dataset.original) label.dataset.original = label.textContent;
+        label.textContent = text;
+        btn.classList.add('is-done');
+        setTimeout(function () {
+          label.textContent = label.dataset.original;
+          btn.classList.remove('is-done');
+        }, 1500);
+      }
+
+      function updateBubble() {
+        fetch(cartUrl + '?section_id=cart-icon-bubble')
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            var bubble = document.getElementById('cart-icon-bubble');
+            if (!bubble) return;
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var fresh = doc.getElementById('cart-icon-bubble');
+            if (fresh) bubble.innerHTML = fresh.innerHTML;
+          });
+      }
+
+      function addToCart(variantId, btn) {
+        btn.classList.add('is-loading');
+        var cart = getCartUI();
+        var body = { items: [{ id: variantId, quantity: 1 }] };
+        if (cart && typeof cart.getSectionsToRender === 'function') {
+          body.sections = cart.getSectionsToRender().map(function (s) { return s.id; });
+          body.sections_url = window.location.pathname;
+        }
+        fetch(cartAddUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/javascript' },
+          body: JSON.stringify(body)
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (response) {
+            btn.classList.remove('is-loading');
+            if (response.status) { flash(btn, 'Unavailable'); return; }
+            if (cart && typeof cart.renderContents === 'function') {
+              if (cart.tagName === 'CART-DRAWER') cart.classList.remove('is-empty');
+              cart.renderContents(response);
+            } else {
+              updateBubble();
+            }
+            if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+              publish(PUB_SUB_EVENTS.cartUpdate, { source: 'fbt-' + BLOCK_ID, productVariantId: variantId });
+            }
+            flash(btn, 'Added ✓');
+          })
+          .catch(function () { btn.classList.remove('is-loading'); });
+      }
+
+      root.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-fbt-add]');
+        if (!btn || btn.classList.contains('is-loading')) return;
+        var variantId = btn.getAttribute('data-variant-id');
+        if (variantId) addToCart(variantId, btn);
+      });
+    })();
+  </script>
+
+  <style>
+    .fbt { margin: 15px 0; }
+    .fbt__heading { margin: 0 0 1.1rem; font-size: 1.6rem; line-height: 1.2; }
+
+    /* Container + pre-init fallback so it reads as a row before Swiper loads */
+    .fbt__swiper { overflow: hidden; }
+    .fbt__swiper .swiper-wrapper { display: flex; }
+
+    /* Card (high specificity to win over Swiper's runtime-injected slide rules) */
+    .fbt .swiper-slide.fbt-card {
+      width: 18rem;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      border: 0.1rem solid rgba(var(--color-foreground), 0.12);
+      border-radius: 0rem;
+      overflow: hidden;
+      background-color: rgb(var(--color-background));
+    }
+
+    .fbt-card__media { display: block; background-color: #f7f4f0; height: 130px; }
+    .fbt-card__media img,
+    .fbt-card__media svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .fbt-card__media--adapt img,
+    .fbt-card__media--adapt svg { height: auto; }
+
+    .fbt-card__info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1.2rem;
+      flex: 1 1 auto;
+    }
+    .fbt-card__title {
+      font-size: 1.4rem;
+      line-height: 1.3;
+      text-decoration: none;
+      color: rgb(var(--color-foreground));
+    }
+    .fbt-card__title:hover { text-decoration: underline; text-underline-offset: 0.3rem; }
+
+    .fbt-card__price {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      font-size: 1.4rem;
+    }
+    .fbt-card__price-compare {
+      color: rgba(var(--color-foreground), 0.5);
+      text-decoration: line-through;
+    }
+
+    .fbt-card__add {
+      margin-top: auto;
+      padding: 1.1rem 1.2rem;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      background-color: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+      font-size: 1.2rem;
+      letter-spacing: 0.06rem;
+      text-transform: uppercase;
+      transition: opacity 0.15s ease;
+    }
+    .fbt-card__add:hover { opacity: 0.9; }
+    .fbt-card__add.is-loading { opacity: 0.6; pointer-events: none; }
+    .fbt-card__add.is-done { opacity: 1; }
+    .fbt-card__add--soldout {
+      background-color: rgba(var(--color-foreground), 0.3);
+      cursor: not-allowed;
+    }
+  </style>
+
+{%- elsif request.design_mode -%}
+  <div class="fbt fbt--empty" {{ block.shopify_attributes }}>
+    <h2 class="fbt__heading" style="font-size:2rem;">{{ block.settings.heading | default: 'Frequently Bought Together' }}</h2>
+    <p>Select products for this block in the theme editor.</p>
+  </div>
+{%- endif -%}

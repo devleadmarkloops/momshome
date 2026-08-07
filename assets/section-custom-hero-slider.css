@@ -1,0 +1,414 @@
+/* ==========================================================================
+   Custom hero slider
+   ========================================================================== */
+
+/* Keep the subtree on border-box so absolute fills + padding never overflow */
+.hero-slider,
+.hero-slider *,
+.hero-slider *::before,
+.hero-slider *::after {
+  box-sizing: border-box;
+}
+
+.hero-slider {
+  position: relative;
+}
+
+.hero-slider__swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Prevent stacked-slide flash before Swiper initialises */
+.hero-slider__swiper:not(.swiper-initialized) .swiper-slide:not(:first-child) {
+  display: none;
+}
+
+.hero-slider__slide {
+  position: relative;
+  overflow: hidden;
+  height: 45rem; /* fallback — real height comes from the section's scoped style */
+}
+
+@media screen and (min-width: 750px) {
+  .hero-slider__slide {
+    height: 55rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Media
+   -------------------------------------------------------------------------- */
+
+.hero-slider__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-slider__media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slider__media img,
+.hero-slider__placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-slider__placeholder {
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+/* Configurable overlay (flat by default) */
+.hero-slider__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(0, 0, 0, var(--hs-overlay-opacity, 0));
+}
+
+/* Directional gradient variant — direction follows desktop alignment */
+.hero-slider--overlay-gradient.hero-slider--align-left .hero-slider__media::after {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, var(--hs-overlay-opacity, 0.4)) 0%,
+    rgba(0, 0, 0, calc(var(--hs-overlay-opacity, 0.4) * 0.45)) 38%,
+    rgba(0, 0, 0, 0) 72%
+  );
+}
+
+.hero-slider--overlay-gradient.hero-slider--align-right .hero-slider__media::after {
+  background: linear-gradient(
+    270deg,
+    rgba(0, 0, 0, var(--hs-overlay-opacity, 0.4)) 0%,
+    rgba(0, 0, 0, calc(var(--hs-overlay-opacity, 0.4) * 0.45)) 38%,
+    rgba(0, 0, 0, 0) 72%
+  );
+}
+
+.hero-slider--overlay-gradient.hero-slider--align-center .hero-slider__media::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, var(--hs-overlay-opacity, 0.4)) 100%
+  );
+}
+
+/* Subtle bottom scrim so the tabs stay legible over any image */
+.hero-slider__media::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.28) 100%);
+}
+
+.hero-slider--single .hero-slider__media::before {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Content
+   .hero-slider__content : absolute fill, controls VERTICAL placement
+   .hero-slider__bound   : standard page-width column (global gutter alignment),
+                            controls HORIZONTAL placement
+   .hero-slider__content-inner : the text column (max width)
+   -------------------------------------------------------------------------- */
+
+.hero-slider__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 8rem; /* bottom space reserves room for the tabs */
+}
+
+.hero-slider__bound {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.hero-slider__content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  width: 100%;
+  max-width: var(--hs-content-max-width, 52rem);
+  /* Text sits directly on the image — never paint the colour scheme's box */
+  background-color: transparent;
+  color: rgb(var(--color-foreground));
+}
+
+.hero-slider__heading {
+  margin: 0;
+}
+
+.hero-slider__text {
+  margin: 0;
+  max-width: 44rem;
+  margin-top: -0.6rem;
+}
+
+.hero-slider__text p {
+  margin: 0;
+}
+
+.hero-slider__actions {
+  margin: 0;
+}
+
+/* Mobile placement ( < 750px ) */
+@media screen and (max-width: 749px) {
+  .hero-slider__content {
+    padding: 4rem 0 8.5rem;
+  }
+
+  .hero-slider__content-inner {
+    gap: 1.6rem;
+  }
+
+  .hero-slider__content--m-top {
+    align-items: flex-start;
+  }
+
+  .hero-slider__content--m-middle {
+    align-items: center;
+  }
+
+  .hero-slider__content--m-bottom {
+    align-items: flex-end;
+  }
+
+  .hero-slider__content--m-align-left .hero-slider__bound {
+    justify-content: flex-start;
+  }
+
+  .hero-slider__content--m-align-center .hero-slider__bound {
+    justify-content: center;
+  }
+
+  .hero-slider__content--m-align-right .hero-slider__bound {
+    justify-content: flex-end;
+  }
+
+  .hero-slider__content--m-align-left .hero-slider__content-inner {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .hero-slider__content--m-align-center .hero-slider__content-inner {
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-slider__content--m-align-right .hero-slider__content-inner {
+    text-align: right;
+    align-items: flex-end;
+  }
+}
+
+/* Desktop placement ( >= 750px ) */
+@media screen and (min-width: 750px) {
+  .hero-slider__content {
+    padding: 5rem 0 7rem;
+  }
+
+  .hero-slider__content--top-left,
+  .hero-slider__content--top-center,
+  .hero-slider__content--top-right {
+    align-items: flex-start;
+  }
+
+  .hero-slider__content--middle-left,
+  .hero-slider__content--middle-center,
+  .hero-slider__content--middle-right {
+    align-items: center;
+  }
+
+  .hero-slider__content--bottom-left,
+  .hero-slider__content--bottom-center,
+  .hero-slider__content--bottom-right {
+    align-items: flex-end;
+  }
+
+  .hero-slider__content--top-left .hero-slider__bound,
+  .hero-slider__content--middle-left .hero-slider__bound,
+  .hero-slider__content--bottom-left .hero-slider__bound {
+    justify-content: flex-start;
+  }
+
+  .hero-slider__content--top-center .hero-slider__bound,
+  .hero-slider__content--middle-center .hero-slider__bound,
+  .hero-slider__content--bottom-center .hero-slider__bound {
+    justify-content: center;
+  }
+
+  .hero-slider__content--top-right .hero-slider__bound,
+  .hero-slider__content--middle-right .hero-slider__bound,
+  .hero-slider__content--bottom-right .hero-slider__bound {
+    justify-content: flex-end;
+  }
+
+  .hero-slider__content--align-left .hero-slider__content-inner {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .hero-slider__content--align-center .hero-slider__content-inner {
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-slider__content--align-right .hero-slider__content-inner {
+    text-align: right;
+    align-items: flex-end;
+  }
+}
+
+/* Outline button: match Dawn's transparent-banner treatment so the scheme's
+   button fill is removed and the outline reads cleanly on the image
+   (mirrors the `.button--secondary { --alpha-button-background: 0 }` rule in
+   image-banner.css). */
+.hero-slider .button--secondary {
+  --alpha-button-background: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Tabs
+   -------------------------------------------------------------------------- */
+
+.hero-slider__tabs {
+  position: absolute;
+  left: 50%;
+  bottom: 2.4rem;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
+  max-width: 100%;
+  padding: 0 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background-color: transparent;
+}
+
+.hero-slider__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-slider__tab {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  color: rgb(var(--color-foreground));
+  min-width: 0;
+}
+
+.hero-slider__tab-label {
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+
+.hero-slider__tab.is-active .hero-slider__tab-label {
+  opacity: 1;
+}
+
+.hero-slider__tab-track {
+  position: relative;
+  width: 8rem;
+  max-width: 22vw;
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.25);
+}
+
+.hero-slider__tab-progress {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: rgb(var(--color-foreground));
+  transition: transform 0.1s linear;
+}
+
+.hero-slider__tab:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 4px;
+}
+
+.hero-slider--single .hero-slider__tabs {
+  display: none;
+}
+
+/* Desktop: left-aligned labels over wider tracks (Figma spec) */
+@media screen and (min-width: 750px) {
+  .hero-slider__tabs {
+    gap: 2rem;
+  }
+
+  .hero-slider__tab {
+    align-items: flex-start;
+  }
+
+  .hero-slider__tab-label {
+    font-size: 1.2rem;
+  }
+
+  .hero-slider__tab-track {
+    width: 15rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .hero-slider__tabs {
+    bottom: 1.8rem;
+    gap: 1.6rem;
+  }
+
+  .hero-slider__tab-track {
+    width: 6rem;
+  }
+
+  .hero-slider__tab-label {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider__tab-progress,
+  .hero-slider__tab-label {
+    transition: none;
+  }
+}

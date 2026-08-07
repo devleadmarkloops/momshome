@@ -1,0 +1,51 @@
+{%- comment -%}
+  Renders a single review card for the community-reviews section.
+  Accepts:
+  - block: the section block containing review settings
+{%- endcomment -%}
+
+<div class="community-review-card">
+  {%- if block.settings.rating > 0 -%}
+    <span class="community-review-card__stars">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign icon_class = 'community-review-card__star-icon'
+          if i > block.settings.rating
+            assign icon_class = icon_class | append: ' community-review-card__star-icon--empty'
+          endif
+        -%}
+        {%- if section.settings.star_icon != blank -%}
+          {{ section.settings.star_icon | image_url: width: 32 | image_tag: class: icon_class, loading: 'lazy', alt: '' }}
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+  {%- endif -%}
+
+  {%- if block.settings.review_text != blank -%}
+    <p class="community-review-card__text typeset0">&ldquo;{{ block.settings.review_text }}&rdquo;</p>
+  {%- endif -%}
+
+  {%- if block.settings.image != blank -%}
+    <div class="community-review-card__image-wrapper">
+      {{
+        block.settings.image
+        | image_url: width: 600
+        | image_tag:
+          class: 'community-review-card__image',
+          loading: 'lazy',
+          widths: '300, 450, 600'
+      }}
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.name != blank or block.settings.detail != blank -%}
+    <div class="community-review-card__footer">
+      {%- if block.settings.name != blank -%}
+        <p class="community-review-card__name">{{ block.settings.name }}</p>
+      {%- endif -%}
+      {%- if block.settings.detail != blank -%}
+        <p class="community-review-card__detail">{{ block.settings.detail }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,436 @@
+{{ 'section-collection-feature.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign d_layout = section.settings.desktop_layout
+  assign m_image = section.settings.mobile_image
+
+  assign heading_size = section.settings.heading_size
+  assign text_size = section.settings.text_size
+
+  assign spv_d = section.settings.slides_per_view_desktop
+  assign spv_m = section.settings.slides_per_view_mobile
+
+  case section.settings.card_ratio
+    when 'square'
+      assign card_ar = '1 / 1'
+    when 'landscape'
+      assign card_ar = '4 / 3'
+    else
+      assign card_ar = '3 / 4'
+  endcase
+
+  assign grad = section.settings.card_gradient_opacity | divided_by: 100.0
+  assign img_w = section.settings.image_width
+
+  assign img = section.settings.image
+  assign img_m = section.settings.image_mobile | default: section.settings.image
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #cf-{{ section.id }} {
+    --cf-media-w: {{ img_w }}%;
+    --cf-grad: {{ grad }};
+    --cf-card-ratio: {{ card_ar }};
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div
+    id="cf-{{ section.id }}"
+    class="cf section-{{ section.id }}-padding cf--{{ d_layout }} cf--m-{{ m_image }}{% if section.settings.show_arrows %} cf--has-nav{% endif %}"
+  >
+    <div class="page-width">
+      <div class="cf__inner">
+        <div class="cf__content">
+          {%- if section.settings.heading != blank or section.settings.description != blank -%}
+            <div class="cf__intro{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {%- if section.settings.heading != blank -%}
+                <h2 class="cf__heading inline-richtext {{ heading_size }}">{{ section.settings.heading }}</h2>
+              {%- endif -%}
+              {%- if section.settings.description != blank -%}
+                <div class="cf__desc rte {{ text_size }}">{{ section.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if section.blocks.size > 0 -%}
+            <div class="cf__slider">
+              {%- if section.settings.show_arrows -%}
+                <div class="cf__nav">
+                  <button type="button" class="cf__nav-btn cf__nav--prev" aria-label="{{ 'general.slider.previous_slide' | t | default: 'Previous' }}">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </button>
+                  <button type="button" class="cf__nav-btn cf__nav--next" aria-label="{{ 'general.slider.next_slide' | t | default: 'Next' }}">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </button>
+                </div>
+              {%- endif -%}
+
+              <div class="cf__cards swiper" data-spv-d="{{ spv_d }}" data-spv-m="{{ spv_m }}">
+                <div class="swiper-wrapper" role="list">
+                {%- for block in section.blocks -%}
+                  {%- liquid
+                    assign coll = block.settings.collection
+                    assign card_img = coll.image
+                    if card_img == blank
+                      assign card_img = block.settings.image
+                    endif
+                    if card_img == blank and coll.products.first
+                      assign card_img = coll.products.first.featured_image
+                    endif
+
+                    assign card_title = block.settings.heading | default: coll.title | default: 'Collection'
+                    assign card_link = block.settings.link | default: coll.url
+                  -%}
+                  <a
+                    {% if card_link != blank %}href="{{ card_link }}"{% else %}role="link" aria-disabled="true"{% endif %}
+                    class="cf__card swiper-slide"
+                    role="listitem"
+                    {{ block.shopify_attributes }}
+                  >
+                    <div class="cf__card-media">
+                      {%- if card_img != blank -%}
+                        <img
+                          src="{{ card_img | image_url: width: 400 }}"
+                          srcset="{{ card_img | image_url: width: 300 }} 300w, {{ card_img | image_url: width: 450 }} 450w, {{ card_img | image_url: width: 600 }} 600w, {{ card_img | image_url: width: 800 }} 800w"
+                          sizes="(min-width: 990px) 22vw, 60vw"
+                          alt="{{ card_img.alt | escape | default: card_title | escape }}"
+                          width="{{ card_img.width }}"
+                          height="{{ card_img.height }}"
+                          loading="lazy"
+                        >
+                      {%- else -%}
+                        {{ 'collection-apparel-2' | placeholder_svg_tag: 'placeholder-svg cf__placeholder' }}
+                      {%- endif -%}
+                      <span class="cf__card-grad"></span>
+                    </div>
+
+                    <div class="cf__card-content">
+                      <span class="cf__card-text">
+                        {%- if block.settings.eyebrow != blank -%}
+                          <span class="cf__card-eyebrow">{{ block.settings.eyebrow | escape }}</span>
+                        {%- endif -%}
+                        <span class="cf__card-title">{{ card_title | escape }}</span>
+                      </span>
+                      <span class="cf__card-arrow" aria-hidden="true">
+                        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="34" height="34" rx="17" fill="white" fill-opacity="0.1"/>
+                          <path d="M14.1055 12.3561L18.9999 17.2506L14.1055 22.145" stroke="white" stroke-width="1.63149"/>
+                        </svg>
+                      </span>
+                    </div>
+                  </a>
+                {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="cf__media">
+          {%- if img != blank -%}
+            <picture>
+                {%- if section.settings.image_mobile != blank -%}
+                  <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1100 }} 1100w">
+                {%- endif -%}
+                <img
+                  src="{{ img | image_url: width: 900 }}"
+                  srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 900 }} 900w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1600 }} 1600w"
+                  sizes="(min-width: 990px) {{ img_w }}vw, 100vw"
+                  alt="{{ img.alt | escape }}"
+                  width="{{ img.width }}"
+                  height="{{ img.height }}"
+                  loading="lazy"
+                >
+              </picture>
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg cf__media-placeholder' }}
+            {%- endif -%}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'section-collection-feature.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Collection feature",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find your fit. Own your moment."
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "t:sections.all.heading_size.label",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>From work to weekends, we've got you covered.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Description text size",
+      "options": [
+        { "value": "typeset0", "label": "Small" },
+        { "value": "typeset", "label": "Medium" },
+        { "value": "typeset2", "label": "Large" }
+      ],
+      "default": "typeset"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop layout",
+      "options": [
+        { "value": "content-first", "label": "Image right" },
+        { "value": "image-first", "label": "Image left" }
+      ],
+      "default": "content-first"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image width (desktop)",
+      "min": 30,
+      "max": 60,
+      "step": 1,
+      "unit": "%",
+      "default": 46
+    },
+    {
+      "type": "select",
+      "id": "mobile_image",
+      "label": "Image on mobile",
+      "options": [
+        { "value": "top", "label": "Show first" },
+        { "value": "bottom", "label": "Show last" },
+        { "value": "hidden", "label": "Hide" }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Falls back to the main image."
+    },
+    {
+      "type": "header",
+      "content": "Collection cards"
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "Card shape",
+      "options": [
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" },
+        { "value": "landscape", "label": "Landscape" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "range",
+      "id": "card_gradient_opacity",
+      "label": "Card gradient strength",
+      "info": "Dark gradient from the bottom so the text stays readable.",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_desktop",
+      "label": "Cards per view (desktop)",
+      "options": [
+        { "value": "1.5", "label": "1.5" },
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" },
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_mobile",
+      "label": "Cards per view (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "1.2", "label": "1.2" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "1.8", "label": "1.8" },
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show slider arrows",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Section padding (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Section padding (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Collection card",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback image",
+          "info": "Used when the collection has no image."
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Subheading",
+          "default": "Shop for"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Title",
+          "info": "Defaults to the collection name."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Defaults to the collection."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection feature",
+      "blocks": [
+        { "type": "card", "settings": { "eyebrow": "Shop for", "heading": "Dresses" } },
+        { "type": "card", "settings": { "eyebrow": "Shop for", "heading": "Cut-Out Dresses" } },
+        { "type": "card", "settings": { "eyebrow": "Shop for", "heading": "Shirt Dresses" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
