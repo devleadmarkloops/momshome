@@ -26,7 +26,7 @@
             "layout": "stacked",
             "alignment": "left",
             "icon_size": 20,
-            "text_size": 1.4,
+            "text_size": 1.2,
             "bold_text": false,
             "item_spacing": 12,
             "show_background": false,
