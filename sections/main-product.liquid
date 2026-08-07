@@ -2508,10 +2508,60 @@
           "default": false
         },
         {
+          "type": "select",
+          "id": "color_source",
+          "label": "Colors",
+          "options": [
+            {
+              "value": "scheme",
+              "label": "Use a color scheme"
+            },
+            {
+              "value": "custom",
+              "label": "Use custom colors"
+            }
+          ],
+          "default": "scheme"
+        },
+        {
           "type": "color_scheme",
           "id": "color_scheme",
           "label": "Color scheme",
           "default": "scheme-1"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Custom background",
+          "default": "#eef0fb"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Custom text color",
+          "default": "#121212"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Custom icon color",
+          "default": "#121212"
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "unit": "px",
+          "label": "Border width",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border color",
+          "default": "#e5e5e5"
         },
         {
           "type": "range",

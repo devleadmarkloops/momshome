@@ -6,6 +6,11 @@
 .icon-text-bar--boxed {
   padding: var(--itb-pad-block, 12px) var(--itb-pad-inline, 16px);
   border-radius: var(--itb-radius, 0);
+  border: var(--itb-border-width, 0) solid var(--itb-border-color, rgba(var(--color-foreground), 0.12));
+}
+
+.icon-text-bar--boxed.icon-text-bar--custom-colors {
+  background-color: var(--itb-bg-color, transparent);
 }
 
 .icon-text-bar__list {
@@ -27,7 +32,12 @@
 }
 
 .icon-text-bar--align-center .icon-text-bar__item {
+  justify-content: center;
   text-align: center;
+}
+
+.icon-text-bar--align-center.icon-text-bar--stacked .icon-text-bar__list {
+  align-items: center;
 }
 
 .icon-text-bar__item {
@@ -52,6 +62,15 @@
 .icon-text-bar .svg-wrapper > svg {
   width: 100%;
   height: 100%;
+  fill: currentColor;
+}
+
+.icon-text-bar--custom-colors .icon-text-bar__item {
+  color: var(--itb-text-color, rgb(var(--color-foreground)));
+}
+
+.icon-text-bar--custom-colors .svg-wrapper {
+  color: var(--itb-icon-color, currentColor);
 }
 
 .icon-text-bar__image {

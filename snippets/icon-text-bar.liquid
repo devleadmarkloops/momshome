@@ -19,11 +19,19 @@
   endfor
 -%}
 
+{%- liquid
+  assign use_custom_colors = false
+  if block.settings.color_source == 'custom'
+    assign use_custom_colors = true
+  endif
+-%}
+
 {%- if items_count > 0 -%}
   <div
     class="
       icon-text-bar icon-text-bar--{{ block.settings.layout }} icon-text-bar--align-{{ block.settings.alignment }}
-      {% if block.settings.show_background %} icon-text-bar--boxed gradient color-{{ block.settings.color_scheme }}{% endif %}
+      {% if use_custom_colors %} icon-text-bar--custom-colors{% endif %}
+      {% if block.settings.show_background %} icon-text-bar--boxed{% unless use_custom_colors %} gradient color-{{ block.settings.color_scheme }}{% endunless %}{% endif %}
     "
     style="
       --itb-icon-size: {{ block.settings.icon_size }}px;
@@ -35,6 +43,13 @@
       --itb-margin-top: {{ block.settings.margin_top }}px;
       --itb-margin-bottom: {{ block.settings.margin_bottom }}px;
       --itb-weight: {% if block.settings.bold_text %}600{% else %}400{% endif %};
+      --itb-border-width: {{ block.settings.border_width | default: 0 }}px;
+      {% if use_custom_colors %}
+        --itb-bg-color: {{ block.settings.background_color }};
+        --itb-text-color: {{ block.settings.text_color }};
+        --itb-icon-color: {{ block.settings.icon_color }};
+      {% endif %}
+      {% if block.settings.border_color != blank %}--itb-border-color: {{ block.settings.border_color }};{% endif %}
     "
     {{ block.shopify_attributes }}
   >
