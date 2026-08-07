@@ -35,7 +35,7 @@
 {%- liquid
   assign card_style = settings.card_style
   assign align = settings.card_text_alignment
-  assign fit = image_fit | default: 'contain'
+  assign fit = image_fit | default: 'cover'
 
   assign ratio = 1
   if media_aspect_ratio == 'portrait'
