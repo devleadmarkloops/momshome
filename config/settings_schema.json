@@ -1253,6 +1253,27 @@
         "default": 40
       },
       {
+        "type": "select",
+        "id": "sale_badge_style",
+        "label": "Sale badge text",
+        "info": "Shown when a product has a compare-at price.",
+        "options": [
+          {
+            "value": "percent",
+            "label": "Savings percentage (Save 50%)"
+          },
+          {
+            "value": "amount",
+            "label": "Savings amount (Save Rs.2,600)"
+          },
+          {
+            "value": "text",
+            "label": "Sale"
+          }
+        ],
+        "default": "percent"
+      },
+      {
         "type": "color_scheme",
         "id": "sale_badge_color_scheme",
         "label": "t:settings_schema.badges.settings.sale_badge_color_scheme.label",

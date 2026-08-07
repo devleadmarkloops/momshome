@@ -118,6 +118,8 @@
       "add_to_cart": "Добавяне към количката",
       "description": "Описание",
       "on_sale": "Разпродажба",
+      "save_percent_html": "Спестете {{ percent }}%",
+      "save_amount_html": "Спестете {{ savings }}",
       "quantity": {
         "label": "Количество",
         "input_label": "Количество за {{ product }}",

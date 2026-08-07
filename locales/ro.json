@@ -119,6 +119,8 @@
       "add_to_cart": "Adăugați în coș",
       "description": "Descriere",
       "on_sale": "Vânzare",
+      "save_percent_html": "Economisiți {{ percent }}%",
+      "save_amount_html": "Economisiți {{ savings }}",
       "product_variants": "Variante de produse",
       "share": "Distribuiți acest produs",
       "sold_out": "Stoc epuizat",

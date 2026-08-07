@@ -118,6 +118,8 @@
       "add_to_cart": "เพิ่มลงในตะกร้าสินค้า",
       "description": "คำอธิบาย",
       "on_sale": "ลดราคา",
+      "save_percent_html": "ประหยัด {{ percent }}%",
+      "save_amount_html": "ประหยัด {{ savings }}",
       "quantity": {
         "label": "ปริมาณ",
         "input_label": "ปริมาณสำหรับ {{ product }}",

@@ -118,6 +118,8 @@
       "add_to_cart": "添加到购物车",
       "description": "描述",
       "on_sale": "促销",
+      "save_percent_html": "省 {{ percent }}%",
+      "save_amount_html": "省 {{ savings }}",
       "product_variants": "产品多属性",
       "quantity": {
         "label": "数量",

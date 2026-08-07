@@ -120,6 +120,8 @@
       "add_to_cart": "Добавить в корзину",
       "description": "Описание",
       "on_sale": "Распродажа",
+      "save_percent_html": "Скидка {{ percent }}%",
+      "save_amount_html": "Экономия {{ savings }}",
       "share": "Поделиться этим продуктом",
       "sold_out": "Продано",
       "unavailable": "Недоступно",

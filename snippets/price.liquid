@@ -38,6 +38,17 @@
   if target == product and product.price_varies
     assign money_price = 'products.product.price.from_price_html' | t: price: money_price
   endif
+
+  assign savings_amount = 0
+  assign savings_percent = 0
+  if compare_at_price > price
+    assign savings_amount = compare_at_price | minus: price
+    assign savings_percent = savings_amount | times: 100.0 | divided_by: compare_at_price | round
+    assign money_savings = savings_amount | money
+    if settings.currency_code_enabled
+      assign money_savings = savings_amount | money_with_currency
+    endif
+  endif
 -%}
 
 {%- unless target == null and placeholder == null -%}
@@ -91,10 +102,14 @@
         {%- endif -%}
       </div>
       <div class="price__sale">
+        <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
+        <span class="price-item price-item--sale">
+          {{ money_price }}
+        </span>
         {%- unless product.price_varies == false and product.compare_at_price_varies %}
           <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
           <span>
-            <s class="price-item price-item--regular">
+            <s class="price-item price-item--regular price-item--last">
               {% if settings.currency_code_enabled %}
                 {{ compare_at_price | money_with_currency }}
               {% else %}
@@ -103,10 +118,6 @@
             </s>
           </span>
         {%- endunless -%}
-        <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
-        <span class="price-item price-item--sale price-item--last">
-          {{ money_price }}
-        </span>
       </div>
       {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
         {% render 'unit-price', price: product.selected_or_first_available_variant.unit_price, measurement: product.selected_or_first_available_variant.unit_price_measurement %}
@@ -114,7 +125,15 @@
     </div>
     {%- if show_badges -%}
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
-        {{ 'products.product.on_sale' | t }}
+        {%- liquid
+          if savings_amount > 0 and settings.sale_badge_style == 'percent'
+            echo 'products.product.save_percent_html' | t: percent: savings_percent
+          elsif savings_amount > 0 and settings.sale_badge_style == 'amount'
+            echo 'products.product.save_amount_html' | t: savings: money_savings
+          else
+            echo 'products.product.on_sale' | t
+          endif
+        -%}
       </span>
 
       <span class="badge price__badge-sold-out color-{{ settings.sold_out_badge_color_scheme }}">

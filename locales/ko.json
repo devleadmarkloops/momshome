@@ -118,6 +118,8 @@
       "add_to_cart": "카트에 추가",
       "description": "설명",
       "on_sale": "할인",
+      "save_percent_html": "{{ percent }}% 할인",
+      "save_amount_html": "{{ savings }} 할인",
       "product_variants": "제품 이형 상품",
       "quantity": {
         "label": "수량",

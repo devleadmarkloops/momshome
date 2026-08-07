@@ -118,6 +118,8 @@
       "add_to_cart": "Hozzáadás a kosárhoz",
       "description": "Leírás",
       "on_sale": "Akciós",
+      "save_percent_html": "Megtakarítás: {{ percent }}%",
+      "save_amount_html": "Megtakarítás: {{ savings }}",
       "product_variants": "Termékváltozatok",
       "quantity": {
         "label": "Mennyiség",

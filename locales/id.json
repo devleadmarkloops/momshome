@@ -118,6 +118,8 @@
       "add_to_cart": "Tambahkan ke keranjang",
       "description": "Deskripsi",
       "on_sale": "Obral",
+      "save_percent_html": "Hemat {{ percent }}%",
+      "save_amount_html": "Hemat {{ savings }}",
       "product_variants": "Varian produk",
       "quantity": {
         "label": "Jumlah",

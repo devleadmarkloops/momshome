@@ -118,6 +118,8 @@
       "add_to_cart": "Lisää ostoskoriin",
       "description": "Kuvaus",
       "on_sale": "Alennusmyynti",
+      "save_percent_html": "Säästä {{ percent }} %",
+      "save_amount_html": "Säästä {{ savings }}",
       "quantity": {
         "label": "Määrä",
         "input_label": "Tuotteen {{ product }} määrä",

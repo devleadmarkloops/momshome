@@ -119,6 +119,8 @@
       "add_to_cart": "Dodaj u košaricu",
       "description": "Opis",
       "on_sale": "Rasprodaja",
+      "save_percent_html": "Uštedite {{ percent }} %",
+      "save_amount_html": "Uštedite {{ savings }}",
       "product_variants": "Varijante proizvoda",
       "share": "Podijelite ovaj proizvod",
       "sold_out": "Rasprodano",

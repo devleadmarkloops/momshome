@@ -118,6 +118,8 @@
       "add_to_cart": "カートに追加する",
       "description": "商品説明",
       "on_sale": "セール",
+      "save_percent_html": "{{ percent }}%オフ",
+      "save_amount_html": "{{ savings }}お得",
       "product_variants": "商品バリエーション",
       "quantity": {
         "label": "数量",

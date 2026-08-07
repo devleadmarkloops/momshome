@@ -118,6 +118,8 @@
       "add_to_cart": "Sepete ekle",
       "description": "Açıklama",
       "on_sale": "İndirim",
+      "save_percent_html": "%{{ percent }} tasarruf edin",
+      "save_amount_html": "{{ savings }} tasarruf edin",
       "quantity": {
         "label": "Adet",
         "input_label": "{{ product }} için adet",
