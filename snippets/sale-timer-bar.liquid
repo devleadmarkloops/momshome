@@ -1,0 +1,109 @@
+{% comment %}
+  Renders a sale bar: discount label on the left, countdown on the right.
+  Only appears when the selected variant has a compare-at price above its price.
+
+  Accepts:
+  - block: {Object} the `sale_timer_bar` block
+  - product: {Object} Product Liquid object
+  - section_id: {String} the section id, used to build the update target id
+
+  Usage:
+  {% render 'sale-timer-bar', block: block, product: product, section_id: section.id %}
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign compare_at_price = variant.compare_at_price
+  assign price = variant.price
+  assign on_sale = false
+
+  if compare_at_price > price
+    assign on_sale = true
+    assign savings_amount = compare_at_price | minus: price
+    assign savings_percent = savings_amount | times: 100.0 | divided_by: compare_at_price | round
+    assign money_savings = savings_amount | money
+    if settings.currency_code_enabled
+      assign money_savings = savings_amount | money_with_currency
+    endif
+
+    assign percent_string = savings_percent | append: '%'
+    assign discount_text = block.settings.discount_text | replace: '[percent]', percent_string
+    assign discount_text = discount_text | replace: '[amount]', money_savings
+  endif
+
+  assign use_custom_colors = false
+  if block.settings.color_source == 'custom'
+    assign use_custom_colors = true
+  endif
+-%}
+
+<sale-timer-bar
+  id="SaleTimerBar-{{ block.id }}"
+  class="sale-timer-bar-wrapper"
+  data-section="{{ section_id }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if on_sale -%}
+    <div
+      class="
+        sale-timer-bar sale-timer-bar--{{ block.settings.alignment }}
+        {% if use_custom_colors %} sale-timer-bar--custom-colors{% else %} gradient color-{{ block.settings.color_scheme }}{% endif %}
+        {% if block.settings.full_width %} sale-timer-bar--full{% endif %}
+      "
+      style="
+        --stb-radius: {{ block.settings.corner_radius }}px;
+        --stb-pad-block: {{ block.settings.padding_vertical }}px;
+        --stb-pad-inline: {{ block.settings.padding_horizontal }}px;
+        --stb-margin-top: {{ block.settings.margin_top }}px;
+        --stb-margin-bottom: {{ block.settings.margin_bottom }}px;
+        --stb-discount-size: {{ block.settings.discount_size }}rem;
+        --stb-label-size: {{ block.settings.label_size }}rem;
+        --stb-digit-size: {{ block.settings.digit_size }}rem;
+        {% if use_custom_colors %}
+          --stb-bg-color: {{ block.settings.background_color }};
+          --stb-text-color: {{ block.settings.text_color }};
+          --stb-discount-color: {{ block.settings.discount_color }};
+        {% endif %}
+      "
+    >
+      <span class="sale-timer-bar__discount{% if block.settings.uppercase_discount %} sale-timer-bar__discount--upper{% endif %}">
+        {{- discount_text -}}
+      </span>
+
+      <div class="sale-timer-bar__timer">
+        {%- if block.settings.timer_label != blank -%}
+          <span class="sale-timer-bar__label">{{ block.settings.timer_label }}</span>
+        {%- endif -%}
+
+        <countdown-bar
+          class="sale-timer-bar__countdown"
+          data-mode="{{ block.settings.timer_mode }}"
+          data-end="{{ block.settings.end_date }}"
+          data-reset-hour="{{ block.settings.reset_hour }}"
+          data-duration="{{ block.settings.duration_hours }}"
+          data-show-days="{{ block.settings.show_days }}"
+          data-expired-action="hide"
+          data-storage-key="stb-{{ block.id }}-{{ product.id }}"
+          hidden
+        >
+          <div class="sale-timer-bar__units countdown-bar__inner" role="timer" aria-label="{{ block.settings.timer_label | strip_html | escape | default: 'Sale ends in' }}">
+            {%- if block.settings.show_days -%}
+              <span class="sale-timer-bar__unit">
+                <span data-days>00</span>{{ block.settings.suffix_days }}
+              </span>
+            {%- endif -%}
+            <span class="sale-timer-bar__unit">
+              <span data-hours>00</span>{{ block.settings.suffix_hours }}
+            </span>
+            <span class="sale-timer-bar__unit">
+              <span data-minutes>00</span>{{ block.settings.suffix_minutes }}
+            </span>
+            <span class="sale-timer-bar__unit">
+              <span data-seconds>00</span>{{ block.settings.suffix_seconds }}
+            </span>
+          </div>
+        </countdown-bar>
+      </div>
+    </div>
+  {%- endif -%}
+</sale-timer-bar>

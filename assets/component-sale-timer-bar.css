@@ -1,0 +1,102 @@
+sale-timer-bar {
+  display: block;
+}
+
+.sale-timer-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.6rem;
+  margin-top: var(--stb-margin-top, 0);
+  margin-bottom: var(--stb-margin-bottom, 0);
+  padding: var(--stb-pad-block, 10px) var(--stb-pad-inline, 16px);
+  border-radius: var(--stb-radius, 0);
+  color: rgb(var(--color-foreground));
+}
+
+.sale-timer-bar--custom-colors {
+  background-color: var(--stb-bg-color, transparent);
+  color: var(--stb-text-color, rgb(var(--color-foreground)));
+}
+
+/* Breaks out of the info column to span the full section width */
+.sale-timer-bar--full {
+  margin-left: calc(var(--stb-pad-inline, 16px) * -1);
+  margin-right: calc(var(--stb-pad-inline, 16px) * -1);
+  border-radius: 0;
+}
+
+.sale-timer-bar--between {
+  justify-content: space-between;
+}
+
+.sale-timer-bar--center {
+  justify-content: center;
+}
+
+.sale-timer-bar--left {
+  justify-content: flex-start;
+}
+
+.sale-timer-bar__discount {
+  font-size: var(--stb-discount-size, 1.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04rem;
+  color: var(--stb-discount-color, inherit);
+}
+
+.sale-timer-bar__discount--upper {
+  text-transform: uppercase;
+}
+
+.sale-timer-bar__timer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.sale-timer-bar__label {
+  font-size: var(--stb-label-size, 1.2rem);
+  line-height: 1.2;
+  opacity: 0.85;
+}
+
+.sale-timer-bar__countdown {
+  display: inline-flex;
+  margin: 0;
+}
+
+.sale-timer-bar__countdown[hidden] {
+  display: none;
+}
+
+/* An expired timer takes its label with it, so "Sale ends in" never sits alone */
+.sale-timer-bar__timer:has(.sale-timer-bar__countdown[hidden]) {
+  display: none;
+}
+
+.sale-timer-bar__units {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.sale-timer-bar__unit {
+  font-size: var(--stb-digit-size, 1.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 749px) {
+  .sale-timer-bar {
+    gap: 0.6rem 1rem;
+    padding: calc(var(--stb-pad-block, 10px) * 0.85) calc(var(--stb-pad-inline, 16px) * 0.85);
+  }
+
+  .sale-timer-bar__units {
+    gap: 0.6rem;
+  }
+}

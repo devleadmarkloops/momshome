@@ -32,6 +32,13 @@
   {%- assign countdown_bar_blocks = section.blocks | where: 'type', 'countdown_bar' -%}
   {%- if countdown_bar_blocks.size > 0 -%}
     {{ 'component-countdown-bar.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+  {%- assign sale_timer_bar_blocks = section.blocks | where: 'type', 'sale_timer_bar' -%}
+  {%- if sale_timer_bar_blocks.size > 0 -%}
+    {{ 'component-sale-timer-bar.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'sale-timer-bar.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+  {%- if countdown_bar_blocks.size > 0 or sale_timer_bar_blocks.size > 0 -%}
     <script src="{{ 'countdown-bar.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 
@@ -786,6 +793,8 @@
                   {% render 'icon-text-bar', block: block %}
                 {%- when 'countdown_bar' -%}
                   {% render 'countdown-bar', block: block, product: product %}
+                {%- when 'sale_timer_bar' -%}
+                  {% render 'sale-timer-bar', block: block, product: product, section_id: section.id %}
               {%- endcase -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -3617,6 +3626,278 @@
           "unit": "px",
           "label": "Space below",
           "default": 0
+        }
+      ]
+    },
+    {
+      "type": "sale_timer_bar",
+      "name": "Sale + timer bar",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Only appears when the selected variant has a compare-at price higher than its price."
+        },
+        {
+          "type": "header",
+          "content": "Discount label"
+        },
+        {
+          "type": "text",
+          "id": "discount_text",
+          "label": "Discount text",
+          "default": "[percent] OFF",
+          "info": "[percent] becomes the savings percentage, [amount] becomes the savings amount."
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase_discount",
+          "label": "Uppercase",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "discount_size",
+          "min": 1,
+          "max": 2.6,
+          "step": 0.1,
+          "unit": "rem",
+          "label": "Discount text size",
+          "default": 1.4
+        },
+        {
+          "type": "header",
+          "content": "Timer"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "timer_label",
+          "label": "Timer label",
+          "default": "Sale ends in"
+        },
+        {
+          "type": "select",
+          "id": "timer_mode",
+          "label": "Timer type",
+          "options": [
+            {
+              "value": "evergreen",
+              "label": "Per visitor (restarts for each new visitor)"
+            },
+            {
+              "value": "daily",
+              "label": "Resets daily"
+            },
+            {
+              "value": "fixed",
+              "label": "Ends on a fixed date"
+            }
+          ],
+          "default": "evergreen"
+        },
+        {
+          "type": "range",
+          "id": "duration_hours",
+          "min": 1,
+          "max": 72,
+          "step": 1,
+          "unit": "hr",
+          "label": "Duration per visitor",
+          "default": 24,
+          "info": "Used with the Per visitor timer."
+        },
+        {
+          "type": "range",
+          "id": "reset_hour",
+          "min": 0,
+          "max": 23,
+          "step": 1,
+          "label": "Daily reset hour",
+          "default": 0,
+          "info": "Used with the Resets daily timer. 0 = midnight, visitor's local time."
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date and time",
+          "info": "Used with the Fixed date timer. Format: YYYY-MM-DD HH:MM (visitor's local time), e.g. 2026-12-31 23:59"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_days",
+          "label": "Show days",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "suffix_days",
+          "label": "Days suffix",
+          "default": "d"
+        },
+        {
+          "type": "text",
+          "id": "suffix_hours",
+          "label": "Hours suffix",
+          "default": "h"
+        },
+        {
+          "type": "text",
+          "id": "suffix_minutes",
+          "label": "Minutes suffix",
+          "default": "m"
+        },
+        {
+          "type": "text",
+          "id": "suffix_seconds",
+          "label": "Seconds suffix",
+          "default": "s"
+        },
+        {
+          "type": "range",
+          "id": "label_size",
+          "min": 1,
+          "max": 1.8,
+          "step": 0.1,
+          "unit": "rem",
+          "label": "Timer label size",
+          "default": 1.2
+        },
+        {
+          "type": "range",
+          "id": "digit_size",
+          "min": 1,
+          "max": 2.6,
+          "step": 0.1,
+          "unit": "rem",
+          "label": "Timer digit size",
+          "default": 1.4
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "between",
+              "label": "Discount left, timer right"
+            },
+            {
+              "value": "center",
+              "label": "Centered"
+            },
+            {
+              "value": "left",
+              "label": "Both left"
+            }
+          ],
+          "default": "between"
+        },
+        {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Stretch past the info column padding",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "select",
+          "id": "color_source",
+          "label": "Colors",
+          "options": [
+            {
+              "value": "custom",
+              "label": "Use custom colors"
+            },
+            {
+              "value": "scheme",
+              "label": "Use a color scheme"
+            }
+          ],
+          "default": "custom"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Custom background",
+          "default": "#e8fc03"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Custom text color",
+          "default": "#121212"
+        },
+        {
+          "type": "color",
+          "id": "discount_color",
+          "label": "Custom discount text color",
+          "default": "#121212"
+        },
+        {
+          "type": "header",
+          "content": "Spacing"
+        },
+        {
+          "type": "range",
+          "id": "corner_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Vertical padding",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Horizontal padding",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 12
         }
       ]
     }
