@@ -91,7 +91,7 @@
             "bold_text": false,
             "item_spacing": 12,
             "show_background": true,
-            "color_source": "scheme",
+            "color_source": "custom",
             "color_scheme": "scheme-1",
             "background_color": "#eef0fb",
             "text_color": "#121212",
