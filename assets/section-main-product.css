@@ -239,7 +239,7 @@ fieldset.js.product-form__input.product-form__input--pill {
   margin-bottom: 0;
   text-transform: uppercase;
   font-weight: 600;
-  max-width: calc(100% - 152px);
+  max-width: calc(100% - 105px);
 }
 .product-form__submit:hover{
   border:none !important;
