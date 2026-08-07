@@ -214,7 +214,7 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "enable_quick_add": true,
+        "enable_quick_add": false,
         "padding_top": 60,
         "padding_bottom": 60
       }
