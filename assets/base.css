@@ -2,7 +2,10 @@ product-component,
 collection-component {
   display: block;
 }
-
+*{
+  line-height: normal;
+  letter-spacing: normal;
+}
 :root {
   --alpha-button-background: 1;
   --alpha-button-border: 1;
