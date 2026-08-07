@@ -513,14 +513,14 @@
         "heading_TzB8rM": {
           "type": "heading",
           "settings": {
-            "heading": "The Story Behind Simply Living",
+            "heading": "The Story Behind Moms's Home",
             "heading_size": "h1"
           }
         },
         "text_m8tPrg": {
           "type": "text",
           "settings": {
-            "text": "<p>Simply Living began with a simple idea: a home works better when everything has its place. We source kitchen and storage pieces built to last in real Pakistani homes — humid kitchens, busy counters, small drawers.<br/><br/>Every product is checked for material and finish before it reaches you, and delivered to your door with cash on delivery across Pakistan.</p>",
+            "text": "<p>At Mom Home, we believe every mom deserves a kitchen that is organised, practical, and easy to manage. That's why we carefully select smart kitchen accessories, home organisation products, and household essentials that simplify everyday tasks and help create a cleaner, more efficient home.<br/><br/>From space-saving kitchen organisers to innovative storage solutions, every product is chosen for its quality, durability, and usefulness in real Pakistani homes. Before reaching your doorstep, each item is inspected to ensure it meets our quality standards.<br/><br/>With Cash on Delivery available across Pakistan, Mom Home is committed to making everyday home organisation simple, affordable, and stress-free—so you can spend less time managing clutter and more time enjoying your home.</p>",
             "text_style": "body"
           }
         },
@@ -528,7 +528,7 @@
           "type": "button",
           "settings": {
             "button_label": "Our Story",
-            "button_link": "shopify://pages/about-us",
+            "button_link": "https://momshome.shop/pages/about",
             "button_style_secondary": false
           }
         }
