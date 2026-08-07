@@ -151,8 +151,44 @@
         font-display: swap;
       }
 
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-ExtraBold.ttf?v=1774425646');
+        font-weight: 800;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-Bold.ttf?v=1774425646');
+        font-weight: 700;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-SemiBold.ttf?v=1774425646');
+        font-weight: 600;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-Medium.ttf?v=1774425646');
+        font-weight: 500;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-Regular.ttf?v=1774425646');
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: InterTight;
+        src: url('https://cdn.shopify.com/s/files/1/0787/6447/4391/files/InterTight-Light.ttf?v=1774425646');
+        font-weight: 300;
+        font-display: swap;
+      }
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }}; 
+        --font-body-family: 'InterTight', {{ settings.type_body_font.fallback_families }}; 
         /* --font-body-family: 'PostGrotesk', {{ settings.type_body_font.fallback_families }};*/
         --font-button-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
