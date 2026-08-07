@@ -4,6 +4,7 @@
   /* line-height: calc(1 + 0.5 / var(--font-body-scale)); */
   line-height: normal;
   color: rgb(var(--color-foreground));
+  font-weight:bold;
 }
 
 .price > * {
