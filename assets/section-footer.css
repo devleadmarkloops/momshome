@@ -76,7 +76,7 @@
 }
 
 .bpf__text {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
@@ -118,7 +118,7 @@
   color: rgb(var(--color-background));
   background-color: rgb(var(--color-foreground));
   padding: 1.44rem 1.4rem;
- font-size: 1.2rem;
+ font-size: 1.4rem;
   line-height: 1.2;
   box-shadow: none;
 }
@@ -139,7 +139,7 @@
   padding: 1.2rem 1.5rem;
   color: rgb(var(--color-foreground));
   font-family: var(--font-button-family);
- font-size: 1.2rem;
+ font-size: 1.4rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -155,7 +155,7 @@
   border: 0;
   padding: 1.2rem 1.5rem;
   font-family: var(--font-button-family);
- font-size: 1.2rem;
+ font-size: 1.4rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -168,14 +168,14 @@
 } */
 .bpf__news-note {
   margin-top: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   line-height: 1.4;
   color: rgba(var(--color-foreground), 0.85);
 }
 
 .bpf__news-note a { color: inherit; text-decoration: underline; text-underline-offset: 0.2rem; }
 
-.bpf__news-msg { display: block; margin-top: 1rem; font-size: 1.2rem; }
+.bpf__news-msg { display: block; margin-top: 1rem; font-size: 1.4rem; }
 .bpf__news-msg--error { color: #ff8a8a; }
 .bpf__news-msg--success { color: rgba(var(--color-foreground), 0.9); }
 
@@ -239,7 +239,7 @@
 .bpf__policy-list a {
   color: rgba(var(--color-foreground), 0.7);
   text-decoration: none;
- font-size: 1.2rem;
+ font-size: 1.4rem;
 }
 
 .bpf__policy-list a:hover {
@@ -249,7 +249,7 @@
 }
 
 .bpf__info-text {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   line-height: 1.5;
   color: rgba(var(--color-foreground), 0.7);
 }
@@ -338,7 +338,7 @@
   }
 
   .bpf__menu-list a {
-   font-size: 1.2rem;
+   font-size: 1.4rem;
   }
 
   .bpf__caret {

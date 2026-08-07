@@ -330,7 +330,7 @@
 
 .hero-slider__tab-label {
   font-family: var(--font-body-family);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -382,7 +382,7 @@
   }
 
   .hero-slider__tab-label {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   .hero-slider__tab-track {

@@ -438,7 +438,7 @@ blockquote {
 
 @media screen and (min-width: 750px) {
   .caption {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -450,12 +450,12 @@ blockquote {
 }
 
 .caption-with-letter-spacing--medium {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   letter-spacing: 0.16rem;
 }
 
 .caption-with-letter-spacing--large {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   letter-spacing: 0.18rem;
 }
 
@@ -477,7 +477,7 @@ blockquote {
 table:not([class]) {
   table-layout: fixed;
   border-collapse: collapse;
- font-size: 1.2rem;
+ font-size: 1.4rem;
   border-style: hidden;
   box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.2);
   /* draws the table border  */
@@ -553,7 +553,7 @@ h6:empty {
   text-underline-offset: 0.3rem;
   color: rgb(var(--color-link));
   background-color: transparent;
- font-size: 1.2rem;
+ font-size: 1.4rem;
   font-family: inherit;
 }
 
@@ -567,7 +567,7 @@ h6:empty {
 
 .link-with-icon {
   display: inline-flex;
- font-size: 1.2rem;
+ font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.1rem;
   text-decoration: none;
@@ -928,7 +928,7 @@ summary::-webkit-details-marker {
 }
 
 .subtitle--small {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   letter-spacing: 0.1rem;
 }
 
@@ -1374,7 +1374,7 @@ button.shopify-payment-button__button--unbranded {
 .button-label,
 .shopify-challenge__button,
 .customer button {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   letter-spacing: 0;
   line-height: 0;
 }
@@ -1459,7 +1459,7 @@ box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0 0.5rem rgba(var(--c
 }
 
 .button--tertiary {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   padding: 1rem 1.5rem;
   min-width: calc(9rem + var(--buttons-border-width) * 2);
   min-height: calc(3.5rem + var(--buttons-border-width) * 2);
@@ -1542,7 +1542,7 @@ shopify-accelerated-checkout-cart {
 }
 
 .share-button__button {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   display: flex;
   align-items: center;
   color: rgb(var(--color-link));
@@ -1780,7 +1780,7 @@ details[open] > .share-button__fallback {
   font-family: var(--font-body-family);
   font-style: var(--font-body-style);
   font-weight: var(--font-body-weight);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: rgba(var(--color-foreground), 0.75);
 }
 
@@ -1975,7 +1975,7 @@ input[type='checkbox'] {
 .form__message {
   align-items: center;
   display: flex;
- font-size: 1.2rem;
+ font-size: 1.4rem;
   line-height: 1;
   margin-top: 1rem;
 }
@@ -1985,7 +1985,7 @@ input[type='checkbox'] {
 }
 
 .customer .field .form__message {
- font-size: 1.2rem;
+ font-size: 1.4rem;
   text-align: left;
 }
 
@@ -2152,7 +2152,7 @@ input[type='checkbox'] {
 .quantity__rules {
   margin-top: 0.5rem;
   position: relative;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .quantity__rules .caption {
@@ -2404,7 +2404,7 @@ input[type='checkbox'] {
   text-align: center;
   padding: 1rem 0;
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 300;
   letter-spacing: 0;
   line-height: normal;
