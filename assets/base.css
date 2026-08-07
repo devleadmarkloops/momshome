@@ -2036,7 +2036,6 @@ input[type='checkbox'] {
   min-height: calc((var(--inputs-border-width) * 2) + 3rem);
 }
 .product-form__buttons .quantity {
-  
   min-height: calc((var(--inputs-border-width) * 2) + 4.5rem);
 }
 
