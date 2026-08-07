@@ -1,1 +1,256 @@
-{"sections":{"main":{"type":"main-product","blocks":{"title":{"type":"title","settings":{}},"price":{"type":"price","settings":{}},"short_description_3NetC6":{"type":"short_description","settings":{"text_style":"body"}},"variant_picker":{"type":"variant_picker","settings":{"picker_type":"button","swatch_shape":"circle"}},"quantity_selector":{"type":"quantity_selector","disabled":true,"settings":{}},"buy_buttons":{"type":"buy_buttons","settings":{"show_dynamic_checkout":false,"show_gift_card_recipient":true}},"pdp_accordion_6wtEbE":{"type":"pdp_accordion","settings":{"heading":"Description","content":"{{ product.description }}","page":"","open_by_default":false}},"pdp_accordion_6YChAj":{"type":"pdp_accordion","settings":{"heading":"Addtional Information","content":"<p>Weight: 0.3 kg<br\/>Dimensions: One size fits most<br\/>Material: 95% polyester, 5% spandex<br\/>Country of Origin: Imported<\/p>","page":"","open_by_default":false}},"pdp_accordion_JVbm3A":{"type":"pdp_accordion","settings":{"heading":"Shipping & Delivery","content":"<p>We deliver across Pakistan, with cash on delivery available nationwide. Orders are dispatched within 24 hours. Delivery takes 2-3 working days in Karachi, Lahore and Islamabad, and 3-5 working days elsewhere in Pakistan. All orders are tracked and we send your tracking number once your parcel is dispatched.<\/p>","page":"","open_by_default":false}}},"block_order":["title","price","short_description_3NetC6","variant_picker","quantity_selector","buy_buttons","pdp_accordion_6wtEbE","pdp_accordion_6YChAj","pdp_accordion_JVbm3A"],"settings":{"enable_sticky_info":true,"color_scheme":"scheme-1","media_size":"medium","constrain_to_viewport":false,"media_fit":"cover","gallery_layout":"stacked","mobile_thumbnails":"show","media_position":"left","image_zoom":"none","hide_variants":true,"enable_video_looping":false,"size_guide_enabled":true,"size_guide_button_text":"Size Guide","size_guide_title":"Size Guide","size_guide_image_position":"top","size_guide_fitnotes_heading":"Fit notes BP Basic Sweat Pants","size_guide_fitnotes_text":"<p>These sweat pants have a relaxed fit with a tapered ankle. If you prefer a looser feel, size up. The elasticated waistband provides a comfortable fit across sizes. Model is 5'9\" and wears a size S.<\/p>","size_guide_inseam_heading":"Inseam","size_guide_inseam_text":"28\" (Petite) · 30\" (Regular) · 32\" (Tall) · 34\" (Extra Tall)","size_guide_table_heading":"Measurements in cm","size_guide_table_headers":"Size, Bust, Waist, Hips","size_guide_table_rows":"XXS, 76–81, 58–63, 84–89\nXS, 81–86, 63–68, 89–94\nS, 86–91, 68–73, 94–99\nM, 91–96, 73–78, 99–104\nL, 96–101, 78–83, 104–109\nXL, 101–106, 83–88, 109–114\n2XL, 106–116, 88–98, 114–124\n3XL, 116–126, 98–108, 124–134","size_guide_footnote":"Between sizes? We recommend sizing based on your preferred fit — size down for a more fitted look, size up for a relaxed feel.","padding_top":32,"padding_bottom":60,"padding_top_mob":24,"padding_bottom_mob":32}},"disclosures":{"type":"disclosures","disabled":true,"settings":{"heading":"Disclosures","heading_size":"h2","open_by_default":false,"color_scheme":"","padding_top":36,"padding_bottom":0}},"related-products":{"type":"related-products","settings":{"heading":"You May Also Like","heading_size":"h1","products_to_show":4,"columns_desktop":4,"columns_mobile":"2","color_scheme":"scheme-196b37b6-9293-4d69-80c8-18070f863a58","image_ratio":"square","image_shape":"default","show_secondary_image":true,"show_vendor":false,"show_rating":false,"enable_quick_add":true,"padding_top":60,"padding_bottom":60}},"1783078784344512e2":{"type":"apps","settings":{"include_margins":true}},"faq_BN8hKc":{"type":"faq","blocks":{"question_YEnEBi":{"type":"question","settings":{"question":"How Do I Know My Size?","answer":"<p>Check our size guide on each product page before ordering — every piece includes detailed measurements. If you're between sizes, we recommend going with the larger size for a relaxed fit or the smaller size for a more fitted look.<\/p>","open":true}},"question_VPD8kw":{"type":"question","settings":{"question":"Are Body Politix Pieces True To Size?","answer":"<p>Yes — our pieces are cut true to size and designed to flatter real bodies. Some styles are intentionally relaxed or fitted, so always check the fit notes in the product description before you order.<\/p>","open":false}},"question_zji4tJ":{"type":"question","settings":{"question":"How Long Does Delivery Take?","answer":"<p>Orders within Lagos are delivered in 1–3 business days, while deliveries to other states take 3–7 business days. You'll receive a tracking update as soon as your order ships.<\/p>","open":false}},"question_EWHrY8":{"type":"question","settings":{"question":"Can I Change My Order After Checkout?","answer":"<p>We can update your order details (size, colour, or delivery address) as long as it hasn't been shipped yet. Reach out to us as soon as possible via WhatsApp or email with your order number and we'll sort it out.<\/p>","open":false}}},"block_order":["question_YEnEBi","question_VPD8kw","question_zji4tJ","question_EWHrY8"],"name":"FAQ","settings":{"color_scheme":"scheme-2","card_color_scheme":"scheme-1","heading":"FAQ’s","heading_size":"h1","alignment":"center","category_size":"h3","group_gap":56,"question_size":"m","answer_size":"typeset0","single_open":false,"max_width":780,"card_gap":12,"card_radius":0,"padding_top":60,"padding_bottom":60,"padding_top_mobile":40,"padding_bottom_mobile":40}}},"order":["main","disclosures","related-products","1783078784344512e2","faq_BN8hKc"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "icon_text_bar_hPyQqP": {
+          "type": "icon_text_bar",
+          "settings": {
+            "layout": "stacked",
+            "alignment": "left",
+            "icon_size": 20,
+            "text_size": 1.4,
+            "bold_text": false,
+            "item_spacing": 12,
+            "show_background": false,
+            "color_scheme": "scheme-1",
+            "corner_radius": 0,
+            "padding_vertical": 12,
+            "padding_horizontal": 16,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "icon_1": "return",
+            "text_1": "Easy Return Policy",
+            "icon_2": "star",
+            "text_2": "100% Original Products",
+            "icon_3": "truck",
+            "text_3": "Free Shipping",
+            "icon_4": "none",
+            "text_4": "",
+            "icon_5": "none",
+            "text_5": "",
+            "icon_6": "none",
+            "text_6": ""
+          }
+        },
+        "short_description_3NetC6": {
+          "type": "short_description",
+          "settings": {
+            "text_style": "body"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "disabled": true,
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "pdp_accordion_6wtEbE": {
+          "type": "pdp_accordion",
+          "settings": {
+            "heading": "Description",
+            "content": "{{ product.description }}",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "pdp_accordion_6YChAj": {
+          "type": "pdp_accordion",
+          "settings": {
+            "heading": "Addtional Information",
+            "content": "<p>Weight: 0.3 kg<br/>Dimensions: One size fits most<br/>Material: 95% polyester, 5% spandex<br/>Country of Origin: Imported</p>",
+            "page": "",
+            "open_by_default": false
+          }
+        },
+        "pdp_accordion_JVbm3A": {
+          "type": "pdp_accordion",
+          "settings": {
+            "heading": "Shipping & Delivery",
+            "content": "<p>We deliver across Pakistan, with cash on delivery available nationwide. Orders are dispatched within 24 hours. Delivery takes 2-3 working days in Karachi, Lahore and Islamabad, and 3-5 working days elsewhere in Pakistan. All orders are tracked and we send your tracking number once your parcel is dispatched.</p>",
+            "page": "",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "icon_text_bar_hPyQqP",
+        "short_description_3NetC6",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "pdp_accordion_6wtEbE",
+        "pdp_accordion_6YChAj",
+        "pdp_accordion_JVbm3A"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": false,
+        "media_fit": "cover",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "none",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "size_guide_enabled": true,
+        "size_guide_button_text": "Size Guide",
+        "size_guide_title": "Size Guide",
+        "size_guide_image_position": "top",
+        "size_guide_fitnotes_heading": "Fit notes BP Basic Sweat Pants",
+        "size_guide_fitnotes_text": "<p>These sweat pants have a relaxed fit with a tapered ankle. If you prefer a looser feel, size up. The elasticated waistband provides a comfortable fit across sizes. Model is 5'9\" and wears a size S.</p>",
+        "size_guide_inseam_heading": "Inseam",
+        "size_guide_inseam_text": "28\" (Petite) · 30\" (Regular) · 32\" (Tall) · 34\" (Extra Tall)",
+        "size_guide_table_heading": "Measurements in cm",
+        "size_guide_table_headers": "Size, Bust, Waist, Hips",
+        "size_guide_table_rows": "XXS, 76–81, 58–63, 84–89\nXS, 81–86, 63–68, 89–94\nS, 86–91, 68–73, 94–99\nM, 91–96, 73–78, 99–104\nL, 96–101, 78–83, 104–109\nXL, 101–106, 83–88, 109–114\n2XL, 106–116, 88–98, 114–124\n3XL, 116–126, 98–108, 124–134",
+        "size_guide_footnote": "Between sizes? We recommend sizing based on your preferred fit — size down for a more fitted look, size up for a relaxed feel.",
+        "padding_top": 32,
+        "padding_bottom": 60,
+        "padding_top_mob": 24,
+        "padding_bottom_mob": 32
+      }
+    },
+    "disclosures": {
+      "type": "disclosures",
+      "disabled": true,
+      "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You May Also Like",
+        "heading_size": "h1",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-196b37b6-9293-4d69-80c8-18070f863a58",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "1783078784344512e2": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "faq_BN8hKc": {
+      "type": "faq",
+      "blocks": {
+        "question_YEnEBi": {
+          "type": "question",
+          "settings": {
+            "question": "How Do I Know My Size?",
+            "answer": "<p>Check our size guide on each product page before ordering — every piece includes detailed measurements. If you're between sizes, we recommend going with the larger size for a relaxed fit or the smaller size for a more fitted look.</p>",
+            "open": true
+          }
+        },
+        "question_VPD8kw": {
+          "type": "question",
+          "settings": {
+            "question": "Are Body Politix Pieces True To Size?",
+            "answer": "<p>Yes — our pieces are cut true to size and designed to flatter real bodies. Some styles are intentionally relaxed or fitted, so always check the fit notes in the product description before you order.</p>",
+            "open": false
+          }
+        },
+        "question_zji4tJ": {
+          "type": "question",
+          "settings": {
+            "question": "How Long Does Delivery Take?",
+            "answer": "<p>Orders within Lagos are delivered in 1–3 business days, while deliveries to other states take 3–7 business days. You'll receive a tracking update as soon as your order ships.</p>",
+            "open": false
+          }
+        },
+        "question_EWHrY8": {
+          "type": "question",
+          "settings": {
+            "question": "Can I Change My Order After Checkout?",
+            "answer": "<p>We can update your order details (size, colour, or delivery address) as long as it hasn't been shipped yet. Reach out to us as soon as possible via WhatsApp or email with your order number and we'll sort it out.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "question_YEnEBi",
+        "question_VPD8kw",
+        "question_zji4tJ",
+        "question_EWHrY8"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "card_color_scheme": "scheme-1",
+        "heading": "FAQ’s",
+        "heading_size": "h1",
+        "alignment": "center",
+        "category_size": "h3",
+        "group_gap": 56,
+        "question_size": "m",
+        "answer_size": "typeset0",
+        "single_open": false,
+        "max_width": 780,
+        "card_gap": 12,
+        "card_radius": 0,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  },
+  "order": [
+    "main",
+    "disclosures",
+    "related-products",
+    "1783078784344512e2",
+    "faq_BN8hKc"
+  ]
+}
