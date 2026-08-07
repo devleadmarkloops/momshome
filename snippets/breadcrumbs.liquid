@@ -73,4 +73,28 @@
     display: inline-flex;
     align-items: center;
   }
+
+  /* Mobile: keep the trail on one line and truncate the current page with an ellipsis */
+  @media screen and (max-width: 749px) {
+    .breadcrumbs__list {
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+    .breadcrumbs__item,
+    .breadcrumbs__sep {
+      flex: 0 0 auto;
+    }
+    .breadcrumbs__item:last-child {
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .breadcrumbs__current {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 </style>
