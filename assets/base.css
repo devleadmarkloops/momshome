@@ -2,6 +2,9 @@ product-component,
 collection-component {
   display: block;
 }
+.pdp-acc__content ul {
+  padding: 0 1.5rem;
+}
 *{
   line-height: normal;
   letter-spacing: normal;
