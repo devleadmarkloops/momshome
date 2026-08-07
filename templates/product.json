@@ -58,7 +58,7 @@
             "layout": "stacked",
             "alignment": "left",
             "icon_size": 20,
-            "text_size": 1.2,
+            "text_size": 1.4,
             "bold_text": false,
             "item_spacing": 12,
             "show_background": false,
