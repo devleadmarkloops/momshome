@@ -17,8 +17,8 @@
         "image_fiiPcV": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Group_5.png",
-            "image_width": 170,
+            "image": "shopify://shop_images/mom_s_home_1.svg",
+            "image_width": 340,
             "alignment": ""
           }
         },
@@ -50,6 +50,7 @@
         "newsletter_button": "Subscribe",
         "newsletter_button_color_scheme": "scheme-1",
         "newsletter_subtext": "By subscribing you agree to our Privacy Policy and Terms of Service.",
+        "show_social": true,
         "show_policy": true,
         "info_text": "<p>Simply Living brings order to the everyday — kitchen and home organisers built to last in Pakistani homes.</p>",
         "margin_top": 0,
