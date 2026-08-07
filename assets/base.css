@@ -452,7 +452,7 @@ blockquote {
 }
 
 .caption-with-letter-spacing--large {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   letter-spacing: 0.18rem;
 }
 
@@ -474,7 +474,7 @@ blockquote {
 table:not([class]) {
   table-layout: fixed;
   border-collapse: collapse;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   border-style: hidden;
   box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.2);
   /* draws the table border  */
@@ -550,7 +550,7 @@ h6:empty {
   text-underline-offset: 0.3rem;
   color: rgb(var(--color-link));
   background-color: transparent;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   font-family: inherit;
 }
 
@@ -564,7 +564,7 @@ h6:empty {
 
 .link-with-icon {
   display: inline-flex;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: 0.1rem;
   text-decoration: none;
@@ -925,7 +925,7 @@ summary::-webkit-details-marker {
 }
 
 .subtitle--small {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   letter-spacing: 0.1rem;
 }
 
@@ -1539,7 +1539,7 @@ shopify-accelerated-checkout-cart {
 }
 
 .share-button__button {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   display: flex;
   align-items: center;
   color: rgb(var(--color-link));
@@ -1972,7 +1972,7 @@ input[type='checkbox'] {
 .form__message {
   align-items: center;
   display: flex;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   line-height: 1;
   margin-top: 1rem;
 }
@@ -1982,7 +1982,7 @@ input[type='checkbox'] {
 }
 
 .customer .field .form__message {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   text-align: left;
 }
 

@@ -76,7 +76,7 @@
 }
 
 .bpf__text {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
@@ -118,7 +118,7 @@
   color: rgb(var(--color-background));
   background-color: rgb(var(--color-foreground));
   padding: 1.44rem 1.4rem;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   line-height: 1.2;
   box-shadow: none;
 }
@@ -139,7 +139,7 @@
   padding: 1.2rem 1.5rem;
   color: rgb(var(--color-foreground));
   font-family: var(--font-button-family);
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -155,7 +155,7 @@
   border: 0;
   padding: 1.2rem 1.5rem;
   font-family: var(--font-button-family);
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   letter-spacing: 0.02em;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -239,7 +239,7 @@
 .bpf__policy-list a {
   color: rgba(var(--color-foreground), 0.7);
   text-decoration: none;
-  font-size: 1.4rem;
+ font-size: 1.2rem;
 }
 
 .bpf__policy-list a:hover {
@@ -249,7 +249,7 @@
 }
 
 .bpf__info-text {
-  font-size: 1.4rem;
+ font-size: 1.2rem;
   line-height: 1.5;
   color: rgba(var(--color-foreground), 0.7);
 }
@@ -338,7 +338,7 @@
   }
 
   .bpf__menu-list a {
-    font-size: 1.4rem;
+   font-size: 1.2rem;
   }
 
   .bpf__caret {
