@@ -334,7 +334,7 @@
 
   .bpf__col-title {
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .bpf__menu-list a {
@@ -364,7 +364,7 @@
     padding-bottom: 1.8rem;
   }
 
-  .bpf__news-title { margin-bottom: 1.5rem; font-size: 1.5rem; }
+  .bpf__news-title { margin-bottom: 1.5rem; font-size: 1.4rem; }
   .bpf__news { text-align: left; }
 
   .bpf__info { text-align: center; }
