@@ -1,0 +1,72 @@
+{% comment %}
+  Renders an urgency countdown bar for the product info column.
+
+  Accepts:
+  - block: {Object} the `countdown_bar` block
+  - product: {Object} used to build a stable storage key for the evergreen timer
+
+  Usage:
+  {% render 'countdown-bar', block: block, product: product %}
+{% endcomment %}
+
+<countdown-bar
+  class="
+    countdown-bar countdown-bar--{{ block.settings.alignment }}
+    {% if block.settings.show_background %} countdown-bar--boxed gradient color-{{ block.settings.color_scheme }}{% endif %}
+  "
+  style="
+    --cdb-digit-size: {{ block.settings.digit_size }}rem;
+    --cdb-label-size: {{ block.settings.label_size }}rem;
+    --cdb-radius: {{ block.settings.corner_radius }}px;
+    --cdb-pad-block: {{ block.settings.padding_vertical }}px;
+    --cdb-pad-inline: {{ block.settings.padding_horizontal }}px;
+    --cdb-margin-top: {{ block.settings.margin_top }}px;
+    --cdb-margin-bottom: {{ block.settings.margin_bottom }}px;
+  "
+  data-mode="{{ block.settings.timer_mode }}"
+  data-end="{{ block.settings.end_date }}"
+  data-reset-hour="{{ block.settings.reset_hour }}"
+  data-duration="{{ block.settings.duration_hours }}"
+  data-show-days="{{ block.settings.show_days }}"
+  data-expired-action="{{ block.settings.expired_action }}"
+  data-storage-key="cdb-{{ block.id }}-{{ product.id }}"
+  hidden
+  {{ block.shopify_attributes }}
+>
+  <div class="countdown-bar__inner" role="timer" aria-label="{{ block.settings.label | strip_html | escape }}">
+    {%- if block.settings.label != blank -%}
+      <span class="countdown-bar__heading">{{ block.settings.label }}</span>
+    {%- endif -%}
+
+    <div class="countdown-bar__units">
+      {%- if block.settings.show_days -%}
+        <div class="countdown-bar__unit" data-unit="days">
+          <span class="countdown-bar__digits" data-days>00</span>
+          <span class="countdown-bar__unit-label">{{ block.settings.label_days }}</span>
+        </div>
+        <span class="countdown-bar__sep" aria-hidden="true">:</span>
+      {%- endif -%}
+
+      <div class="countdown-bar__unit">
+        <span class="countdown-bar__digits" data-hours>00</span>
+        <span class="countdown-bar__unit-label">{{ block.settings.label_hours }}</span>
+      </div>
+      <span class="countdown-bar__sep" aria-hidden="true">:</span>
+
+      <div class="countdown-bar__unit">
+        <span class="countdown-bar__digits" data-minutes>00</span>
+        <span class="countdown-bar__unit-label">{{ block.settings.label_minutes }}</span>
+      </div>
+      <span class="countdown-bar__sep" aria-hidden="true">:</span>
+
+      <div class="countdown-bar__unit">
+        <span class="countdown-bar__digits" data-seconds>00</span>
+        <span class="countdown-bar__unit-label">{{ block.settings.label_seconds }}</span>
+      </div>
+    </div>
+  </div>
+
+  {%- if block.settings.expired_action == 'message' and block.settings.expired_text != blank -%}
+    <p class="countdown-bar__expired" data-expired-message hidden>{{ block.settings.expired_text }}</p>
+  {%- endif -%}
+</countdown-bar>

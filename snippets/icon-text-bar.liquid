@@ -1,0 +1,79 @@
+{% comment %}
+  Renders a repeating icon + text list for the product info column.
+  Doubles as a highlight bar (background panel) when `show_background` is on.
+
+  Accepts:
+  - block: {Object} the `icon_text_bar` block
+
+  Usage:
+  {% render 'icon-text-bar', block: block %}
+{% endcomment %}
+
+{%- liquid
+  assign items_count = 0
+  for i in (1..6)
+    assign text_key = 'text_' | append: i
+    if block.settings[text_key] != blank
+      assign items_count = items_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if items_count > 0 -%}
+  <div
+    class="
+      icon-text-bar icon-text-bar--{{ block.settings.layout }} icon-text-bar--align-{{ block.settings.alignment }}
+      {% if block.settings.show_background %} icon-text-bar--boxed gradient color-{{ block.settings.color_scheme }}{% endif %}
+    "
+    style="
+      --itb-icon-size: {{ block.settings.icon_size }}px;
+      --itb-text-size: {{ block.settings.text_size }}rem;
+      --itb-gap: {{ block.settings.item_spacing }}px;
+      --itb-radius: {{ block.settings.corner_radius }}px;
+      --itb-pad-block: {{ block.settings.padding_vertical }}px;
+      --itb-pad-inline: {{ block.settings.padding_horizontal }}px;
+      --itb-margin-top: {{ block.settings.margin_top }}px;
+      --itb-margin-bottom: {{ block.settings.margin_bottom }}px;
+      --itb-weight: {% if block.settings.bold_text %}600{% else %}400{% endif %};
+    "
+    {{ block.shopify_attributes }}
+  >
+    <ul class="icon-text-bar__list list-unstyled" role="list">
+      {%- for i in (1..6) -%}
+        {%- liquid
+          assign text_key = 'text_' | append: i
+          assign icon_key = 'icon_' | append: i
+          assign image_key = 'image_' | append: i
+          assign item_text = block.settings[text_key]
+          assign item_icon = block.settings[icon_key]
+          assign item_image = block.settings[image_key]
+        -%}
+        {%- if item_text != blank -%}
+          <li class="icon-text-bar__item">
+            {%- if item_image != blank -%}
+              <img
+                class="icon-text-bar__image"
+                src="{{ item_image | image_url: width: 96 }}"
+                srcset="
+                  {{ item_image | image_url: width: 48 }} 1x,
+                  {{ item_image | image_url: width: 96 }} 2x
+                "
+                width="48"
+                height="48"
+                loading="lazy"
+                {% if item_image.alt != blank %}
+                  alt="{{ item_image.alt | escape }}"
+                {% else %}
+                  alt=""
+                {% endif %}
+              >
+            {%- elsif item_icon != 'none' -%}
+              {%- render 'icon-accordion', icon: item_icon -%}
+            {%- endif -%}
+            <span class="icon-text-bar__text inline-richtext">{{ item_text }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}

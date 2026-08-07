@@ -25,6 +25,16 @@
     {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
   {%- endif -%}
 
+  {%- assign icon_text_bar_blocks = section.blocks | where: 'type', 'icon_text_bar' -%}
+  {%- if icon_text_bar_blocks.size > 0 -%}
+    {{ 'component-icon-text-bar.css' | asset_url | stylesheet_tag }}
+  {%- endif -%}
+  {%- assign countdown_bar_blocks = section.blocks | where: 'type', 'countdown_bar' -%}
+  {%- if countdown_bar_blocks.size > 0 -%}
+    {{ 'component-countdown-bar.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'countdown-bar.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
   {%- style -%}
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top_mob }}px;
@@ -772,6 +782,10 @@
                   </product-recommendations>
                 {%- when 'icon-with-text' -%}
                   {% render 'icon-with-text', block: block %}
+                {%- when 'icon_text_bar' -%}
+                  {% render 'icon-text-bar', block: block %}
+                {%- when 'countdown_bar' -%}
+                  {% render 'countdown-bar', block: block, product: product %}
               {%- endcase -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -2407,6 +2421,1152 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "icon_text_bar",
+      "name": "Icon list / highlight bar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": [
+            {
+              "value": "stacked",
+              "label": "Stacked (one per line)"
+            },
+            {
+              "value": "inline",
+              "label": "Inline row (wraps)"
+            }
+          ],
+          "default": "stacked"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "min": 12,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Icon size",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 1.2,
+          "max": 2.4,
+          "step": 0.1,
+          "unit": "rem",
+          "label": "Text size",
+          "default": 1.4
+        },
+        {
+          "type": "checkbox",
+          "id": "bold_text",
+          "label": "Bold text",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "item_spacing",
+          "min": 4,
+          "max": 32,
+          "step": 2,
+          "unit": "px",
+          "label": "Space between items",
+          "default": 12
+        },
+        {
+          "type": "header",
+          "content": "Background"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_background",
+          "label": "Show background panel",
+          "info": "Turn on to use this block as a highlight bar, e.g. below the Add to cart button.",
+          "default": false
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "range",
+          "id": "corner_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Vertical padding",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Horizontal padding",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Block spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Item 1"
+        },
+        {
+          "type": "select",
+          "id": "icon_1",
+          "label": "Icon 1",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "return"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Custom icon 1",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_1",
+          "label": "Text 1",
+          "info": "Leave blank to hide this item.",
+          "default": "Easy Return Policy"
+        },
+        {
+          "type": "header",
+          "content": "Item 2"
+        },
+        {
+          "type": "select",
+          "id": "icon_2",
+          "label": "Icon 2",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "star"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Custom icon 2",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_2",
+          "label": "Text 2",
+          "info": "Leave blank to hide this item.",
+          "default": "100% Original Products"
+        },
+        {
+          "type": "header",
+          "content": "Item 3"
+        },
+        {
+          "type": "select",
+          "id": "icon_3",
+          "label": "Icon 3",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Custom icon 3",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_3",
+          "label": "Text 3",
+          "info": "Leave blank to hide this item.",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "header",
+          "content": "Item 4"
+        },
+        {
+          "type": "select",
+          "id": "icon_4",
+          "label": "Icon 4",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Custom icon 4",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_4",
+          "label": "Text 4",
+          "info": "Leave blank to hide this item."
+        },
+        {
+          "type": "header",
+          "content": "Item 5"
+        },
+        {
+          "type": "select",
+          "id": "icon_5",
+          "label": "Icon 5",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_5",
+          "label": "Custom icon 5",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_5",
+          "label": "Text 5",
+          "info": "Leave blank to hide this item."
+        },
+        {
+          "type": "header",
+          "content": "Item 6"
+        },
+        {
+          "type": "select",
+          "id": "icon_6",
+          "label": "Icon 6",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "reset",
+              "label": "Reset"
+            },
+            {
+              "value": "padlock",
+              "label": "Padlock"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "discount",
+              "label": "Discount"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "fire",
+              "label": "Fire"
+            },
+            {
+              "value": "lightning_bolt",
+              "label": "Lightning bolt"
+            },
+            {
+              "value": "stopwatch",
+              "label": "Stopwatch"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "info",
+              "label": "Info"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "lipstick",
+              "label": "Lipstick"
+            },
+            {
+              "value": "perfume",
+              "label": "Perfume"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_6",
+          "label": "Custom icon 6",
+          "info": "Overrides the icon above. Use a square image, 48x48px or larger."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text_6",
+          "label": "Text 6",
+          "info": "Leave blank to hide this item."
+        }
+      ]
+    },
+    {
+      "type": "countdown_bar",
+      "name": "Countdown bar",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "label",
+          "label": "Label",
+          "default": "Sale Ends In:"
+        },
+        {
+          "type": "select",
+          "id": "timer_mode",
+          "label": "Timer type",
+          "options": [
+            {
+              "value": "evergreen",
+              "label": "Per visitor (restarts for each new visitor)"
+            },
+            {
+              "value": "daily",
+              "label": "Resets daily"
+            },
+            {
+              "value": "fixed",
+              "label": "Ends on a fixed date"
+            }
+          ],
+          "default": "evergreen",
+          "info": "Per visitor keeps urgency without a real deadline. Fixed date is honest for genuine sale end dates."
+        },
+        {
+          "type": "range",
+          "id": "duration_hours",
+          "min": 1,
+          "max": 72,
+          "step": 1,
+          "unit": "hr",
+          "label": "Duration per visitor",
+          "default": 24,
+          "info": "Used with the Per visitor timer."
+        },
+        {
+          "type": "range",
+          "id": "reset_hour",
+          "min": 0,
+          "max": 23,
+          "step": 1,
+          "label": "Daily reset hour",
+          "default": 0,
+          "info": "Used with the Resets daily timer. 0 = midnight, visitor's local time."
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date and time",
+          "info": "Used with the Fixed date timer. Format: YYYY-MM-DD HH:MM (visitor's local time), e.g. 2026-12-31 23:59"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_days",
+          "label": "Show days",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "expired_action",
+          "label": "When the timer ends",
+          "options": [
+            {
+              "value": "hide",
+              "label": "Hide the block"
+            },
+            {
+              "value": "message",
+              "label": "Show a message"
+            }
+          ],
+          "default": "hide"
+        },
+        {
+          "type": "text",
+          "id": "expired_text",
+          "label": "Expired message",
+          "default": "This offer has ended."
+        },
+        {
+          "type": "header",
+          "content": "Unit labels"
+        },
+        {
+          "type": "text",
+          "id": "label_days",
+          "label": "Days",
+          "default": "Days"
+        },
+        {
+          "type": "text",
+          "id": "label_hours",
+          "label": "Hours",
+          "default": "Hours"
+        },
+        {
+          "type": "text",
+          "id": "label_minutes",
+          "label": "Minutes",
+          "default": "Minutes"
+        },
+        {
+          "type": "text",
+          "id": "label_seconds",
+          "label": "Seconds",
+          "default": "Seconds"
+        },
+        {
+          "type": "header",
+          "content": "Appearance"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "digit_size",
+          "min": 1.6,
+          "max": 4,
+          "step": 0.2,
+          "unit": "rem",
+          "label": "Digit size",
+          "default": 2.4
+        },
+        {
+          "type": "range",
+          "id": "label_size",
+          "min": 1,
+          "max": 1.8,
+          "step": 0.1,
+          "unit": "rem",
+          "label": "Label size",
+          "default": 1.1
+        },
+        {
+          "type": "header",
+          "content": "Background"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_background",
+          "label": "Show background panel",
+          "default": false
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "range",
+          "id": "corner_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Vertical padding",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Horizontal padding",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Block spacing"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space above",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Space below",
+          "default": 0
         }
       ]
     }

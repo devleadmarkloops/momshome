@@ -1,0 +1,99 @@
+countdown-bar {
+  display: block;
+  margin-top: var(--cdb-margin-top, 0);
+  margin-bottom: var(--cdb-margin-bottom, 0);
+}
+
+countdown-bar[hidden] {
+  display: none;
+}
+
+.countdown-bar--boxed {
+  padding: var(--cdb-pad-block, 12px) var(--cdb-pad-inline, 16px);
+  border-radius: var(--cdb-radius, 0);
+}
+
+.countdown-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem 1.6rem;
+  color: rgb(var(--color-foreground));
+}
+
+.countdown-bar--left .countdown-bar__inner {
+  justify-content: flex-start;
+}
+
+.countdown-bar--right .countdown-bar__inner {
+  justify-content: flex-end;
+}
+
+.countdown-bar__heading {
+  font-size: var(--cdb-label-size, 1.4rem);
+  line-height: 1.4;
+  letter-spacing: 0.02rem;
+}
+
+.countdown-bar__units {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.countdown-bar__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 4.2rem;
+}
+
+.countdown-bar__digits {
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-size: var(--cdb-digit-size, 2.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-bar__unit-label {
+  font-size: var(--cdb-label-size, 1.1rem);
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.countdown-bar__sep {
+  font-family: var(--font-heading-family);
+  font-size: var(--cdb-digit-size, 2.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  opacity: 0.5;
+}
+
+.countdown-bar__expired {
+  margin: 0;
+  text-align: center;
+  font-size: var(--cdb-label-size, 1.4rem);
+  color: rgb(var(--color-foreground));
+}
+
+@media screen and (max-width: 749px) {
+  .countdown-bar--boxed {
+    padding: calc(var(--cdb-pad-block, 12px) * 0.75) calc(var(--cdb-pad-inline, 16px) * 0.75);
+  }
+
+  .countdown-bar__inner {
+    gap: 0.6rem 1.2rem;
+  }
+
+  .countdown-bar__digits,
+  .countdown-bar__sep {
+    font-size: max(1.8rem, calc(var(--cdb-digit-size, 2.4rem) * 0.8));
+  }
+
+  .countdown-bar__unit {
+    min-width: 3.6rem;
+  }
+}
