@@ -1601,7 +1601,7 @@ a.product__text {
   }
   .product__title>* {
       margin: 0;
-      font-size: 28px;
+      font-size: 24px;
   }
   .product__short-description {
     margin-top: 0 !important;
