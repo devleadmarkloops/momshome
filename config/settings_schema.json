@@ -1259,19 +1259,19 @@
         "info": "Shown when a product has a compare-at price.",
         "options": [
           {
-            "value": "percent",
-            "label": "Savings percentage (Save 50%)"
-          },
-          {
             "value": "amount",
             "label": "Savings amount (Save Rs.2,600)"
+          },
+          {
+            "value": "percent",
+            "label": "Savings percentage (Save 50%)"
           },
           {
             "value": "text",
             "label": "Sale"
           }
         ],
-        "default": "percent"
+        "default": "amount"
       },
       {
         "type": "color_scheme",
