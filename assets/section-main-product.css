@@ -1623,7 +1623,7 @@ a.product__text {
     width: calc(11rem / var(--font-body-scale) + var(--inputs-border-width) * 2) !important;
 }
 .product-form__submit {
-    font-weight: 500;
+    font-weight: 600;
     max-width: calc(100% - 120px);
 }
 .product-form__buttons {
