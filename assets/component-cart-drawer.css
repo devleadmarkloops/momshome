@@ -112,7 +112,7 @@ cart-drawer:not(.is-empty) .cart-drawer__collection {
 
 .drawer__footer {
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.2);
-  padding: 1.5rem 0;
+  padding: 0 0 1.5rem 0;
 }
 
 cart-drawer-items.is-empty + .drawer__footer {
@@ -306,7 +306,7 @@ cart-drawer-items {
 }
 
 .cart-drawer__footer > * + * {
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
 
 .cart-drawer .totals {
