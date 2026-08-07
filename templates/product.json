@@ -20,6 +20,38 @@
           "type": "price",
           "settings": {}
         },
+        "sale_timer_bar_eWewKn": {
+          "type": "sale_timer_bar",
+          "settings": {
+            "discount_text": "[percent] OFF",
+            "uppercase_discount": true,
+            "discount_size": 1.4,
+            "timer_label": "Sale ends in",
+            "timer_mode": "evergreen",
+            "duration_hours": 24,
+            "reset_hour": 0,
+            "end_date": "",
+            "show_days": false,
+            "suffix_days": "d",
+            "suffix_hours": "h",
+            "suffix_minutes": "m",
+            "suffix_seconds": "s",
+            "label_size": 1.2,
+            "digit_size": 1.4,
+            "alignment": "between",
+            "full_width": false,
+            "color_source": "custom",
+            "color_scheme": "scheme-1",
+            "background_color": "#e8fc03",
+            "text_color": "#121212",
+            "discount_color": "#121212",
+            "corner_radius": 0,
+            "padding_vertical": 10,
+            "padding_horizontal": 16,
+            "margin_top": 12,
+            "margin_bottom": 12
+          }
+        },
         "icon_text_bar_hPyQqP": {
           "type": "icon_text_bar",
           "settings": {
@@ -148,6 +180,7 @@
       "block_order": [
         "title",
         "price",
+        "sale_timer_bar_eWewKn",
         "icon_text_bar_hPyQqP",
         "short_description_3NetC6",
         "variant_picker",
