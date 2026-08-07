@@ -102,7 +102,7 @@
             "padding_vertical": 12,
             "padding_horizontal": 16,
             "margin_top": 0,
-            "margin_bottom": 0,
+            "margin_bottom": 20,
             "icon_1": "check_mark",
             "text_1": "30 Days Money Back Guarantee",
             "icon_2": "star",
